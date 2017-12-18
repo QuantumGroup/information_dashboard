@@ -2,8 +2,8 @@
 
 ## Purpose
 
-This project is to be a tool that take in requirements, such as keywords or locations, and collects 
-data from open sources that corresponds to those requirements. In its final form, this will consist of 
+This project is to be a tool that takes in user requirements, such as keywords or locations, and collects 
+data from open sources that correspond to those requirements. In its final form, this will consist of 
 a few different components.
 
 ## Components
@@ -28,29 +28,29 @@ purposes.
 ### Analyzers
 
 Formatted data will be run through a number of analyzers, starting with natural language processors that 
-will prepare the data to be further analyzed using speech tagging, topic modeling, sentiment analysis, 
-and other forms of machine learning and statistical techniques.  
+will prepare the data to be further broken down using speech tagging, topic modeling, sentiment analysis, 
+and other machine learning and statistical techniques.  
 
 ### Disseminators
 
-Finally, processed or analyzed data will need to be disseminated to end users, with the option for both 
+Finally, the processed and/or analyzed data will need to be disseminated to end users, with options for both 
 machine-readable and human-readable formats.  
 
 ## Modules
 
 ### setup.py
 
-The file that sets up the files and directories needed to run the other scripts
+This is the file that sets up the other files and directories needed to run the rest of the project.
 
 ### control.py
 
-The control script that runs all of the other scripts.
+This is the control script that runs the rest of the project.
 
 ### twitter_location_collector.py
 
-The Twitter collector that takes in data based off of location inputs, parses the collected 
+This is the Twitter collector that takes in data based off of location inputs, parses the collected 
 tweets, and adds the parsed data to the SQLite database.
 
 ### collector.sqlite3
 
-The SQLite database that holds the data collected by the collectors.
+This is the SQLite database that holds the data ingested by the collectors.

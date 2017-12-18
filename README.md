@@ -40,8 +40,17 @@ machine-readable and human-readable formats.
 
 ### setup.py
 
+The file that sets up the files and directories needed to run the other scripts
+
 ### control.py
+
+The control script that runs all of the other scripts.
 
 ### twitter_location_collector.py
 
+The Twitter collector that takes in data based off of location inputs, parses the collected 
+tweets, and adds the parsed data to the SQLite database.
+
 ### collector.sqlite3
+
+The SQLite database that holds the data collected by the collectors.

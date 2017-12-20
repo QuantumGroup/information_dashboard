@@ -20,15 +20,15 @@ class InformationCollectorSetup:
 
         # this creates the table that takes in data from the tweet_parser
         table_tweets = 'CREATE TABLE IF NOT EXISTS tweets (id_str INTEGER,name TEXT, screename TEXT, ' \
-                       'timestamp REAL, tweet TEXT, coordinates_long REAL, coordinate_lat REAL,  place_sw_point_long REAL,' \
-                       'place_sw_point_lat REAL, place_nw_point_long REAL, place_nw_point_lat REAL, ' \
-                       'place_ne_point_long REAL, place_ne_point_lat REAL, place_se_point_long REAL, place_se_point_lat ' \
-                       'REAL)'
+                       'timestamp REAL, tweet TEXT, coordinates_long REAL, coordinate_lat REAL,  ' \
+                       'place_sw_point_long REAL, place_sw_point_lat REAL, place_nw_point_long REAL, ' \
+                       'place_nw_point_lat REAL, place_ne_point_long REAL, place_ne_point_lat REAL, ' \
+                       'place_se_point_long REAL, place_se_point_lat REAL)'
         c.execute(table_tweets)
 
-        # this cretes the table that takes in data from the rss_feed_parser
+        # this creates the table that takes in data from the rss_feed_parser
         table_rss = 'CREATE TABLE IF NOT EXISTS rss (uid INTEGER, organization TEXT, published REAL, title TEXT, ' \
-                    'content TEXT)'
+                    'summary TEXT, content TEXT)'
         c.execute(table_rss)
 
         c.close()

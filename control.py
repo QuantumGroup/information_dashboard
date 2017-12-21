@@ -10,6 +10,10 @@ import twitter_track_collector
 import twitter_follow_collector
 import rss_collector
 
+"""
+sets up whether the setup script is needed 
+"""
+setup_required = False
 
 """
 sets up whether whether debug mode is on
@@ -26,8 +30,9 @@ error_log = os.path.join('error_log.txt')
 """
 sets up files, if necessary
 """
-# setup = setup.InformationCollectorSetup()
-# setup.database_setup()
+setup = setup.InformationCollectorSetup()
+if setup_required is True:
+    setup.database_setup()
 
 
 """

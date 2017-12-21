@@ -44,9 +44,13 @@ class RSS_Collector():
             # sourcing is determined, and the results of this block are used by the rest of the variable creation code.
             try:
                 str_url = rss_json['link']
+                # this saves the whole link, to be used as an identifier so as to not save the same story twice in our
+                # database, and for use to download the content from the site itself
+                whole_url = str(str_url)
                 parsed_url = urlparse(str_url)
                 hostname_url = parsed_url.hostname
                 organization = str(hostname_url[4:-4])
+                print('whole_url is ' + whole_url)
             except:
                 organization = 'None'
                 e = sys.exc_info()[0]
@@ -133,14 +137,8 @@ class RSS_Collector():
 
             # this block returns the website content from the URL specified in the RSS JSON object
             # todo: properly call web scraper method with appropriate arguments
-            target_url = ''
-            content = self.rss_scraper(target_url)
+            content = self.rss_scraper(whole_url)
             print('content is ' + content)
-
-            # # prints out the resulting variables for debugging purposes
-            # if debug is True:
-            #     print(uid + '\n' + organization + '\n' + published + '\n' + 'title: ' + title + '\n' + 'summary: ' +
-            #           summary + '\n' + content + '\n---\n')
 
             # sets up the connection to the SQLite database
             sqlite_database = os.path.join('collector.sqlite3')
@@ -148,8 +146,8 @@ class RSS_Collector():
             c = conn.cursor()
             # saves each variable to the database using DB-API's parameter substitution, where '?' is a stand-in for a
             # tuple element containing the actual values
-            c.execute('INSERT INTO rss VALUES (?,?,?,?,?,?)',
-                      (uid, organization, published, title, summary, content))
+            c.execute('INSERT INTO rss VALUES (?,?,?,?,?,?,?)',
+                      (uid, organization, published, title, summary, content, whole_url))
             # commits the changes to the database
             try:
                 conn.commit()

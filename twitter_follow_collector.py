@@ -63,15 +63,20 @@ class TwitterFollowCollector(StreamListener):
         # the following block creates the variables (from the tweet JSON object) that we wish to save
         # in the database
 
-
         # this is the 'human-readable' Twitter name
         name = raw_tweet['user']['name']
+        if self.debug is True:
+            print('name: ' + name)
         # this is the Twitter '@' handle
         screenname = raw_tweet['user']['screen_name']
+        if self.debug is True:
+            print('screenname: @' + screenname)
         # this is the time the tweet was created
         timestamp_raw = raw_tweet['created_at']
         timestamp_struct = time.strptime(timestamp_raw, '%a %b %d %H:%M:%S %z %Y')
         timestamp = time.strftime('%c', timestamp_struct)
+        if self.debug is True:
+            print('time: ' + timestamp)
         # uses the timestamp to create a unique ID for database purposes: uses time instead of built-in tweet id_str in
         # order to maintain consistency with out aspects of our code. Added benefit is that it minimizex long-term
         # chances of UID collisions, since the only collisions possible are with other articles, tweets, messages, or
@@ -80,17 +85,18 @@ class TwitterFollowCollector(StreamListener):
         timestamp_id = str(calendar.timegm(timestamp_struct))
         timestamp_addition = random.sample(range(99999), 1)
         id_str = timestamp_id + str(timestamp_addition[0])
-
-
-
-
-        #id_str = raw_tweet['id_str']
+        if self.debug is True:
+            print('UID: ' + id_str)
         # this is the actual tweet body, or message
         tweet = raw_tweet['text']
+        if self.debug is True:
+            print('tweet: ' + tweet)
         # from the Twitter docs: "the coordinates object is only present (non-null) when the Tweet is assigned an
         # exact location. If an exact location is provided, the coordinates object will provide a [long, lat] array
         # with the geographical coordinates
         coordinates = str(raw_tweet['coordinates'])
+        if self.debug is True:
+            print('coordinates: ' + coordinates)
         if coordinates != 'None':
             # if 'coordinates' exist, this retrieves the Python list that contains the coordinates and saves them as
             # individual string objects
@@ -106,6 +112,8 @@ class TwitterFollowCollector(StreamListener):
         # Tweets associated with Places are not necessarily issued from that location but could also potentially be
         # about that location."
         place = str(raw_tweet['place'])
+        if self.debug is True:
+            print('place: ' + place)
         if place != 'None':
             # if 'place' exists, this returns the Python list that contains the coordinates of each corner of the bound
             # box and saves them all as individual strings to send to the database
@@ -137,19 +145,29 @@ class TwitterFollowCollector(StreamListener):
             place_se_point_long = 'None'
             place_se_point_lat = 'None'
 
-        # this block prints each variable to console for debugging purposes
-        print(id_str + '\n' + name + ' (@' + screenname + ')\n' + timestamp + '\n' + tweet + '\n' + 'coordinates: '
-              + coordinates_long + ' ' + coordinates_lat + '\n' + 'place boundary: ' + place_sw_point_long + ' ' +
-              place_sw_point_lat + ', ' + place_nw_point_long + ' ' + place_nw_point_lat + ', ' +
-              place_ne_point_long + ' ' + place_ne_point_lat + ', ' + place_se_point_long + ' ' +
-              place_se_point_lat + '\n---\n')
+        # this block specifies which Collector is being used to download this tweet
+        collector = 'follow(account)'
+        if self.debug is True:
+            print('collector: ' + collector)
+
+        # this block specifies what URL is embedded in this tweet
+        url = 'test_url'
+        if self.debug is True:
+            print('URL: ' + url)
+
+        # this block calls a website scraper and returns the content from the embedded URL
+        # todo: properly call web scraper method with appropriate arguments
+        content = self.url_scraper(url)
+        if self.debug is True:
+            print('content: ' + content + '\n\n')
 
         # saves each variable to the database uses DB-API's parameter substitution, where ? is a stand-in for a
         # tuple containing the values
-        c.execute('INSERT INTO tweets VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        c.execute('INSERT INTO tweets VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
                   (id_str, name, screenname, timestamp, tweet, coordinates_long, coordinates_lat,
                    place_sw_point_long, place_sw_point_lat, place_nw_point_long, place_nw_point_lat,
-                   place_ne_point_long, place_ne_point_lat, place_se_point_long, place_se_point_lat))
+                   place_ne_point_long, place_ne_point_lat, place_se_point_long, place_se_point_lat,
+                   collector, url, content))
 
         # this block commits changes to the database, stopping the process if the database export fails
         try:
@@ -159,3 +177,7 @@ class TwitterFollowCollector(StreamListener):
             sys.exit(1)
 
         return True
+
+    def url_scraper(self, url):
+        # todo: build website scraper that takes in  URL and returns main body text, tailored for each required RSS feed
+        return 'TEST WEBSITE CONTENT'

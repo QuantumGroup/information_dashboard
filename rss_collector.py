@@ -39,16 +39,18 @@ class RSS_Collector():
         # this instantiates the feedparser instance and returns the relevant data as an 'items' entry in a JSON object
         feed = self.rss_ingestor(rss_url, error_log, debug)
 
+        if debug is True:
+            current_time_int = int(time.time())
+            current_time_struct = time.gmtime(current_time_int)
+            current_time = str(time.strftime('%c', current_time_struct))
+            print('--------------------------------------------------------------------------------------------\n'
+                  'item ingested from the RSS feed on %s: comparing entries to database\n'
+                  '--------------------------------------------------------------------------------------------\n'
+                  % current_time)
+
         # for each 'items' in the feedparser object (aka, for every RSS entry), we save the JSON object locally
         for item in feed['items']:
-            if debug is True:
-                current_time_int = int(time.time())
-                current_time_struct = time.gmtime(current_time_int)
-                current_time = str(time.strftime('%c', current_time_struct))
-                print('--------------------------------------------------\n'
-                      'item ingested from RSS feed  %s: comparing to database\n'
-                      '----------------------------------------------------------------\n'
-                      % current_time)
+
             rss_json_raw = json.dumps(item)
             rss_json = json.loads(rss_json_raw)
 
@@ -78,8 +80,8 @@ class RSS_Collector():
             c.execute('SELECT url FROM rss')
             urls = c.fetchall()
             if whole_url not in str(urls):
-
-                print('organization is ' + organization)
+                if debug is True:
+                    print('organization is ' + organization)
 
                 # This block extracts the date published from the RSS JSON object, from the website URL, or if
                 # neither is possible, uses the time during which this script is run (since the script is meant to
@@ -107,7 +109,8 @@ class RSS_Collector():
                     published = 'None'
                     e = sys.exc_info()
                     print('published error\n' + str(e))
-                print('published is ' + published)
+                if debug is True:
+                    print('published is ' + published)
 
                 # This block extracts the article title from the RSS JSON object
                 try:
@@ -119,7 +122,8 @@ class RSS_Collector():
                     title = 'None'
                     e = sys.exc_info()
                     print('title error\n' + str(e))
-                print('title is ' + title)
+                if debug is True:
+                    print('title is ' + title)
 
                 # this block uses the 'published' time, converted into seconds since epoch, plus five (5) random
                 # integers at the end, as unique identifiers for each entry
@@ -143,7 +147,8 @@ class RSS_Collector():
                     uid = str(time_id_list[0])
                     e = sys.exc_info()
                     print('uid error\n' + str(e))
-                print('uid is ' + uid)
+                if debug is True:
+                    print('uid is ' + uid)
 
                 # this block looks for a story summary embedded within the RSS JSON object
                 try:
@@ -156,12 +161,14 @@ class RSS_Collector():
                     summary = 'None'
                     e = sys.exc_info()
                     print('summary error\n' + str(e))
-                print('summary is ' + summary)
+                if debug is True:
+                    print('summary is ' + summary)
 
                 # this block returns the website content from the URL specified in the RSS JSON object
                 # todo: properly call web scraper method with appropriate arguments
                 content = self.rss_scraper(whole_url)
-                print('content is ' + content)
+                if debug is True:
+                    print('content is ' + content + '\n')
 
                 # saves each variable to the database using DB-API's parameter substitution, where '?' is a stand-in
                 # for a tuple element containing the actual values
@@ -173,17 +180,16 @@ class RSS_Collector():
                 except sqlite3.Error as e:
                     print('database commit error\n' + str(e))
 
-                return True
-
             else:
                 if debug is True:
                     print('------------------------------------------\n'
                           'ingested item present in database: passing\n'
-                          '------------------------------------------\n\n')
-                pass
+                          '------------------------------------------\n')
 
-            return True
-
+        if debug is True:
+            print('=================================================\n'
+                  'all entries pre-processed on %s: continuing to next run\n'
+                  % current_time)
 
     def rss_scraper(self, url):
         # todo: build website scraper that takes in  URL and returns main body text, tailored for each required RSS feed

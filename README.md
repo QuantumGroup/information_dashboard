@@ -46,11 +46,38 @@ This is the file that sets up the other files and directories needed to run the 
 
 This is the control script that runs the rest of the project.
 
+### collector.sqlite3
+
+This is the SQLite database that holds the data ingested by the collectors.
+
+### alerts.py
+
+### facebook_collector.py
+
+### rss_collector.py
+
 ### twitter_location_collector.py
 
 This is the Twitter collector that takes in data based off of location inputs, parses the collected 
 tweets, and adds the parsed data to the SQLite database.
 
-### collector.sqlite3
+### twitter_follow_collector.py
 
-This is the SQLite database that holds the data ingested by the collectors.
+### twitter_track_collector.py
+
+## Dependencies
+
+This code relies on a few libraries that are not included in the standard Python 3 library. These are:
+
+- feedparser
+
+This is a library used in the RSS Collector for collecting RSS feeds from given URLs.
+
+- tweepy
+
+This is used in the various Twitter Collectors in order to connect to the Twitter streaming API.
+
+- _keys_and_secrets
+
+This is not a library - it is a Python file used to store and call passwords, keys, secrets, and other PII. The 
+code that relies on such PII calls this file, and it makes for a convenient place to store such data. 

@@ -23,12 +23,12 @@ class InformationCollectorSetup:
                        'timestamp REAL, tweet TEXT, coordinates_long REAL, coordinate_lat REAL,  ' \
                        'place_sw_point_long REAL, place_sw_point_lat REAL, place_nw_point_long REAL, ' \
                        'place_nw_point_lat REAL, place_ne_point_long REAL, place_ne_point_lat REAL, ' \
-                       'place_se_point_long REAL, place_se_point_lat REAL)'
+                       'place_se_point_long REAL, place_se_point_lat REAL, collector TEXT, url REAL, content REAL)'
         c.execute(table_tweets)
 
         # this creates the table that takes in data from the rss_feed_parser
         table_rss = 'CREATE TABLE IF NOT EXISTS rss (uid INTEGER, organization TEXT, published REAL, title TEXT, ' \
-                    'summary TEXT, content TEXT)'
+                    'summary TEXT, content TEXT, url TEXT)'
         c.execute(table_rss)
 
         c.close()

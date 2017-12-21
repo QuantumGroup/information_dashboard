@@ -39,8 +39,6 @@ class TwitterLocationCollector(StreamListener):
         import os
         import sys
         import time
-        import calendar
-        import random
 
         # establishes connection to database
         sql_database = os.path.join('collector.sqlite3')
@@ -60,37 +58,31 @@ class TwitterLocationCollector(StreamListener):
         else:
             return True
 
-        # the following block creates the variables (from the tweet JSON object) that we wish to save
+        # the following blocks create the variables (from the tweet JSON object) that we wish to save
         # in the database
 
         # this is the 'human-readable' Twitter name
         name = raw_tweet['user']['name']
         if self.debug is True:
             print('name: ' + name)
+
         # this is the Twitter '@' handle
         screenname = raw_tweet['user']['screen_name']
         if self.debug is True:
             print('screenname: @' + screenname)
+
         # this is the time the tweet was created
         timestamp_raw = raw_tweet['created_at']
         timestamp_struct = time.strptime(timestamp_raw, '%a %b %d %H:%M:%S %z %Y')
         timestamp = time.strftime('%c', timestamp_struct)
         if self.debug is True:
             print('time: ' + timestamp)
-        # uses the timestamp to create a unique ID for database purposes: uses time instead of built-in tweet id_str in
-        # order to maintain consistency with out aspects of our code. Added benefit is that it minimizex long-term
-        # chances of UID collisions, since the only collisions possible are with other articles, tweets, messages, or
-        # other objects that are posted at the same second as each other - and even then, the addition of five random
-        # digits at the end should minimize this further.
-        timestamp_id = str(calendar.timegm(timestamp_struct))
-        timestamp_addition = random.sample(range(99999), 1)
-        id_str = timestamp_id + str(timestamp_addition[0])
-        if self.debug is True:
-            print('UID: ' + id_str)
+
         # this is the actual tweet body, or message
         tweet = raw_tweet['text']
         if self.debug is True:
             print('tweet: ' + tweet)
+
         # from the Twitter docs: "the coordinates object is only present (non-null) when the Tweet is assigned an
         # exact location. If an exact location is provided, the coordinates object will provide a [long, lat] array
         # with the geographical coordinates
@@ -107,6 +99,7 @@ class TwitterLocationCollector(StreamListener):
             # if 'coordinates' do not exist, sends a 'None' string to the database
             coordinates_long = 'None'
             coordinates_lat = 'None'
+
         # from Twitter docs: "Places are specific, named locations with corresponding geo coordinates. When users
         # decide to assign a location to their Tweet, they are presented with a list of candidate Twitter Places....
         # Tweets associated with Places are not necessarily issued from that location but could also potentially be
@@ -145,6 +138,7 @@ class TwitterLocationCollector(StreamListener):
             place_se_point_long = 'None'
             place_se_point_lat = 'None'
 
+
         # this block specifies which Collector is being used to download this tweet
         collector = 'locations(locations)'
         if self.debug is True:
@@ -163,8 +157,8 @@ class TwitterLocationCollector(StreamListener):
 
         # saves each variable to the database uses DB-API's parameter substitution, where ? is a stand-in for a
         # tuple containing the values
-        c.execute('INSERT INTO tweets VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                  (id_str, name, screenname, timestamp, tweet, coordinates_long, coordinates_lat,
+        c.execute('INSERT INTO tweets VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                  (name, screenname, timestamp, tweet, coordinates_long, coordinates_lat,
                    place_sw_point_long, place_sw_point_lat, place_nw_point_long, place_nw_point_lat,
                    place_ne_point_long, place_ne_point_lat, place_se_point_long, place_se_point_lat,
                    collector, url, content))

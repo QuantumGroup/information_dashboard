@@ -56,21 +56,21 @@ rss_urls = ['http://www.nytimes.com/services/xml/rss/nyt/World.xml',
             'feed://feeds.washingtonpost.com/rss/world']
 
 
-# """
-# runs the Twitter Location Collector
-# """
-# twitter_location = twitter_location_collector.TwitterLocationCollector(location, error_log, debug)
-# location_collection = twitter_location.twitter_location_ingestor(location, error_log, debug)
-# """
-# runs the Twitter Track Collector
-# """
-# twitter_track = twitter_track_collector.TwitterTrackCollector(keywords, error_log, debug)
-# track_collector = twitter_track.twitter_track_collector(keywords, error_log, debug)
-# """
-# runs the Twitter Follow Collector
-# """
-# twitter_follow = twitter_follow_collector.TwitterFollowCollector(accounts, error_log, debug)
-# follow_collector = twitter_follow.twitter_follow_ingestor(accounts, error_log, debug)
+"""
+runs the Twitter Location Collector
+"""
+twitter_location = twitter_location_collector.TwitterLocationCollector(location, error_log, debug)
+location_collection = twitter_location.twitter_location_ingestor(location, error_log, debug)
+"""
+runs the Twitter Track Collector
+"""
+twitter_track = twitter_track_collector.TwitterTrackCollector(keywords, error_log, debug)
+track_collector = twitter_track.twitter_track_collector(keywords, error_log, debug)
+"""
+runs the Twitter Follow Collector
+"""
+twitter_follow = twitter_follow_collector.TwitterFollowCollector(accounts, error_log, debug)
+follow_collector = twitter_follow.twitter_follow_ingestor(accounts, error_log, debug)
 """
 runs the RSS Collector
 """

@@ -125,30 +125,30 @@ class RSS_Collector():
                 if debug is True:
                     print('title is ' + title)
 
-                # this block uses the 'published' time, converted into seconds since epoch, plus five (5) random
-                # integers at the end, as unique identifiers for each entry
-                try:
-                    if organization == 'nytimes':
-                        try:
-                            time_id = str(calendar.timegm(time.strptime(published, '%a %b %d %H:%M:%S %Y')))
-                        except ValueError:
-                            time_id = str(calendar.timegm(time.strptime(published, '%a, %b %d %H:%M:%S %Y')))
-                        time_addition = random.sample(range(99999), 1)
-                        uid = time_id + str(time_addition[0])
-                    elif organization == 'washingtonpost':
-                        try:
-                            time_id = str(calendar.timegm(time.strptime(published, '%a %b %d %H:%M:%S %Y')))
-                        except ValueError:
-                            time_id = str(calendar.timegm(time.strptime(published, '%a, %b %d %H:%M:%S %Y')))
-                        time_addition = random.sample(range(99999), 1)
-                        uid = time_id + str(time_addition[0])
-                except:
-                    time_id_list = random.sample(range(9999999999), 1)
-                    uid = str(time_id_list[0])
-                    e = sys.exc_info()
-                    print('uid error\n' + str(e))
-                if debug is True:
-                    print('uid is ' + uid)
+                # # this block uses the 'published' time, converted into seconds since epoch, plus five (5) random
+                # # integers at the end, as unique identifiers for each entry
+                # try:
+                #     if organization == 'nytimes':
+                #         try:
+                #             time_id = str(calendar.timegm(time.strptime(published, '%a %b %d %H:%M:%S %Y')))
+                #         except ValueError:
+                #             time_id = str(calendar.timegm(time.strptime(published, '%a, %b %d %H:%M:%S %Y')))
+                #         time_addition = random.sample(range(99999), 1)
+                #         uid = time_id + str(time_addition[0])
+                #     elif organization == 'washingtonpost':
+                #         try:
+                #             time_id = str(calendar.timegm(time.strptime(published, '%a %b %d %H:%M:%S %Y')))
+                #         except ValueError:
+                #             time_id = str(calendar.timegm(time.strptime(published, '%a, %b %d %H:%M:%S %Y')))
+                #         time_addition = random.sample(range(99999), 1)
+                #         uid = time_id + str(time_addition[0])
+                # except:
+                #     time_id_list = random.sample(range(9999999999), 1)
+                #     uid = str(time_id_list[0])
+                #     e = sys.exc_info()
+                #     print('uid error\n' + str(e))
+                # if debug is True:
+                #     print('uid is ' + uid)
 
                 # this block looks for a story summary embedded within the RSS JSON object
                 try:
@@ -172,8 +172,8 @@ class RSS_Collector():
 
                 # saves each variable to the database using DB-API's parameter substitution, where '?' is a stand-in
                 # for a tuple element containing the actual values
-                c.execute('INSERT INTO rss VALUES (?,?,?,?,?,?,?)',
-                          (uid, organization, published, title, summary, content, whole_url))
+                c.execute('INSERT INTO rss VALUES (?,?,?,?,?,?)',
+                          (organization, published, title, summary, content, whole_url))
                 # commits the changes to the database
                 try:
                     conn.commit()

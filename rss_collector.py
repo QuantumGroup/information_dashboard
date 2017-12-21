@@ -19,12 +19,9 @@ class RSS_Collector():
     def rss_parser(self, rss_url, error_log, debug):
         import os
         import json
-        import calendar
         import time
-        import random
         import sys
         import sqlite3
-        import re
         from urllib.parse import urlparse
 
         if debug is True:
@@ -89,6 +86,7 @@ class RSS_Collector():
                 # the organization, since the organization chooses their method of publishing this data (if at all).
                 # The following regular expression strips dates from URLs, and the line after that converts that
                 # regex object to a Python date object
+                # import re
                 # url_date_regex = re.search(r'([\./\-_]{0,1}(19|20)\d{2})[\./\-_]{0,1}(([0-3]{0,1}[0-9][\./\-_])|'
                 #                            r'(\w{3,5}[\./\-_]))([0-3]{0,1}[0-9][\./\-]{0,1})?', str_url)
                 # url_date = time.strptime(str(url_date_regex.group(0)), '/%Y/%m/%d/')
@@ -124,32 +122,6 @@ class RSS_Collector():
                     print('title error\n' + str(e))
                 if debug is True:
                     print('title is ' + title)
-
-                # # this block uses the 'published' time, converted into seconds since epoch, plus five (5) random
-                # # integers at the end, as unique identifiers for each entry
-                # try:
-                #     if organization == 'nytimes':
-                #         try:
-                #             time_id = str(calendar.timegm(time.strptime(published, '%a %b %d %H:%M:%S %Y')))
-                #         except ValueError:
-                #             time_id = str(calendar.timegm(time.strptime(published, '%a, %b %d %H:%M:%S %Y')))
-                #         time_addition = random.sample(range(99999), 1)
-                #         uid = time_id + str(time_addition[0])
-                #     elif organization == 'washingtonpost':
-                #         try:
-                #             time_id = str(calendar.timegm(time.strptime(published, '%a %b %d %H:%M:%S %Y')))
-                #         except ValueError:
-                #             time_id = str(calendar.timegm(time.strptime(published, '%a, %b %d %H:%M:%S %Y')))
-                #         time_addition = random.sample(range(99999), 1)
-                #         uid = time_id + str(time_addition[0])
-                # except:
-                #     time_id_list = random.sample(range(9999999999), 1)
-                #     uid = str(time_id_list[0])
-                #     e = sys.exc_info()
-                #     print('uid error\n' + str(e))
-                # if debug is True:
-                #     print('uid is ' + uid)
-
                 # this block looks for a story summary embedded within the RSS JSON object
                 try:
                     if organization == 'nytimes':

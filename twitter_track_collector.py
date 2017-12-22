@@ -11,7 +11,7 @@ class TwitterTrackCollector(StreamListener):
         self.error_log = error_log
         self.debug = debug
 
-    def twitter_track_collector(self, keywords, error_log, debug):
+    def twitter_track_ingestor(self, keywords, error_log, debug):
         from tweepy import Stream
         from tweepy import OAuthHandler
         # imports the auth keys and secrets

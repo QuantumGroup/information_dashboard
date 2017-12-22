@@ -9,6 +9,9 @@ class InformationCollectorSetup:
         # todo: create flag that checks if setup has been run and skips process if True
         pass
 
+    def initiate(self):
+        self.database_setup()
+
     def database_setup(self):
         import sqlite3
         import os

@@ -1,5 +1,5 @@
 """
-This is the main control script: in a production run, this should be replace by the web UI
+This is the main control script: in a production run, this should be either replaced or updated by the web UI
 """
 import os
 import time
@@ -32,19 +32,28 @@ sets up files, if necessary
 """
 setup = setup.InformationCollectorSetup()
 if setup_required is True:
-    setup.database_setup()
+    setup.initiate()
 
 
 """
-sets up variables for Twitter location collection: this is to be a list of the four corners of a bounded box
+sets up variables for Twitter location collection: this is to be a list of the four corners of a bounded box. Per the 
+Twitter docs: A comma-separated list of longitude,latitude pairs specifying a set of bounding boxes to filter Tweets 
+by... Each bounding box should be specified as a pair of longitude and latitude pairs, with the southwest corner of the 
+bounding box coming first. 
+            [  SW,    NW,     NE,    SE,   SW, NW,  NE, SE ]
 """
-location = [-98.7006, 29.2641, -98.3542, 29.6081]
+location = [-122.75, 36.8, -121.75, 37.8, -74, 40, -73, 41]
 """
-sets up the variables for Twitter track collection: this is a list of keywords to be tracked
+sets up the variables for Twitter track collection: this is a list of keywords to be tracked. Per Twitter docs: A comma-
+separated list of phrases which will be used to determine what Tweets will be delivered on the stream. A phrase may be 
+one or more terms separated by spaces, and a phrase will match if all of the terms in the phrase are present in the 
+Tweet, regardless of order and ignoring case. By this model, you can think of commas as logical ORs, while spaces are 
+equivalent to logical ANDs (e.g. ‘the twitter’ is the AND twitter, and ‘the,twitter’ is the OR twitter).
 """
 keywords = ['international relations', 'political science', 'international affairs', 'global affairs']
 """
-sets up the variables for Twitter follow collection: this is a list of Twitter user IDs
+sets up the variables for Twitter follow collection: this is a list of Twitter user IDs. Per the Twitter docs: A comma-
+separated list of user IDs, indicating the users whose Tweets should be delivered on the stream.
 """
 accounts = ['34713362', '428333', '18767649', '23484039', '346569891', '804556370', '81075524', '51241574',
             '2566535282', '380648579', '189305014', '87416722', '94119095', '26574283', '18424289', '16666806',
@@ -60,22 +69,22 @@ rss_urls = ['http://www.nytimes.com/services/xml/rss/nyt/World.xml',
 runs the Twitter Location Collector
 """
 twitter_location = twitter_location_collector.TwitterLocationCollector(location, error_log, debug)
-location_collection = twitter_location.twitter_location_ingestor(location, error_log, debug)
+twitter_location.twitter_location_ingestor(location, error_log, debug)
 """
 runs the Twitter Track Collector
 """
 twitter_track = twitter_track_collector.TwitterTrackCollector(keywords, error_log, debug)
-track_collector = twitter_track.twitter_track_collector(keywords, error_log, debug)
+twitter_track.twitter_track_ingestor(keywords, error_log, debug)
 """
 runs the Twitter Follow Collector
 """
 twitter_follow = twitter_follow_collector.TwitterFollowCollector(accounts, error_log, debug)
-follow_collector = twitter_follow.twitter_follow_ingestor(accounts, error_log, debug)
+twitter_follow.twitter_follow_ingestor(accounts, error_log, debug)
 """
 runs the RSS Collector
 """
 rss = rss_collector.RSS_Collector(rss_urls, error_log, debug)
 while True:
     for url in rss_urls:
-        rss_collector = rss.rss_parser(url, error_log, debug)
+        rss.rss_parser(url, error_log, debug)
     time.sleep(300)

@@ -138,7 +138,6 @@ class TwitterLocationCollector(StreamListener):
             place_se_point_long = 'None'
             place_se_point_lat = 'None'
 
-
         # this block specifies which Collector is being used to download this tweet
         collector = 'locations(locations)'
         if self.debug is True:

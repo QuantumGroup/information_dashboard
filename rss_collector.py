@@ -22,6 +22,7 @@ class RSS_Collector():
         import time
         import sys
         import sqlite3
+        import re
         from urllib.parse import urlparse
 
         if debug is True:
@@ -56,96 +57,111 @@ class RSS_Collector():
             # NB: the fact that each RSS entry is different based on the source means that adding a source to the RSS
             # reader cannot be done at the user level, but must be programmed in every time.
 
-            # this block parses the URL in order to determine the organization responsible for the feed. This is how
-            # sourcing is determined, and the results of this block are used by the rest of the variable creation code.
+            # this block parses the URL in order to determine the name of the organization responsible for the feed.
+            # This is how sourcing is determined, and the results of this block are used by the rest of the variable
+            # creation code.
             try:
                 str_url = rss_json['link']
                 # this saves the whole link, to be used as an identifier so as to not save the same story twice in our
                 # database, and for use to download the content from the site itself
-                whole_url = str(str_url)
+                url = str(str_url)
                 parsed_url = urlparse(str_url)
                 hostname_url = parsed_url.hostname
-                organization = str(hostname_url[4:-4])
+                name = str(hostname_url[4:-4])
             except:
-                whole_url = 'None'
-                organization = 'None'
+                url = 'None'
+                name = 'None'
                 e = sys.exc_info()[0]
-                print('organization error\n' + str(str_url) + '\n' + str(e))
+                print('name error\n' + str(str_url) + '\n' + str(e))
 
             # this block checks the database to see if the URL in the new article matches any URLs already captured: if
             # not a match, the script continues the pre-processing and downloading process; if yes a match, pass
             c.execute('SELECT url FROM rss')
             urls = c.fetchall()
-            if whole_url not in str(urls):
+            if url not in str(urls):
                 if debug is True:
-                    print('organization is ' + organization)
+                    print('name: ' + name)
 
                 # This block extracts the date published from the RSS JSON object, from the website URL, or if
                 # neither is possible, uses the time during which this script is run (since the script is meant to
                 # be run on a regular basis, there should not be many duplicates): which method is used depends on
-                # the organization, since the organization chooses their method of publishing this data (if at all).
-                # The following regular expression strips dates from URLs, and the line after that converts that
-                # regex object to a Python date object
-                # import re
-                # url_date_regex = re.search(r'([\./\-_]{0,1}(19|20)\d{2})[\./\-_]{0,1}(([0-3]{0,1}[0-9][\./\-_])|'
-                #                            r'(\w{3,5}[\./\-_]))([0-3]{0,1}[0-9][\./\-]{0,1})?', str_url)
-                # url_date = time.strptime(str(url_date_regex.group(0)), '/%Y/%m/%d/')
+                # the name, since the name determines their method of publishing this data (if at all).
                 try:
-                    if organization == 'nytimes':
+                    if name == 'nytimes':
                         #  NY Times has a published value in the RSS JSON object
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %Z')
                         published = str(time.strftime('%c', published_struct))
-                    elif organization == 'washingtonpost':
-                        # todo: attempt to combine date from RSS JSON object with time when the script is run
+                    elif name == 'washingtonpost':
                         # WaPo contains the date but not the time the article is published in the URL; therefore,
-                        # we will use the time this script is run on a WaPo RSS object
-                        published_int = int(time.time())
-                        published_struct = time.gmtime(published_int)
-                        published = str(time.strftime('%c', published_struct))
+                        # we will use only the date
+
+                        # The following regular expression strips dates from URLs, and the line after that converts that
+                        # regex object to a Python date object
+                        # todo: issue with regex where if year in headline, regex fails to parse date (<class 'ValueError'>, ValueError("time data '-2017-has-' does not match format '/%Y/%m/%d/'",)
+                        url_date_regex = re.search(
+                            r'([\./\-_]{0,1}(19|20)\d{2})[\./\-_]{0,1}(([0-3]{0,1}[0-9][\./\-_])|'
+                            r'(\w{3,5}[\./\-_]))([0-3]{0,1}[0-9][\./\-]{0,1})?', str_url)
+                        url_date = time.strptime(str(url_date_regex.group(0)), '/%Y/%m/%d/')
+
+                        # published_int = int(time.time())
+                        # published_struct = time.gmtime(published_int)
+                        published = str(time.strftime('%c', url_date))
                 except:
                     published = 'None'
                     e = sys.exc_info()
                     print('published error\n' + str(e))
                 if debug is True:
-                    print('published is ' + published)
+                    print('published: ' + published)
+
+                # this block returns the date and time when the RSS entry was imported
+                try:
+                    imported_int = int(time.time())
+                    imported_struct = time.gmtime(imported_int)
+                    imported = str(time.strftime('%c', imported_struct))
+                except:
+                    imported = 'None'
+                    e = sys.exc_info()
+                    print('imported error\n' + str(e))
+                if debug is True:
+                    print('imported: ' + imported)
 
                 # This block extracts the article title from the RSS JSON object
                 try:
-                    if organization == 'nytimes':
+                    if name == 'nytimes':
                         title = str(rss_json['title'])
-                    elif organization == 'washingtonpost':
+                    elif name == 'washingtonpost':
                         title = str(rss_json['title'])
                 except:
                     title = 'None'
                     e = sys.exc_info()
                     print('title error\n' + str(e))
                 if debug is True:
-                    print('title is ' + title)
+                    print('title: ' + title)
                 # this block looks for a story summary embedded within the RSS JSON object
                 try:
-                    if organization == 'nytimes':
+                    if name == 'nytimes':
                         summary_dict = rss_json['content'][0]
                         summary = str(summary_dict['value'])
-                    elif organization == 'washingtonpost':
+                    elif name == 'washingtonpost':
                         summary = str(rss_json['summary'])
                 except:
                     summary = 'None'
                     e = sys.exc_info()
                     print('summary error\n' + str(e))
                 if debug is True:
-                    print('summary is ' + summary)
+                    print('summary: ' + summary)
 
                 # this block returns the website content from the URL specified in the RSS JSON object
                 # todo: properly call web scraper method with appropriate arguments
-                content = self.rss_scraper(whole_url)
+                content = self.rss_scraper(url)
                 if debug is True:
-                    print('content is ' + content + '\n')
+                    print('content: ' + content + '\n')
 
                 # saves each variable to the database using DB-API's parameter substitution, where '?' is a stand-in
                 # for a tuple element containing the actual values
-                c.execute('INSERT INTO rss VALUES (?,?,?,?,?,?)',
-                          (organization, published, title, summary, content, whole_url))
+                c.execute('INSERT INTO rss VALUES (?,?,?,?,?,?,?)',
+                          (name, published, imported, title, summary, content, url))
                 # commits the changes to the database
                 try:
                     conn.commit()

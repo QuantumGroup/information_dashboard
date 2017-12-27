@@ -72,11 +72,11 @@ class TwitterLocationCollector(StreamListener):
             print('screenname: @' + screenname)
 
         # this is the time the tweet was created
-        timestamp_raw = raw_tweet['created_at']
-        timestamp_struct = time.strptime(timestamp_raw, '%a %b %d %H:%M:%S %z %Y')
-        timestamp = time.strftime('%c', timestamp_struct)
+        published_raw = raw_tweet['created_at']
+        published_struct = time.strptime(published_raw, '%a %b %d %H:%M:%S %z %Y')
+        published = time.strftime('%c', published_struct)
         if self.debug is True:
-            print('time: ' + timestamp)
+            print('time: ' + published)
 
         # this is the actual tweet body, or message
         tweet = raw_tweet['text']
@@ -146,21 +146,15 @@ class TwitterLocationCollector(StreamListener):
         # this block specifies what URL is embedded in this tweet
         url = 'test_url'
         if self.debug is True:
-            print('URL: ' + url)
-
-        # this block calls a website scraper and returns the content from the embedded URL
-        # todo: properly call web scraper method with appropriate arguments
-        content = self.url_scraper(url)
-        if self.debug is True:
-            print('content: ' + content + '\n\n')
+            print('URL: ' + url + '\n\n')
 
         # saves each variable to the database uses DB-API's parameter substitution, where ? is a stand-in for a
         # tuple containing the values
-        c.execute('INSERT INTO tweets VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                  (name, screenname, timestamp, tweet, coordinates_long, coordinates_lat,
+        c.execute('INSERT INTO tweets VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                  (name, screenname, published, tweet, coordinates_long, coordinates_lat,
                    place_sw_point_long, place_sw_point_lat, place_nw_point_long, place_nw_point_lat,
                    place_ne_point_long, place_ne_point_lat, place_se_point_long, place_se_point_lat,
-                   collector, url, content))
+                   collector, url))
 
         # this block commits changes to the database, stopping the process if the database export fails
         try:
@@ -170,7 +164,3 @@ class TwitterLocationCollector(StreamListener):
             sys.exit(1)
 
         return True
-
-    def url_scraper(self, url):
-        # todo: build website scraper that takes in  URL and returns main body text, tailored for each required RSS feed
-        return 'TEST WEBSITE CONTENT'

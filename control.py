@@ -63,24 +63,41 @@ accounts = ['34713362', '428333', '18767649', '23484039', '346569891', '80455637
 sets up the URLs that contain active RSS feeds 
 """
 rss_urls = ['http://www.nytimes.com/services/xml/rss/nyt/World.xml',
-            'feed://feeds.washingtonpost.com/rss/world']
+            'feed://feeds.washingtonpost.com/rss/world',
+            'http://www.smh.com.au/rssheadlines/world/article/rss.xml',
+            'http://www.thedailystar.net/world/rss.xml',
+            'http://www.thehindu.com/news/international/?service=rss',
+            'http://timesofindia.indiatimes.com/rssfeeds/296589292.cms',
+            'http://www.haaretz.com/cmlink/1.628765',
+            'feed://www.haaretz.com/cmlink/1.798067',
+            'feed://www.nation.co.ke/news/world/1068-1068-view-asFeed-hmfstbz/index.xml',
+            'feed://www.nation.co.ke/news/africa/1066-1066-view-asFeed-15sj5pt/index.xml',
+            'feed://english.yonhapnews.co.kr/RSS/headline.xml',
+            'feed://english.yonhapnews.co.kr/RSS/northkorea.xml',
+            'feed://www.straitstimes.com/news/asia/rss.xml',
+            'feed://www.taipeitimes.com/xml/world.rss',
+            'http://feeds.bbci.co.uk/news/world/europe/rss.xml',
+            'http://feeds.bbci.co.uk/news/world/rss.xml',
+            'http://rss.csmonitor.com/feeds/world',
+            'feed://www.wsj.com/xml/rss/3_7085.xml'
+            'feed://hosted2.ap.org/atom/APDEFAULT/cae69a7523db45408eeb2b3a98c0c9c5',
+            'http://feeds.reuters.com/Reuters/worldNews']
 
-
-"""
-runs the Twitter Location Collector
-"""
-twitter_location = twitter_location_collector.TwitterLocationCollector(location, error_log, debug)
-twitter_location.twitter_location_ingestor(location, error_log, debug)
-"""
-runs the Twitter Track Collector
-"""
-twitter_track = twitter_track_collector.TwitterTrackCollector(keywords, error_log, debug)
-twitter_track.twitter_track_ingestor(keywords, error_log, debug)
-"""
-runs the Twitter Follow Collector
-"""
-twitter_follow = twitter_follow_collector.TwitterFollowCollector(accounts, error_log, debug)
-twitter_follow.twitter_follow_ingestor(accounts, error_log, debug)
+# """
+# runs the Twitter Location Collector
+# """
+# twitter_location = twitter_location_collector.TwitterLocationCollector(location, error_log, debug)
+# twitter_location.twitter_location_ingestor(location, error_log, debug)
+# """
+# runs the Twitter Track Collector
+# """
+# twitter_track = twitter_track_collector.TwitterTrackCollector(keywords, error_log, debug)
+# twitter_track.twitter_track_ingestor(keywords, error_log, debug)
+# """
+# runs the Twitter Follow Collector
+# """
+# twitter_follow = twitter_follow_collector.TwitterFollowCollector(accounts, error_log, debug)
+# twitter_follow.twitter_follow_ingestor(accounts, error_log, debug)
 """
 runs the RSS Collector
 """

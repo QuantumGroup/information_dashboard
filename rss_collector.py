@@ -6,17 +6,56 @@ data to the database.
 
 class RSS_Collector():
 
-    def __init__(self, rss_url, error_log, debug):
+    def __init__(self, rss_url, error_log, debug, e_tags, last_modifieds):
         self.rss_url = rss_url
         self.error_log = error_log
         self.debug = debug
+        self.e_tag = e_tags
+        self.last_modifieds = last_modifieds
 
-    def rss_ingestor(self, rss_url, error_log, debug):
+    def rss_ingestor(self, rss_url, error_log, debug, e_tags, last_modifieds):
         import feedparser
+        import sys
+        import control
 
-        return feedparser.parse(rss_url)
+        try:
+            if rss_url in control.e_tags:
+                print('etag found for ' + rss_url)
+                e_tag = control.e_tags[rss_url]
+                print(e_tag)
+                parser = feedparser.parse(rss_url, etag=e_tag)
+                control.e_tags[rss_url] = parser.etag
 
-    def rss_parser(self, rss_url, error_log, debug):
+            elif rss_url in control.last_modifieds:
+                print('last-modified found for ' + rss_url)
+                last_modified = control.last_modifieds[rss_url]
+                print(last_modified)
+                parser = feedparser.parse(rss_url, modified=last_modified)
+                control.last_modifieds[rss_url] = parser.modified
+
+            else:
+                parser = feedparser.parse(rss_url)
+                try:
+                    control.e_tags[rss_url] = parser.etag
+                except:
+                    e = sys.exc_info()
+                    print('no etag found for ' + rss_url)
+                    print(str(e))
+                try:
+                    control.last_modifieds[rss_url] = parser.modified
+                except:
+                    e = sys.exc_info()
+                    print('no last-modified found for ' + rss_url)
+                    print(str(e))
+
+        except:
+            e = sys.exc_info()
+            print(str(e))
+            print('failure')
+
+        return parser
+
+    def rss_parser(self, rss_url, error_log, debug, e_tags, last_modifieds):
         import os
         import json
         import time
@@ -35,7 +74,7 @@ class RSS_Collector():
         c = conn.cursor()
 
         # this instantiates the feedparser instance and returns the relevant data as an 'items' entry in a JSON object
-        feed = self.rss_ingestor(rss_url, error_log, debug)
+        feed = self.rss_ingestor(rss_url, error_log, debug, e_tags, last_modifieds)
 
         if debug is True:
             current_time_int = int(time.time())
@@ -67,7 +106,44 @@ class RSS_Collector():
                 url = str(str_url)
                 parsed_url = urlparse(str_url)
                 hostname_url = parsed_url.hostname
-                name = str(hostname_url[4:-4])
+                if debug is True:
+                    print('hostname: ' + str(hostname_url))
+                if hostname_url == 'www.nytimes.com':
+                    name = 'The New York Times (USA)'
+                elif hostname_url == 'www.washingtonpost.com':
+                    name = 'The Washington Post (USA)'
+                elif hostname_url == 'smh.com.au':
+                    name = 'The Sydney Morning Herald (AUS)'
+                elif hostname_url == 'www.thedailystar.net':
+                    name = 'The Daily Star (IND)'
+                elif hostname_url == 'timesofindia.indiatimes.com':
+                    name = 'The Times of India (IND)'
+                elif hostname_url == 'www.thehindu.com':
+                    name = 'The Hindu (IND)'
+                elif hostname_url == 'www.haaretz.com':
+                    name = 'Haaretz (ISR)'
+                elif hostname_url == 'www.nation.co.ke':
+                    name = 'The Nation (KEN)'
+                elif hostname_url == 'app.yonhapnews.co.kr':
+                    name = 'Yonhap (KOR)'
+                elif hostname_url == 'www.straitstimes.com':
+                    name = 'The Straits Times (SGP)'
+                elif hostname_url == 'www.taipeitimes.com':
+                    name = 'Taipei Times (TWN)'
+                elif hostname_url == 'www.bbc.co.uk':
+                    name = 'BBC (GBR)'
+                elif hostname_url == 'www.csmonitor.com':
+                    name = 'The Christian Science Monitor (USA)'
+                elif hostname_url == 'www.wsj.com':
+                    name = 'The Wall Street Journal (USA)'
+                elif hostname_url == 'hosted2.ap.org':
+                    name = 'AP (USA)'
+                elif hostname_url == 'feeds.reuters.com':
+                    name = 'Reuters (GBR)'
+                elif hostname_url == 'www.latimes.com':
+                    name = 'The Los Angeles Times (USA)'
+                else:
+                    name = str(hostname_url[4:-4])
             except:
                 url = 'None'
                 name = 'None'
@@ -82,30 +158,73 @@ class RSS_Collector():
                 if debug is True:
                     print('name: ' + name)
 
-                # This block extracts the date published from the RSS JSON object, from the website URL, or if
-                # neither is possible, uses the time during which this script is run (since the script is meant to
-                # be run on a regular basis, there should not be many duplicates): which method is used depends on
-                # the name, since the name determines their method of publishing this data (if at all).
+                # This block extracts the time published from the RSS JSON object, or the date from the website URL.
                 try:
-                    if name == 'nytimes':
-                        #  NY Times has a published value in the RSS JSON object
+                    if name == 'The New York Times (USA)' or name == 'The Times of India (IND)' or name == 'BBC (GBR)':
+                        # These have a published value in the JSON object: "Wed, 27 Dec 2017 13:08:10 GMT"
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %Z')
                         published = str(time.strftime('%c', published_struct))
-                    elif name == 'washingtonpost':
-                        # WaPo contains the date but not the time the article is published in the URL; therefore,
+                    elif name == 'The Sydney Morning Herald (AUS)':
+                        # These have a published value in the JSON object: "Wed Dec 27 15:11:22 UTC 2017"
+                        published_raw = str(rss_json['published'])
+                        published_struct = time.strptime(published_raw, '%a %b %d %H:%M:%S %Z %Y')
+                        published = str(time.strftime('%c', published_struct))
+                    elif name == 'The Daily Star (IND)' or name == 'The Hindu (IND)' or name == 'Haaretz (ISR)' or \
+                            name == 'The Straits Times (SGP)' or name == 'Reuters (GBR)':
+                        # These have a published value in the JSON object: "Wed, 27 Dec 2017 00:00:00 +0600"
+                        published_raw = str(rss_json['published'])
+                        published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %z')
+                        published = str(time.strftime('%c', published_struct))
+                    elif name == 'The Nation (KEN)':
+                        # These have a published value in the JSON object: 2017-12-27T14:38:54Z
+                        published_raw = str(rss_json['updated'])
+                        published_stripped = published_raw[:-1]
+                        published_struct = time.strptime(published_stripped, '%Y-%m-%dT%H:%M:%S')
+                        published = str(time.strftime('%c', published_struct))
+                    elif name == 'Yonhap (KOR)':
+                        # These have a published value in the JSON object: 20171227145701
+                        published_raw = str(rss_json['published'])
+                        published_struct = time.strptime(published_raw, '%Y%m%d%H%M%S')
+                        published = str(time.strftime('%c', published_struct))
+                    elif name == 'Taipei Times (TWN)' or name == 'AP (USA)':
+                        # these have a published value in the JSON object: 2017-12-28T08:00:00+08:00
+                        if name == 'Taipei Times (TWN)':
+                            published_raw = str(rss_json['updated'])
+                        elif name == 'AP (USA)':
+                            published_raw = str(rss_json['published'])
+                        # since Python time objects don't support colons in the middle of UTC offsets, this will strip
+                        # out the last three chars in the string and replace them with two (2) zeros (0s), so as to
+                        # complete the full offset as understood by the datetime library's %z directive
+                        published_stripped = published_raw[:-3]
+                        published_assembled = published_stripped + '00'
+                        published_struct = time.strptime(published_assembled, '%Y-%m-%dT%H:%M:%S%z')
+                        published = str(time.strftime('%c', published_struct))
+                    elif name == 'The Wall Street Journal (USA)' or name == 'The Los Angeles Times (USA)':
+                        # these have a published value in the JSON object: Wed, 27 Dec 2017 03:00:00 PST
+                        published_raw = str(rss_json['published'])
+                        if name == 'The Wall Street Journal (USA)':
+                            published_stripped = published_raw[:-3]
+                            published_assembled = published_stripped + '-0500'
+                        elif name == 'The Los Angeles Times (USA)':
+                            published_stripped = published_raw[:-3]
+                            published_assembled = published_stripped + '-0800'
+                        published_struct = time.strptime(published_assembled, '%a, %d %b %Y %H:%M:%S %z')
+                        published = str(time.strftime('%c', published_struct))
+                    elif name == 'The Washington Post (USA)' or name == 'The Christian Science Monitor (USA)':
+                        # These contain the date but not the time the article is published in the URL; therefore,
                         # we will use only the date
-
+                        # ---------------------------
                         # The following regular expression strips dates from URLs, and the line after that converts that
                         # regex object to a Python date object
                         # todo: issue with regex where if year in headline, regex fails to parse date (<class 'ValueError'>, ValueError("time data '-2017-has-' does not match format '/%Y/%m/%d/'",)
                         url_date_regex = re.search(
-                            r'([\./\-_]{0,1}(19|20)\d{2})[\./\-_]{0,1}(([0-3]{0,1}[0-9][\./\-_])|'
-                            r'(\w{3,5}[\./\-_]))([0-3]{0,1}[0-9][\./\-]{0,1})?', str_url)
-                        url_date = time.strptime(str(url_date_regex.group(0)), '/%Y/%m/%d/')
-
-                        # published_int = int(time.time())
-                        # published_struct = time.gmtime(published_int)
+                            r'([./\-_]{0,1}(19|20)\d{2})[./\-_]{0,1}(([0-3]{0,1}[0-9][./\-_])|'
+                            r'(\w{3,5}[./\-_]))([0-3]{0,1}[0-9][./\-]{0,1})?', str_url)
+                        if name == 'The Washington Post (USA)':
+                            url_date = time.strptime(str(url_date_regex.group(0)), '/%Y/%m/%d/')
+                        elif name == 'The Christian Science Monitor (USA)':
+                            url_date = time.strptime(str(url_date_regex.group(0)), '/%Y/%m%d/')
                         published = str(time.strftime('%c', url_date))
                 except:
                     published = 'None'
@@ -128,22 +247,20 @@ class RSS_Collector():
 
                 # This block extracts the article title from the RSS JSON object
                 try:
-                    if name == 'nytimes':
-                        title = str(rss_json['title'])
-                    elif name == 'washingtonpost':
-                        title = str(rss_json['title'])
+                    title = str(rss_json['title'])
                 except:
                     title = 'None'
                     e = sys.exc_info()
                     print('title error\n' + str(e))
                 if debug is True:
                     print('title: ' + title)
+
                 # this block looks for a story summary embedded within the RSS JSON object
                 try:
-                    if name == 'nytimes':
+                    if name == 'The New York Times (USA)':
                         summary_dict = rss_json['content'][0]
                         summary = str(summary_dict['value'])
-                    elif name == 'washingtonpost':
+                    else:
                         summary = str(rss_json['summary'])
                 except:
                     summary = 'None'

@@ -81,7 +81,8 @@ rss_urls = ['http://www.nytimes.com/services/xml/rss/nyt/World.xml',
             'http://rss.csmonitor.com/feeds/world',
             'feed://www.wsj.com/xml/rss/3_7085.xml'
             'feed://hosted2.ap.org/atom/APDEFAULT/cae69a7523db45408eeb2b3a98c0c9c5',
-            'http://feeds.reuters.com/Reuters/worldNews']
+            'http://feeds.reuters.com/Reuters/worldNews',
+            'feed://www.latimes.com/world/rss2.0.xml']
 
 # """
 # runs the Twitter Location Collector
@@ -101,8 +102,14 @@ rss_urls = ['http://www.nytimes.com/services/xml/rss/nyt/World.xml',
 """
 runs the RSS Collector
 """
-rss = rss_collector.RSS_Collector(rss_urls, error_log, debug)
+e_tags = {}
+last_modifieds = {}
+
+rss = rss_collector.RSS_Collector(rss_urls, error_log, debug, e_tags, last_modifieds)
 while True:
     for url in rss_urls:
-        rss.rss_parser(url, error_log, debug)
+        rss.rss_parser(url, error_log, debug, e_tags, last_modifieds)
+    print(e_tags)
+    print(last_modifieds)
     time.sleep(300)
+

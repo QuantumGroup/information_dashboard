@@ -75,11 +75,12 @@ separated list of user IDs, indicating the users whose Tweets should be delivere
         16. @UPI                '16666806'          UPI.com
         17. @BBCBreaking        '5402612'           BBC Breaking News
         18. @FEWSNET            '80797182'          FEWS NET                Famine Early Warning Systems Network
-        19. @ECDC_Outbreaks     '2754484003'        ECDC Outbreaks          European Centre for Disease Prevention and Control
+        19. @ECDC_Outbreaks     '2754484003'        ECDC Outbreaks          EU Centre for Disease Prevention & Control
         20. @nytimesworld       '1877831'           New York Times World
         21. @TheWarMonitor      '1952855342'        WarMonitor
-        22. @Strat2Intel        '4048091663'        Strat 2 Intel           Intelligence arm of Strategic Sentinel
         23. @StratSentinal      '789303014192402432'Strategic Sentinel      
+        22. @Strat2Intel        '4048091663'        Strat 2 Intel           Intelligence arm of Strategic Sentinel LLC
+
         
         deleted sources                         reason
             @markets                            messages are retweeted by @business

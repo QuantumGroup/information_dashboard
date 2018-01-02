@@ -2,9 +2,31 @@
 
 ## Purpose
 
-This project is to be a tool that takes in user requirements, such as keywords or locations, and collects 
-data from open sources that correspond to those requirements. In its final form, this will consist of 
-a few different components.
+The purpose of this project is to provide an at-a-glance view of global events, along with the national and regional 
+information that is required to put that real-time data into context. 
+
+This project to be an aggregate of number of disparate information sources, which include the following:
+- News organizations
+   - These include national papers of record , [international news networks], and global news wires.
+- Social media feeds
+   - These include Twitter, […]
+- Non-governmental organization indicators
+    - These include aggregates of the typical indicators of country risk, such as those provided by the World Bank 
+    (the World Development Indicators), as well as [see Country Risk Docs – Methodology for sources]. 
+- Market indicators
+   - These include stock and stock futures markets by country, stock markets by industry sectors, commodities, 
+   currency exchanges, and fixed income markets.
+- Natural hazards indicators
+   - These will include live weather data, climate predictions, tropical cyclone monitoring, earthquake information, 
+   and drought monitoring.
+- Health hazard indicators
+    - These include infectious disease outbreaks and other related hazards such as famine.
+    
+All of the components listed below are to work together to a common end: to provide a concise global view from as many 
+sources as possible.
+
+This is very much a work in progress - stay tuned.  
+
 
 ## Components
 

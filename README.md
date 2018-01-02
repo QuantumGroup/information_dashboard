@@ -9,10 +9,10 @@ This project to be an aggregate of number of disparate information sources, whic
 - News organizations
    - These include national papers of record , [international news networks], and global news wires.
 - Social media feeds
-   - These include Twitter, […]
+   - These include Twitter, [and others]
 - Non-governmental organization indicators
     - These include aggregates of the typical indicators of country risk, such as those provided by the World Bank 
-    (the World Development Indicators), as well as [see Country Risk Docs – Methodology for sources]. 
+    (the World Development Indicators), as well as [others]. 
 - Market indicators
    - These include stock and stock futures markets by country, stock markets by industry sectors, commodities, 
    currency exchanges, and fixed income markets.
@@ -60,32 +60,45 @@ machine-readable and human-readable formats.
 
 ## Modules
 
-### setup.py
+### alerts.py
 
-This is the file that sets up the other files and directories needed to run the rest of the project.
-
-### control.py
-
-This is the control script that runs the rest of the project.
+[scaffolding for the class that will send out alerts in the form of SMS messages]
 
 ### collector.sqlite3
 
 This is the SQLite database that holds the data ingested by the collectors.
 
-### alerts.py
+### control.py
+
+This is the control script that runs the rest of the project.
 
 ### facebook_collector.py
 
+[scaffolding for the class that will take in data based off of Facebook keywords]
+
 ### rss_collector.py
+
+This is the collectors that takes in data from a variety of news organizations, parses their outputs, and adds that 
+parsed data to the database.
+
+### setup.py
+
+This is the file that sets up the other files and directories needed to run the rest of the project.
+
+### twitter_follow_collector.py
+
+This is the Twitter collector that takes in data based off of specific user accounts, parses the collected 
+tweets, and adds the parsed data to the database.
 
 ### twitter_location_collector.py
 
 This is the Twitter collector that takes in data based off of location inputs, parses the collected 
-tweets, and adds the parsed data to the SQLite database.
-
-### twitter_follow_collector.py
+tweets, and adds the parsed data to the database.
 
 ### twitter_track_collector.py
+
+This is the Twitter collector that takes in data based off of keywords, parses the collected 
+tweets, and adds the parsed data to the database.
 
 ## Dependencies
 

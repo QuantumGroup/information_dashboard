@@ -7,23 +7,23 @@ information that is required to put that real-time data into context.
 
 This project to be an aggregate of number of disparate information sources, which include the following:
 - News organizations
-   - These include national papers of record , [international news networks], and global news wires.
-- Social media feeds
-   - These include Twitter, [and others]
-- Non-governmental organization indicators
-    - These include aggregates of the typical indicators of country risk, such as those provided by the World Bank 
-    (the World Development Indicators), as well as [others]. 
-- Market indicators
-   - These include stock and stock futures markets by country, stock markets by industry sectors, commodities, 
-   currency exchanges, and fixed income markets.
+   - These include national papers of record, [international news networks], and global news wires. 
+- Social networks
+   - These include Twitter, […]
+- Financial markets
+   - These include stock and stock futures markets, stock markets by industry sectors, commodities markets, currency markets, and fixed income markets.
+- Country economic, political, and demographic indicators
+   - Economic indicators include national financial markets, GDP statistics, inflation, import and export figures, and other such information.
+   - Political indicators include regime type, election information, human development indices and other such information.
+   - Demographic indicators include total population and population breakdowns, birth and death rates, GDP per capita, and other such information.
 - Natural hazards indicators
-   - These will include live weather data, climate predictions, tropical cyclone monitoring, earthquake information, 
-   and drought monitoring.
+   - These will include live weather data, climate predictions, tropical cyclone monitoring, earthquake information, and drought monitoring.
 - Health hazard indicators
-    - These include infectious disease outbreaks and other related hazards such as famine.
+   - These include infectious disease outbreaks and other related hazards such as famine.
+
     
-All of the components listed below are to work together to a common end: to provide a concise global view from as many 
-sources as possible.
+All of the components listed are to work together to a common end: to create a dashboard which contains 
+timely, accurate, pre-processed, actionable information.
 
 This is very much a work in progress - stay tuned.  
 

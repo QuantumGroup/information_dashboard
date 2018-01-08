@@ -62,6 +62,8 @@ class RSS_Collector():
         import sys
         import sqlite3
         import re
+        import datetime
+        import time
         from urllib.parse import urlparse
 
         if debug is True:
@@ -69,7 +71,9 @@ class RSS_Collector():
                   '======================\n\n')
 
         # sets up the connection to the SQLite database
-        sqlite_database = os.path.join('collector.sqlite3')
+        sqlite_database_path = os.path.join('collector.sqlite3')
+        sqlite_database = os.path.abspath(sqlite_database_path)
+        print(sqlite_database)
         conn = sqlite3.connect(sqlite_database)
         c = conn.cursor()
 
@@ -164,29 +168,29 @@ class RSS_Collector():
                         # These have a published value in the JSON object: "Wed, 27 Dec 2017 13:08:10 GMT"
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %Z')
-                        published = str(time.strftime('%c', published_struct))
+                        published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
                     elif name == 'The Sydney Morning Herald (AUS)':
                         # These have a published value in the JSON object: "Wed Dec 27 15:11:22 UTC 2017"
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a %b %d %H:%M:%S %Z %Y')
-                        published = str(time.strftime('%c', published_struct))
+                        published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
                     elif name == 'The Daily Star (IND)' or name == 'The Hindu (IND)' or name == 'Haaretz (ISR)' or \
                             name == 'The Straits Times (SGP)' or name == 'Reuters (GBR)':
                         # These have a published value in the JSON object: "Wed, 27 Dec 2017 00:00:00 +0600"
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %z')
-                        published = str(time.strftime('%c', published_struct))
+                        published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
                     elif name == 'The Nation (KEN)':
                         # These have a published value in the JSON object: 2017-12-27T14:38:54Z
                         published_raw = str(rss_json['updated'])
                         published_stripped = published_raw[:-1]
                         published_struct = time.strptime(published_stripped, '%Y-%m-%dT%H:%M:%S')
-                        published = str(time.strftime('%c', published_struct))
+                        published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
                     elif name == 'Yonhap (KOR)':
                         # These have a published value in the JSON object: 20171227145701
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%Y%m%d%H%M%S')
-                        published = str(time.strftime('%c', published_struct))
+                        published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
                     elif name == 'Taipei Times (TWN)' or name == 'AP (USA)':
                         # these have a published value in the JSON object: 2017-12-28T08:00:00+08:00
                         if name == 'Taipei Times (TWN)':
@@ -199,7 +203,7 @@ class RSS_Collector():
                         published_stripped = published_raw[:-3]
                         published_assembled = published_stripped + '00'
                         published_struct = time.strptime(published_assembled, '%Y-%m-%dT%H:%M:%S%z')
-                        published = str(time.strftime('%c', published_struct))
+                        published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
                     elif name == 'The Wall Street Journal (USA)' or name == 'The Los Angeles Times (USA)':
                         # these have a published value in the JSON object: Wed, 27 Dec 2017 03:00:00 PST
                         published_raw = str(rss_json['published'])
@@ -210,7 +214,7 @@ class RSS_Collector():
                             published_stripped = published_raw[:-3]
                             published_assembled = published_stripped + '-0800'
                         published_struct = time.strptime(published_assembled, '%a, %d %b %Y %H:%M:%S %z')
-                        published = str(time.strftime('%c', published_struct))
+                        published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
                     elif name == 'The Washington Post (USA)' or name == 'The Christian Science Monitor (USA)':
                         # These contain the date but not the time the article is published in the URL; therefore,
                         # we will use only the date
@@ -225,7 +229,7 @@ class RSS_Collector():
                             url_date = time.strptime(str(url_date_regex.group(0)), '/%Y/%m/%d/')
                         elif name == 'The Christian Science Monitor (USA)':
                             url_date = time.strptime(str(url_date_regex.group(0)), '/%Y/%m%d/')
-                        published = str(time.strftime('%c', url_date))
+                        published = str(datetime.datetime.fromtimestamp(time.mktime(url_date)))
                 except:
                     published = 'None'
                     e = sys.exc_info()
@@ -237,7 +241,7 @@ class RSS_Collector():
                 try:
                     imported_int = int(time.time())
                     imported_struct = time.gmtime(imported_int)
-                    imported = str(time.strftime('%c', imported_struct))
+                    imported = str(datetime.datetime.fromtimestamp(time.mktime(imported_struct)))
                 except:
                     imported = 'None'
                     e = sys.exc_info()
@@ -268,17 +272,12 @@ class RSS_Collector():
                     print('summary error\n' + str(e))
                 if debug is True:
                     print('summary: ' + summary)
-
-                # this block returns the website content from the URL specified in the RSS JSON object
-                # todo: properly call web scraper method with appropriate arguments
-                content = self.rss_scraper(url)
-                if debug is True:
-                    print('content: ' + content + '\n')
+                    print('\n')
 
                 # saves each variable to the database using DB-API's parameter substitution, where '?' is a stand-in
                 # for a tuple element containing the actual values
-                c.execute('INSERT INTO rss VALUES (?,?,?,?,?,?,?)',
-                          (name, published, imported, title, summary, content, url))
+                c.execute('INSERT INTO rss VALUES (?,?,?,?,?,?)',
+                          (name, published, imported, title, summary, url))
                 # commits the changes to the database
                 try:
                     conn.commit()
@@ -296,6 +295,3 @@ class RSS_Collector():
                   'all entries pre-processed on %s: continuing to next run\n'
                   % current_time)
 
-    def rss_scraper(self, url):
-        # todo: build website scraper that takes in  URL and returns main body text, tailored for each required RSS feed
-        return 'TEST WEBSITE CONTENT'

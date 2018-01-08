@@ -31,7 +31,7 @@ class InformationCollectorSetup:
 
         # this creates the table that takes in data from the rss_feed_parser
         table_rss = 'CREATE TABLE IF NOT EXISTS rss (name TEXT, published REAL, ' \
-                    'imported TEXT, title TEXT, summary TEXT, content TEXT, url TEXT)'
+                    'imported TEXT, title TEXT, summary TEXT, url TEXT)'
         c.execute(table_rss)
 
         c.close()

@@ -123,8 +123,8 @@ rss = rss_collector.RSS_Collector(rss_urls, error_log, debug, e_tags, last_modif
 stocks = stock_collector.StockCollector()
 while True:
     # # this runs the RSS Collector in perpetuity
-    # for url in rss_urls:
-    #     rss.rss_parser(url, error_log, debug, e_tags, last_modifieds)
+    for url in rss_urls:
+        rss.rss_parser(url, error_log, debug, e_tags, last_modifieds)
 
     # this runs the Stock Collector in perpetuity
     for stock_market in stock_markets:

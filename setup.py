@@ -30,7 +30,7 @@ class InformationCollectorSetup:
         c.execute(table_tweets)
 
         # this creates the table that takes in data from the rss_collector
-        table_rss = 'CREATE TABLE IF NOT EXISTS rss (name TEXT, published REAL, ' \
+        table_rss = 'CREATE TABLE IF NOT EXISTS rss (name TEXT, country TEXT, published REAL, ' \
                     'imported TEXT, title TEXT, summary TEXT, url TEXT)'
         c.execute(table_rss)
 

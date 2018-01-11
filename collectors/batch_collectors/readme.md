@@ -36,95 +36,355 @@ other such information.
 
 ### News organizations
 
-| #  | Organization                         | Feed      | URL                                                                           |                                                               
-|--- | ---                                  | ---       | ---                                                                           |                                                       
-| 1  | The New York Times (United States)   | world     | http://www.nytimes.com/services/xml/rss/nyt/World.xml                         |       
-| 2  | The Washington Post (United States)  | world     | feed://feeds.washingtonpost.com/rss/world                                     |
-| 3  | The Sydney Morning Herald (Australia)| world     | http://www.smh.com.au/rssheadlines/world/article/rss.xml                      |
-| 4  | The Daily Star (India)               | world     | http://www.thedailystar.net/world/rss.xml                                     |    
-| 5  | The Hindu (India)                    | world     | http://www.thehindu.com/news/international/?service=rss                       |
-| 6  | The Times of India (India)           | world     | http://timesofindia.indiatimes.com/rssfeeds/296589292.cms                     |
-| 7  | Haaretz (Israel)                     | world     | http://www.haaretz.com/cmlink/1.628765                                        |
-| 8  | Haaretz (Israel)                     | Middle East  | feed://www.haaretz.com/cmlink/1.798067                                     |
-| 9  | Daily Nation (Kenya)                 | world     | feed://www.nation.co.ke/news/world/1068-1068-view-asFeed-hmfstbz/index.xml    |
-| 10 | Daily Nation (Kenya)                 | Africa    | feed://www.nation.co.ke/news/africa/1066-1066-view-asFeed-15sj5pt/index.xml   |
-| 11 | Yonhap (Korea, South)                | all       | feed://english.yonhapnews.co.kr/RSS/headline.xml                              |
-| 12 | Yonhap (Korea, South)                | Korea, North  | feed://english.yonhapnews.co.kr/RSS/northkorea.xml                        |
-| 13 | The Straits Times (Singapore)        | Asia      | feed://www.straitstimes.com/news/asia/rss.xml                                 |
-| 14 | Taipei Times (Taiwan)                | world     | feed://www.taipeitimes.com/xml/world.rss                                      |
-| 15 | BBC (United Kingdom)                 | Europe    | http://feeds.bbci.co.uk/news/world/europe/rss.xml                             |
-| 16 | BBC (United Kingdom)                 | world     | http://feeds.bbci.co.uk/news/world/rss.xml                                    |
-| 17 | The Christian Science Monitor (United States)    | world | http://rss.csmonitor.com/feeds/world                                  |
-| 18 | The Wall Street Journal (United States)          | world | feed://www.wsj.com/xml/rss/3_7085.xml                                 |
-| 19 | The Associated Press (United States) | world | feed://hosted2.ap.org/atom/APDEFAULT/cae69a7523db45408eeb2b3a98c0c9c5             |
-| 20 | Reuters (United Kingdom)             | world | http://feeds.reuters.com/Reuters/worldNews                                        |
-| 21 | The Los Angeles Times (United States)| world | feed://www.latimes.com/world/rss2.0.xml                                           |
+| #  | Organization                                     | Feed          | URL                                                                           |                                                               
+|--- | ---                                              | ---           | ---                                                                           |                                                       
+| 1  | The New York Times (United States)               | world         | http://www.nytimes.com/services/xml/rss/nyt/World.xml                         |       
+| 2  | The Washington Post (United States)              | world         | feed://feeds.washingtonpost.com/rss/world                                     |
+| 3  | The Sydney Morning Herald (Australia)            | world         | http://www.smh.com.au/rssheadlines/world/article/rss.xml                      |
+| 4  | The Daily Star (India)                           | world         | http://www.thedailystar.net/world/rss.xml                                     |    
+| 5  | The Hindu (India)                                | world         | http://www.thehindu.com/news/international/?service=rss                       |
+| 6  | The Times of India (India)                       | world         | http://timesofindia.indiatimes.com/rssfeeds/296589292.cms                     |
+| 7  | Haaretz (Israel)                                 | world         | http://www.haaretz.com/cmlink/1.628765                                        |
+| 8  | Haaretz (Israel)                                 | Middle East   | feed://www.haaretz.com/cmlink/1.798067                                        |
+| 9  | Daily Nation (Kenya)                             | world         | feed://www.nation.co.ke/news/world/1068-1068-view-asFeed-hmfstbz/index.xml    |
+| 10 | Daily Nation (Kenya)                             | Africa        | feed://www.nation.co.ke/news/africa/1066-1066-view-asFeed-15sj5pt/index.xml   |
+| 11 | Yonhap (Korea, South)                            | all           | feed://english.yonhapnews.co.kr/RSS/headline.xml                              |
+| 12 | Yonhap (Korea, South)                            | Korea, North  | feed://english.yonhapnews.co.kr/RSS/northkorea.xml                            |
+| 13 | The Straits Times (Singapore)                    | Asia          | feed://www.straitstimes.com/news/asia/rss.xml                                 |
+| 14 | Taipei Times (Taiwan)                            | world         | feed://www.taipeitimes.com/xml/world.rss                                      |
+| 15 | BBC (United Kingdom)                             | Europe        | http://feeds.bbci.co.uk/news/world/europe/rss.xml                             |
+| 16 | BBC (United Kingdom)                             | world         | http://feeds.bbci.co.uk/news/world/rss.xml                                    |
+| 17 | The Christian Science Monitor (United States)    | world         | http://rss.csmonitor.com/feeds/world                                          |
+| 18 | The Wall Street Journal (United States)          | world         | feed://www.wsj.com/xml/rss/3_7085.xml                                         |
+| 19 | The Associated Press (United States)             | world         | feed://hosted2.ap.org/atom/APDEFAULT/cae69a7523db45408eeb2b3a98c0c9c5         |
+| 20 | Reuters (United Kingdom)                         | world         | http://feeds.reuters.com/Reuters/worldNews                                    |
+| 21 | The Los Angeles Times (United States)            | world         | feed://www.latimes.com/world/rss2.0.xml                                       |
 
 ### Financial markets
 
 Market selection research is from Bloomberg Markets.
 
-#### Stocks
+#### Stock Indexes
 
-Region	    |	Country	        |	Market	                    |   In Use?
----	        |	---	            |	---	                        |   ---
-Americas	|		            |		                        |
-	        |	United States	|		                        |
-	        |		            |	NASDAQ TRANSPORTATION IX	|
-        	|		            |	S&P 600 SMALLCAP INDEX	    |
-	        |		            |	RUSSELL 2000 INDEX"         |
-	        |		            |	NASDAQ BIOTECH INDEX	    |
-	        |		            |	DOW JONES INDUS. AVG	    |
-	        |		            |	NASDAQ BANK INDEX           |
-	        |		            |	BBG NA REITS	            |
-	        |		            |	NYSE COMPOSITE INDEX	    |
-	        |		            |	NASDAQ 100 STOCK INDX	    |
-	        |		            |	NASDAQ OTHER FINANCIAL	    |
-	        |		            |	NASDAQ INSURANCE INDEX	    |
-	        |		            |	DOW JONES TRANS. AVG	    |
-	        |		            |	NASDAQ TELECOMM INDEX	    |
-	        |		            |	S&P 500 INDEX	            |
-	        |		            |	NASDAQ COMPOSITE INDEX	    |
-	        |		            |	DOW JONES UTILITY AVG	    |
-	        |		            |	KBW BANK INDEX	            |
-	        |		            |	RUSSELL 1000 INDEX	        |
-	        |		            |	NASDAQ FINANCIAL INDEX	    |
-	        |		            |	RUSSELL 3000 INDEX	        |
-	        |		            |	NASDAQ COMPUTER INDEX	    |
-	        |		            |	NASDAQ INDUSTRIAL INDEX	    |
-	        |	Argentina	    |		                        |
-	        |		            |	ARGENTINA BURCAP INDEX	    |
-	        |		            |	M.AR MERVAL ARGENTINA IX	|
-	        |		            |	ARGENTINA MERVAL INDEX	    |
-	        |	Peru	        |		                        |
-	        |		            |	S&P/BVLLIMA25TRPEN	        |
-	        |		            |	S&P/BVLPeruGeneralTRPEN	    |
-	        |	Brazil	        |		                        |
-	        |		            |	BRAZIL IBrX INDEX	        |
-	        |		            |	BRAZIL IBOVESPA INDEX	    |
-	        |	Mexico	        |		                        |
-	        |		            |	S&P/BMV INMEX	            |
-	        |		            |	S&P/BMV IPC	                |
-	        |	Canada	        |		                        |
-	        |		            |	 S&P/TSX 60 INDEX	        |
-	        |		            |	S&P/TSX COMPOSITE INDEX	    |
-	        |	Chile	        |		                        |
-	        |		            |	CHILE STOCK MKT GENERAL	    |
-	        |		            |	CHILE STOCK MKT SELECT	    |
-	        |	Venezulea	    |		                        |
-	        |		            |	VENEZUELA STOCK MKT INDX	|
-	        |	Costa Rica	    |		                        |
-	        |		            |	BCT Corp Costa Rica Indx	|
-	        |	Panama	        |		                        |
-	        |		            |	Bolsa de Panama General	    |
-	        |	Jamaica	        |		                        |
-	        |		            |	JSE MARKET INDEX	        |
-	        |	Colombia	    |		                        |
-	        |		            |	COLOMBIA COLCAP INDEX	    |
-	        |	Bermuda	        |		                        |
-	        |		            |	BERMUDA STOCK EXCHANGE	    |
+Information for list of indices by nation is from Bloomberg. Ticker data is from Yahoo Finance. Actual data for indices 
+is from Alpha Vantage. 
+
+|	Region	    |   	Country	    |	Market	                                |	Ticker	|In use?|
+|	---	        |	---	            |	---	                                    |	---	    |	---	|
+|	Americas	|		            |		                                    |		    |		|
+|		        |	United States	|		                                    |		    |		|
+|		        |		            |	NASDAQ TRANSPORTATION IX	            |	CTRN	|	x	|
+|		        |	            	|	S&P 600 SMALLCAP INDEX	                |	SML	    |		|
+|   	    	|	            	|	RUSSELL 2000 INDEX	                    |	RUT	    |	√	|
+|	          	|	            	|	NASDAQ BIOTECH INDEX	                |	NBI	    |   	|
+|		        |	            	|	DOW JONES INDUS. AVG	                |	DJI 	|	√	|
+|   		    |	            	|	NASDAQ BANK INDEX	                    |	CBNK	|		|
+|	    	    |	            	|	BBG NA REITS	                        |	BBREIT	|		|
+|		        |	              	|	NYSE COMPOSITE INDEX	                |	NYA	    |		|
+|   		    |	            	|	NASDAQ 100 STOCK INDX	                |	NDX	    |		|
+|	    	    |		            |	NASDAQ OTHER FINANCIAL	                |	CFIN	|		|
+|		        |	            	|	NASDAQ INSURANCE INDEX	                |	CINS	|		|
+|   		    |           		|	DOW JONES TRANS. AVG	                |	TRAN	|		|
+|	    	    |		            |	NASDAQ TELECOMM INDEX	                |	CUTL	|		|
+|		        |	            	|	S&P 500 INDEX	                        |	SPX 	|	√	|
+|		        |	            	|	NASDAQ COMPOSITE INDEX	                |	CCMP	|		|
+|		        |	            	|	DOW JONES UTILITY AVG	                |	UTIL	|		|
+|		        |	            	|	KBW BANK INDEX	                        |	BKX 	|		|
+|		        |	            	|	RUSSELL 1000 INDEX	                    |	RIY	    |		|
+|		        |	            	|	NASDAQ FINANCIAL INDEX	                |	NDF 	|		|
+|		        |	            	|	RUSSELL 3000 INDEX	                    |	RAY	    |		|
+|		        |	            	|	NASDAQ COMPUTER INDEX	                |	IXK	    |		|
+|		        |		            |	NASDAQ INDUSTRIAL INDEX	                |	CIND	|		|
+|		        |	Argentina	    |		                                    |		    |		|
+|		        |		            |	ARGENTINA BURCAP INDEX	                |	BURCAP	|	√	|
+|		        |		            |	M.AR MERVAL ARGENTINA IX	            |	MAR	    |		|
+|		        |		            |	ARGENTINA MERVAL INDEX	                |	MERVAL	|		|
+|		        |	Peru	        |		                                    |		    |		|
+|		        |		            |	S&P/BVLLIMA25TRPEN	                    |	SPBL25PT|	x	|
+|		        |		            |	S&P/BVLPeruGeneralTRPEN	                |	SPBLPGPT|	x	|
+|		        |	Brazil	        |		                                    |		    |		|
+|		        |		            |	BRAZIL IBrX INDEX	                    |	IBX	    |	x	|
+|		        |		            |	BRAZIL IBOVESPA INDEX	                |	IBOV	|	x	|
+|		        |	Mexico	        |		                                    |		    |		|
+|		        |	            	|	S&P/BMV INMEX	                        |	INMEX	|	x	|
+|		        |		            |	S&P/BMV IPC	                            |	MEXBOL	|	x	|
+|		        |	Canada	        |		                                    |		    |		|
+|		        |		            |	 S&P/TSX 60 INDEX	                    |	SPTSX60	|		|
+|		        |		            |	S&P/TSX COMPOSITE INDEX	                |	SPTSX	|	x	|
+|		        |	Chile	        |		                                    |		    |		|
+|		        |		            |	CHILE STOCK MKT GENERAL	                |	IGPA	|	x	|
+|		        |		            |	CHILE STOCK MKT SELECT	                |	IPSA	|		|
+|		        |	Venezuela	    |		                                    |		    |		|
+|		        |		            |	VENEZUELA STOCK MKT INDX	            |	IBVC	|	x	|
+|		        |	Costa Rica	    |		                                    |		    |		|
+|		        |		            |	BCT Corp Costa Rica Indx	            |	CRSMBCT	|	x	|
+|		        |	Panama	        |		                                    |		    |		|
+|		        |		            |	Bolsa de Panama General	                |	BVPSBVPS|	x	|
+|		        |	Jamaica	        |		                                    |		    |		|
+|		        |		            |	JSE MARKET INDEX	                    |	JMSMX	|		|
+|		        |	Colombia	    |		                                    |		    |		|
+|		        |		            |	COLOMBIA COLCAP INDEX	                |	COLCAP	|	x	|
+|		        |	Bermuda	        |		                                    |		    |		|
+|		        |		            |	BERMUDA STOCK EXCHANGE	                |	BSX	    |	x	|
+|	EMEA	    |		            |		                                    |	    	|		|
+|		        |	Europe	        |		                                    |		    |		|
+|		        |		            |	S&P EURO INDEX	                        |	SPEU	|	x	|
+|		        |		            |	Euro Stoxx 50 Pr	                    |	SX5E	|	√	|
+|		        |		            |	BLOOMBERG EUROPEAN 500	                |	BE500	|	x	|
+|		        |		            |	S&P EUROPE 350 INDEX	                |	SPEURO	|	x	|
+|		        |		            |	FTSE ALL-SHARE INDEX	                |	ASX	    |		|
+|		        |	United Kingdom	|		                                    |		    |		|
+|		        |		            |	FTSE 100 INDEX	                        |	UKX	    |	√	|
+|		        |		            |	FTSE AIM ALL SHARE INDEX	            |	AXX	    |		|
+|		        |		            |	WIG30	                                |	WIG30	|		|
+|		        |	Poland	        |		                                    |		    |		|
+|		        |		            |	WSE WIG INDEX	                        |	WIG	    |	x	|
+|		        |		            |	WIG 20	                                |	WIG20	|		|
+|		        |	France	        |		                                    |		    |		|
+|		        |		            |	CAC 40 INDEX	                        |	CAC	    |	x	|
+|		        |		            |	CAC All-Tradable	                    |	SBF250	|		|
+|		        |	Turkey      	|		                                    |		    |		|
+|		        |		            |	BIST 30 Index	                        |	XU030	|	x	|
+|		        |		            |	BIST 100 INDEX	                        |	XU100	|		|
+|		        |	Bahrain	        |		                                    |		    |		|
+|		        |		            |	BB ALL SHARE INDEX	                    |	BHSEASI	|	x	|
+|		        |		            |	BB ESTERAD INDEX	                    |	BHSEEI	|		|
+|		        |	Germany	        |		                                    |		    |		|
+|		        |		            |	DAX INDEX	                            |	DAX	    |	x	|
+|		        |		            |	HDAX INDEX	                            |	HDAX	|		|
+|		        |	United Arab Emirates	    |		                        |		    |		|
+|		        |		            |	ADX GENERAL INDEX	                    |	ADSMI	|		|
+|		        |		            |	DFM GENERAL INDEX	                    |	DFMGI	|		|
+|		        |	Greece	        |		                                    |		    |		|
+|		        |		            |	FTSE/ASE Large Cap	                    |	FTASE	|		|
+|		        |		            |	Athex Composite Share Pr	            |	ASE	    |		|
+|		        |	Denmark	        |		                                    |		    |		|
+|		        |		            |	OMX COPENHAGEN 20 INDEX	                |	KFX	    |		|
+|		        |		            |	OMX COPENHAGEN INDEX	                |	KAX 	|		|
+|		        |	South Africa	|		                                    |		    |		|
+|		        |		            |	FTSE/JSE AFRICA ALL SHR	                |	JALSH	|		|
+|		        |		            |	FTSE/JSE AFRICA TOP40 IX	            |	TOP40	|		|
+|		        |	Finland	        |		                                    |		    |		|
+|		        |		            |	OMX HELSINKI 25 INDEX	                |	HEX25	|		|
+|		        |		            |	OMX HELSINKI INDEX	                    |	HEX	    |		|
+|		        |	Kuwait	        |		                                    |		    |		|
+|		        |		            |	KUWAIT SE PRICE INDEX	                |	KWSEIDX	|		|
+|		        |		            |	KUWAIT SE WEIGHTED INDEX	            |	SECTMIND|		|
+|		        |	Russia	        |		                                    |		    |		|
+|		        |		            |	RUSSIAN RTS INDEX $	                    |	RTSI$	|		|
+|		        |		            |	MOEX Russia Index	                    |	INDEXCF	|		|
+|		        |	Ukraine	        |		                                    |		    |		|
+|		        |		            |	Ukrainian Equities Index	            |	UX	    |		|
+|		        |		            |	PFTS Index	                            |	PFTS	|		|
+|		        |	Switzerland	    |		                                    |		    |		|
+|		        |		            |	SWISS MARKET INDEX	                    |	SMI	    |		|
+|		        |		            |	SPI SWISS PERFORMANCE IX	            |	SPI	    |		|
+|		        |	Kenya	        |		                                    |		    |		|
+|		        |		            |	Nairobi SE 20 Share	                    |	KNSMIDX	|		|
+|		        |		            |	Nairobi All Share	                    |	NSEASI	|		|
+|		        |	Serbia	        |		                                    |		    |		|
+|		        |		            |	BELEXline Index 	                    |	BELEXLIN|		|
+|		        |		            |	BELEX15 INDEX	                        |	BELEX15	|		|
+|		        |	Norway	        |		                                    |		    |		|
+|		        |		            |	OSE ALL SHARE INDEX	                    |	OSEAX	|		|
+|		        |		            |	OSE BENCHMARK INDEX	                    |	OSEBX	|		|
+|		        |	Hungary	        |		                                    |		    |		|
+|		        |		            |	HUNGARIAN TRADED INDEX	                |	CHTX	|		|
+|		        |		            |	BUDAPEST STOCK EXCH INDX	            |	BUX	    |		|
+|		        |	Spain	        |		                                    |		    |		|
+|		        |		            |	SPAIN MA  MADRID INDEX	                |	MADX    |		|
+|		        |		            |	IBEX 35 INDEX	                        |	IBEX	|		|
+|		        |	Netherlands	    |		                                    |		    |		|
+|		        |		            |	AMSTERDAM MIDKAP INDEX	                |	AMX	    |		|
+|		        |		            |	AEX-Index	                            |	AEX	    |		|
+|		        |	Italy	        |		                                    |		    |		|
+|		        |		            |	FTSE MIB INDEX	                        |	FTSEMIB	|		|
+|		        |		            |	FTSE Italia All-Share	                |	ITLMS	|		|
+|		        |	Bosnia & Herzegovina	|		                            |		    |		|
+|		        |		            |	Bosnia BIRS Index	                    |	BIRS	|		|
+|		        |		            |	SASE Free Market 10 Idx	                |	SASX10	|		|
+|		        |	Belgium	        |		                                    |		    |		|
+|		        |		            |	BELGIAN STK MRKT PRC IDX	            |	BELPRC	|		|
+|		        |		            |	BEL 20 INDEX	                        |	BEL20	|		|
+|		        |	Luxembourg	    |		                                    |		    |		|
+|		        |		            |	LUXEMBOURG LuxX RETURN	                |	LUXXR	|		|
+|		        |		            |	LUXEMBOURG LuxX INDEX	                |	LUXXX	|		|
+|		        |	Portugal	    |		                                    |		    |		|
+|		        |		            |	PSI All-Share Index GR	                |	BVLX	|		|
+|		        |		            |	PSI 20 INDEX	                        |	PSI20	|		|
+|		        |	Israel	        |		                                    |		    |		|
+|		        |		            |	TA-125 Index	                        |	TA-125	|	x	|
+|		        |		            |	TA-35 Index	                            |	TA-35	|		|
+|		        |	Macedonia	    |		                                    |		    |		|
+|		        |		            |	MBID Index	                            |	MBIDM	|		|
+|		        |		            |	MBI 10 Index	                        |	MBI	    |		|
+|		        |	Austria	        |		                                    |		    |		|
+|		        |		            |	AUSTRIAN ATX PRIME INDEX	            |	ATXPRIME|		|
+|		        |		            |	AUSTRIAN TRADED ATX INDX	            |	ATX	    |		|
+|		        |	Sweden	        |		                                    |		    |		|
+|		        |		            |	OMX STOCKHOLM BENCHMARK	                |	SBX	    |   	|
+|		        |		            |	OMX STOCKHOLM 30 INDEX	                |	OMX	    |		|
+|		        |	Tunisia	        |		                                    |		    |		|
+|		        |		            |	Tunis SE TUNINDEX	                    |	TUSISE	|		|
+|		        |	Montenegro	    |		                                    |		    |		|
+|		        |		            |	MONEX INDEX	                            |	MONEX	|		|
+|		        |	Saudi Arabia	|		                                    |		    |		|
+|		        |		            |	TADAWUL ALL SHARE INDEX	                |	SASEIDX	|		|
+|		        |	Botswana	    |		                                    |		    |		|
+|		        |		            |	Botswana Gaborone Dom	                |	BGSMDC	|		|
+|		        |	Qatar	        |		                                    |		    |		|
+|		        |		            |	QE Index	                            |	DSM	    |		|
+|		        |	Jordan	        |		                                    |		    |		|
+|		        |		            |	AMMAN SE GENERAL INDEX	                |	JOSMGNFF|		|
+|		        |	Slovenia	    |		                                    |	    	|		|
+|		        |		            |	Slovenian Blue Chip Idx	                |	SBITOP	|		|
+|		        |	Palestine	    |		                                    |		    |		|
+|		        |		            |	PSE Al Quds	                            |	PASISI	|		|
+|		        |	Nigeria 	    |		                                    |		    |		|
+|		        |		            |	NIGERIA STCK EXC ALL SHR	            |	NGSEINDX|		|
+|		        |	Iceland	        |		                                    |		    |		|
+|		        |		            |	OMX Iceland All-Share PR	            |	ICEXI	|		|
+|		        |	Namibia	        |		                                    |		    |		|
+|		        |		            |	NAMIBIA OVERALL INDEX	                |	FTN098	|		|
+|		        |	Cyprus	        |		                                    |		    |		|
+|		        |		            |	GENERAL MARKET INDEX CSE	            |	CYSMMAPA|		|
+|		        |	Lebanon	        |		                                    |		    |		|
+|		        |		            |	BLOM STOCK INDEX	                    |	BLOM	|		|
+|		        |	Oman	        |		                                    |		    |		|
+|		        |		            |	MSM30 Index	                            |	MSM30	|		|
+|		        |	Mauritius	    |		                                    |		    |		|
+|		        |		            |	MAURITIUS STOCK EXCHANGE	            |	SEMDEX	|		|
+|		        |	Ireland	        |		                                    |		    |		|
+|		        |		            |	IRISH OVERALL INDEX	                    |	ISEQ	|		|
+|		        |	Slovakia	    |		                                    |		    |		|
+|		        |		            |	SLOVAK SHARE INDEX	                    |	SKSM	|		|
+|		        |	Croatia	        |		                                    |		    |		|
+|		        |		            |	CROATIA ZAGREB CROBEX	                |	CRO	    |		|
+|		        |	Morocco	        |		                                    |		    |		|
+|		        |		            |	MASI Free Float Index	                |	MOSENEW	|		|
+|		        |	Tanzania	    |		                                    |	    	|		|
+|		        |		            |	Tanzania All Share Index	            |	DARSDSEI|		|
+|		        |	Bulgaria	    |		                                    |		    |		|
+|		        |		            |	SOFIX INDEX	                            |	SOFIX	|		|
+|		        |	Malta	        |		                                    |		    |		|
+|		        |		            |	MALTA STOCK EXCHANGE IND	            |	MALTEX	|		|
+|		        |	Latvia	        |		                                    |		    |		|
+|		        |		            |	OMX RIGA OMXR	                        |	RIGSE	|		|
+|		        |	Estonia	        |		                                    |		    |		|
+|		        |		            |	OMX TALLINN OMXT	                    |	TALSE	|		|
+|		        |	United States	|		                                    |		    |		|
+|		        |		            |	BBG EMEA WORLD INDEX	                |	BWORLDEU|		|
+|		        |	Kazakhstan	    |		                                    |		    |		|
+|		        |		            |	Kazakhstan KASE Stock Ex	            |	KZKAK	|		|
+|		        |	Romania	        |		                                    |		    |		|
+|		        |		            |	BUCHAREST BET INDEX	                    |	BET	    |		|
+|		        |	Lithuania	    |		                                    |		    |		|
+|		        |		            |	OMX VILNIUS OMXV	                    |	VILSE	|		|
+|		        |	Ghana	        |		                                    |		    |		|
+|		        |       		    |	GSE Composite Index	                    |	GGSECI	|		|
+|		        |	Czech Republic	|		                                    |		    |		|
+|		        |		            |	PRAGUE STOCK EXCH INDEX	                |	PX	    |		|
+|	APAC	    |		            |		                                    |		    |		|
+|		        |	Japan	        |		                                    |		    |		|
+|		        |		            |	TOPIX LARGE 70 IDX (TSE)	            |	TPXL70	|		|
+|		        |		            |	TSE2 TOPIX 2ND SECT INDX	            |	TSE2	|		|
+|		        |		            |	NIKKEI JASDAQ	                        |	NKYJQ	|		|
+|       		|		            |	TOPIX MID 400 INDX (TSE)	            |	TPXM400	|		|
+|       		|		            |	TOPIX SMALL INDEX (TSE)	                |	TPXSM	|		|
+|       		|		            |	TSE MOTHERS INDEX	                    |	TSEMOTHR|		|
+|       		|		            |	TOPIX CORE 30 IDX (TSE)	                |	TPXC30	|		|
+|       		|		            |	JASDAQ: STOCK INDEX	                    |	JSDA	|		|
+|       		|		            |	TSE REIT INDEX	                        |	TSEREIT	|		|
+|	        	|		            |	NIKKEI 300 INDEX	                    |	NEY	    |		|
+|	        	|		            |	TOPIX INDEX (TOKYO)	                    |	TPX	    |		|
+|	        	|		            |	NIKKEI 500	                            |	NKY500  |		|
+|	        	|		            |	NIKKEI 225	                            |	NKY	    |	x	|
+|	        	|		            |	TOPIX 100 INDEX (TSE)	                |	TPX100	|		|
+|	        	|		            |	TOPIX 500 INDEX (TSE)	                |	TPX500	|		|
+|	        	|	China	        |		                                    |		    |		|
+|	        	|		            |	SHENZHEN SE COMPOSITE IX	            |	SZCOMP	|		|
+|	        	|	            	|	CSI 300 INDEX	                        |	SHSZ300	|		|
+|	        	|	            	|	ChiNext Price Index	                    |	SZ399006|		|
+|	        	|	            	|	SHANGHAI G-SHARES	                    |	SHNCOMP	|		|
+|	        	|	            	|	SHANGHAI SE 180 A SHR IX	            |	SSE180	|		|
+|	        	|	            	|	SSE 50 Index	                        |	SSE50	|		|
+|	        	|	            	|	SHENZHEN SE B SHARE INDX	            |	SZBSHR	|		|
+|	           	|	            	|	SHANGHAI SE B SHARE INDX	            |	SHBSHR	|		|
+|		        |	            	|	SZSE COMPONENT INDEX	                |	SICOM	|		|
+|		        |	            	|	SHENZHEN SE A SHARE INDX	            |	SZASHR	|		|
+|	        	|	            	|	SHANGHAI SE A SHARE INDX	            |	SHASHR  |		|
+|		        |	            	|	SHANGHAI SE COMPOSITE	                |	SHCOMP	|		|
+|		        |	Hong Kong	    |		                                    |		    |		|
+|		        |	            	|	HANG SENG COMPOSITE INDX	            |	HSCI	|		|
+|		        |	            	|	HANG SENG CHINA AFF.CRP	                |	HSCCI	|		|
+|		        |	            	|	HANG SENG HK 35 INDEX	                |	HSHK35	|		|
+|	        	|	            	|	HANG SENG CHINA ENT INDX	            |	HSCEI	|		|
+|	        	|	            	|	HANG SENG INDEX	                        |	HIS	    |		|
+|	        	|	            	|	S&P/HKEx LargeCap Index	                |	HKSPLC25|		|
+|	        	|		            |	HS China (HK-listed) 25	                |	HSFML25	|		|
+|	        	|		            |	S&P ASIA 50 INDEX CME	                |	SAXCME	|		|
+|	        	|		            |	S&P/HKEx GEM Index	                    | 	HKSPGEM	|		|
+|	        	|		            |	HANG SENG H-FINANCIALS	                |	H-FIN	|		|
+|	        	|		            |	 HS China (HK-listed) 100	            |	H-FIN	|		|
+|	        	|	South Korea	    |		                                    |		    |		|
+|	        	|		            |	KOREA KOSPI 100 INDEX	                |	KOSPI100|		|
+|	        	|		            |	KOSDAQ STAR INDEX	                    |	KOSTAR	|		|
+|	        	|		            |	KOREA KOSPI 50 INDEX	                |	KOSPI50	|		|
+|	        	|		            |	KOSPI 200 INDEX	                        |	KOSPI2	|		|
+|	          	|		            |	KOSPI INDEX	                            |	KOSPI	|		|
+|	        	|		            |	KRX 100 INDEX	                        |	KRX100	|		|
+|		        |		            |	KOSDAQ INDEX	                        |	KOSDAQ	|		|
+|		        |	India	        |		                                    |		    |		|
+|	        	|		            |	S&P BSE 200 IDX	                        |	BSE200	|		|
+|	        	|		            |	S&P BSE 500 IDX	                        |	BSE500	|		|
+|	        	|		            |	Nifty 50	                            |	NIFTY   |		|
+|		        |		            |	S&P BSE SENSEX INDEX	                |	SENSEX	|	√	|
+|		        |		            |	S&P BSE 100 IDX	                        |	BSE100	|		|
+|		        |	New Zealand	    |		                                    |		    |		|
+|	        	|		            |	S&P/NZX 10 Index	                    |	NZSE10	|		|
+|	            |		            |	S&P/NZX 50 Index Gross	                |	NZSE50FG|		|
+|	        	|		            |	S&P NZX All Index	                    |	NZSE	|		|
+|	        	|		            |	S&P/NZX 20 Index	                    |	NZX20	|		|
+|	        	|	Taiwan	        |		                                    |		    |		|
+|		        |		            |	TAIWAN TPEx EXCHANGE	                |	TWOTCI	|		|
+|	        	|		            |	FTSE TWSE Taiwan 50 Indx	            |	TW50	|		|
+|		        |		            |	TAIWAN TAIEX INDEX	                    |	TWSE	|		|
+|		        |	Australia	    |		                                    |		    |		|
+|	        	|		            |	ALL ORDINARIES INDX	                    |	AS30	|		|
+|		        |		            |	S&P/ASX 300 INDEX	                    |	AS52	|		|
+|		        |		            |	S&P/ASX 200 INDEX	                    |	AS51	|		|
+|		        |	Pakistan	    |		                                    |		    |		|
+|	        	|		            |	KARACHI ALL SHARE INDEX	                |	KSE	    |		|
+|		        |		            |	KARACHI 30 INDEX	                    |	KSE30	|		|
+|	        	|	        	    |	KARACHI 100 INDEX	                    |	KSE100	|		|
+|		        |	Malaysia	    |		                                    |		    |		|
+|		        |		            |	FTSE BURSA MALAYSIA EMAS	            |	FBMEMAS	|		|
+|		        |		            |	FTSE Bursa Malaysia KLCI	            |	FBMKLCI	|		|
+|		        |	Indonesia	    |		                                    |		    |		|
+|		        |		            |	JAKARTA LQ-45 INDEX	                    |	LQ45	|		|
+|		        |		            |	JAKARTA COMPOSITE INDEX	                |	JCI	    |		|
+|		        |	Singapore	    |		                                    |		    |		|
+|		        |		            |	FTSE ST ALL SHARE INDEX	                |	FSTAS	|		|
+|		        |		            |	Straits Times Index STI	                |	STI	    |		|
+|		        |	Thailand	    |		                                    |		    |		|
+|		        |		            |	STOCK EXCH OF THAI INDEX	            |	SET	    |		|
+|		        |		            |	THAI SET 50 INDEX	                    |	SET50	|		|
+|		        |	Vietnam	        |		                                    |		    |		|
+|		        |		            |	HO CHI MINH STOCK INDEX	                |	VNINDEX	|		|
+|		        |		            |	HNX INDEX	                            |	VHINDEX	|		|
+|		        |	Bengladesh  	|		                                    |		    |		|
+|		        |	              	|	DSE Broad Index	                        |	DSEX	|		|
+|		        |	Mongolia	    |		                                    |		    |		|
+|		        |	            	|	MSE Top 20 Index	                    |	MSETOP	|		|
+|		        |	Asia	        |		                                    |		    |		|
+|		        |	            	|	MSCI ASIA APEX 50	                    |	MXAPEXA |		|
+|		        |	Laos        	|		                                    |		    |		|
+|		        |		            |	Laos Composite Index	                |	LSXC	|		|
+|		        |	Phillipines	    |		                                    |		    |		|
+|		        |		            |	PSEi - PHILIPPINE SE IDX	            |	PCOMP	|		|
+|		        |	Sri Lanka	    |		                                    |		    |		|
+|		        |		            |	SRI LANKA COLOMBO ALL SH	            |	CSEALL  |		|
  
- Market data is from Alpha Vantage.
  
  #### Currencies
  

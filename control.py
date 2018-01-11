@@ -9,11 +9,12 @@ import twitter_location_collector
 import twitter_track_collector
 import twitter_follow_collector
 import collectors.batch_collectors.rss_collector as rss_collector
+import collectors.batch_collectors.stock_collector as stock_collector
 
 """
 sets up whether the setup script is needed 
 """
-setup_required = False
+setup_required = True
 
 """
 sets up whether whether debug mode is on
@@ -86,6 +87,15 @@ rss_urls = ['http://www.nytimes.com/services/xml/rss/nyt/World.xml',
             'http://feeds.reuters.com/Reuters/worldNews',
             'feed://www.latimes.com/world/rss2.0.xml']
 
+stock_markets = ['DJI',
+                 'RUT',
+                 'SPX',
+                 'BURCAP',
+                 'UKX',
+                 'SX5E',
+                 'SENSEX'
+                 ]
+
 if social_network is True:
     """
     runs the Twitter Location Collector
@@ -110,8 +120,16 @@ e_tags = {}
 last_modifieds = {}
 
 rss = rss_collector.RSS_Collector(rss_urls, error_log, debug, e_tags, last_modifieds)
+stocks = stock_collector.StockCollector()
 while True:
-    for url in rss_urls:
-        rss.rss_parser(url, error_log, debug, e_tags, last_modifieds)
+    # # this runs the RSS Collector in perpetuity
+    # for url in rss_urls:
+    #     rss.rss_parser(url, error_log, debug, e_tags, last_modifieds)
+
+    # this runs the Stock Collector in perpetuity
+    for stock_market in stock_markets:
+        stocks.stock_ingestor(stock_market)
+
+    # this pauses all of the collectors for five (5) minutes
     time.sleep(300)
 

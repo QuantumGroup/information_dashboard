@@ -56,9 +56,11 @@ class RSS_Collector():
         return parser
 
     def rss_parser(self, rss_url, error_log, debug, e_tags, last_modifieds):
+        # local file imports
+        import control
+        # Python library imports
         import os
         import json
-        import time
         import sys
         import sqlite3
         import re
@@ -66,26 +68,25 @@ class RSS_Collector():
         import time
         from urllib.parse import urlparse
 
-        if debug is True:
+        if control.debug is True:
             print('starting RSS Collector\n'
                   '======================\n\n')
 
         # sets up the connection to the SQLite database
         sqlite_database_path = os.path.join('collector.sqlite3')
         sqlite_database = os.path.abspath(sqlite_database_path)
-        print(sqlite_database)
         conn = sqlite3.connect(sqlite_database)
         c = conn.cursor()
 
         # this instantiates the feedparser instance and returns the relevant data as an 'items' entry in a JSON object
         feed = self.rss_ingestor(rss_url, error_log, debug, e_tags, last_modifieds)
 
-        if debug is True:
+        if control.debug is True:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)
-            current_time = str(time.strftime('%c', current_time_struct))
+            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
             print('--------------------------------------------------------------------------------------------\n'
-                  'item ingested from the RSS feed on %s: comparing entries to database\n'
+                  'batch ingested from the RSS feed on %s: comparing entries to database\n'
                   '--------------------------------------------------------------------------------------------\n'
                   % current_time)
 
@@ -294,4 +295,3 @@ class RSS_Collector():
             print('=================================================\n'
                   'all entries pre-processed on %s: continuing to next run\n'
                   % current_time)
-

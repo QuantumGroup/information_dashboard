@@ -4,7 +4,7 @@ data to the database.
 """
 
 
-class RSS_Collector():
+class RSS_Collector:
 
     def __init__(self, rss_url, error_log, debug, e_tags, last_modifieds):
         self.rss_url = rss_url
@@ -114,39 +114,39 @@ class RSS_Collector():
                 if debug is True:
                     print('hostname: ' + str(hostname_url))
                 if hostname_url == 'www.nytimes.com':
-                    name = 'The New York Times (USA)'
+                    name = 'The New York Times'
                 elif hostname_url == 'www.washingtonpost.com':
-                    name = 'The Washington Post (USA)'
+                    name = 'The Washington Post'
                 elif hostname_url == 'smh.com.au':
-                    name = 'The Sydney Morning Herald (AUS)'
+                    name = 'The Sydney Morning Herald'
                 elif hostname_url == 'www.thedailystar.net':
-                    name = 'The Daily Star (IND)'
+                    name = 'The Daily Star'
                 elif hostname_url == 'timesofindia.indiatimes.com':
-                    name = 'The Times of India (IND)'
+                    name = 'The Times of India'
                 elif hostname_url == 'www.thehindu.com':
-                    name = 'The Hindu (IND)'
+                    name = 'The Hindu'
                 elif hostname_url == 'www.haaretz.com':
-                    name = 'Haaretz (ISR)'
+                    name = 'Haaretz'
                 elif hostname_url == 'www.nation.co.ke':
-                    name = 'The Nation (KEN)'
+                    name = 'The Nation'
                 elif hostname_url == 'app.yonhapnews.co.kr':
-                    name = 'Yonhap (KOR)'
+                    name = 'Yonhap'
                 elif hostname_url == 'www.straitstimes.com':
-                    name = 'The Straits Times (SGP)'
+                    name = 'The Straits Times'
                 elif hostname_url == 'www.taipeitimes.com':
-                    name = 'Taipei Times (TWN)'
+                    name = 'The Taipei Times'
                 elif hostname_url == 'www.bbc.co.uk':
-                    name = 'BBC (GBR)'
+                    name = 'The BBC'
                 elif hostname_url == 'www.csmonitor.com':
-                    name = 'The Christian Science Monitor (USA)'
+                    name = 'The Christian Science Monitor'
                 elif hostname_url == 'www.wsj.com':
-                    name = 'The Wall Street Journal (USA)'
+                    name = 'The Wall Street Journal'
                 elif hostname_url == 'hosted2.ap.org':
-                    name = 'AP (USA)'
+                    name = 'AP'
                 elif hostname_url == 'feeds.reuters.com':
-                    name = 'Reuters (GBR)'
+                    name = 'Reuters'
                 elif hostname_url == 'www.latimes.com':
-                    name = 'The Los Angeles Times (USA)'
+                    name = 'The Los Angeles Times'
                 else:
                     name = str(hostname_url[4:-4])
             except:
@@ -154,6 +154,42 @@ class RSS_Collector():
                 name = 'None'
                 e = sys.exc_info()[0]
                 print('name error\n' + str(str_url) + '\n' + str(e))
+
+            # this code block adds the nationality of origin for each of these news services
+            if hostname_url == 'www.nytimes.com':
+                country = 'USA'
+            elif hostname_url == 'www.washingtonpost.com':
+                country = 'USA'
+            elif hostname_url == 'smh.com.au':
+                country = 'AUS'
+            elif hostname_url == 'www.thedailystar.net':
+                country = 'IND'
+            elif hostname_url == 'timesofindia.indiatimes.com':
+                country = 'IND'
+            elif hostname_url == 'www.thehindu.com':
+                country = 'IND'
+            elif hostname_url == 'www.haaretz.com':
+                country = 'ISR'
+            elif hostname_url == 'www.nation.co.ke':
+                country = 'KEN'
+            elif hostname_url == 'app.yonhapnews.co.kr':
+                country = 'KOR'
+            elif hostname_url == 'www.straitstimes.com':
+                country = 'SGP'
+            elif hostname_url == 'www.taipeitimes.com':
+                country = 'TWN'
+            elif hostname_url == 'www.bbc.co.uk':
+                country = 'GBR'
+            elif hostname_url == 'www.csmonitor.com':
+                country = 'USA'
+            elif hostname_url == 'www.wsj.com':
+                country = 'USA'
+            elif hostname_url == 'hosted2.ap.org':
+                country = 'USA'
+            elif hostname_url == 'feeds.reuters.com':
+                country = 'GBR'
+            elif hostname_url == 'www.latimes.com':
+                country = 'USA'
 
             # this block checks the database to see if the URL in the new article matches any URLs already captured: if
             # not a match, the script continues the pre-processing and downloading process; if yes a match, pass
@@ -165,38 +201,38 @@ class RSS_Collector():
 
                 # This block extracts the time published from the RSS JSON object, or the date from the website URL.
                 try:
-                    if name == 'The New York Times (USA)' or name == 'The Times of India (IND)' or name == 'BBC (GBR)':
+                    if name == 'The New York Times' or name == 'The Times of India' or name == 'The BBC':
                         # These have a published value in the JSON object: "Wed, 27 Dec 2017 13:08:10 GMT"
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %Z')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
-                    elif name == 'The Sydney Morning Herald (AUS)':
+                    elif name == 'The Sydney Morning Herald':
                         # These have a published value in the JSON object: "Wed Dec 27 15:11:22 UTC 2017"
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a %b %d %H:%M:%S %Z %Y')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
-                    elif name == 'The Daily Star (IND)' or name == 'The Hindu (IND)' or name == 'Haaretz (ISR)' or \
-                            name == 'The Straits Times (SGP)' or name == 'Reuters (GBR)':
+                    elif name == 'The Daily Star' or name == 'The Hindu' or name == 'Haaretz' or \
+                            name == 'The Straits Times' or name == 'Reuters':
                         # These have a published value in the JSON object: "Wed, 27 Dec 2017 00:00:00 +0600"
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %z')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
-                    elif name == 'The Nation (KEN)':
+                    elif name == 'The Nation':
                         # These have a published value in the JSON object: 2017-12-27T14:38:54Z
                         published_raw = str(rss_json['updated'])
                         published_stripped = published_raw[:-1]
                         published_struct = time.strptime(published_stripped, '%Y-%m-%dT%H:%M:%S')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
-                    elif name == 'Yonhap (KOR)':
+                    elif name == 'Yonhap':
                         # These have a published value in the JSON object: 20171227145701
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%Y%m%d%H%M%S')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
-                    elif name == 'Taipei Times (TWN)' or name == 'AP (USA)':
+                    elif name == 'The Taipei Times' or name == 'AP':
                         # these have a published value in the JSON object: 2017-12-28T08:00:00+08:00
-                        if name == 'Taipei Times (TWN)':
+                        if name == 'The Taipei Times':
                             published_raw = str(rss_json['updated'])
-                        elif name == 'AP (USA)':
+                        elif name == 'AP':
                             published_raw = str(rss_json['published'])
                         # since Python time objects don't support colons in the middle of UTC offsets, this will strip
                         # out the last three chars in the string and replace them with two (2) zeros (0s), so as to
@@ -205,18 +241,18 @@ class RSS_Collector():
                         published_assembled = published_stripped + '00'
                         published_struct = time.strptime(published_assembled, '%Y-%m-%dT%H:%M:%S%z')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
-                    elif name == 'The Wall Street Journal (USA)' or name == 'The Los Angeles Times (USA)':
+                    elif name == 'The Wall Street Journal' or name == 'The Los Angeles Times':
                         # these have a published value in the JSON object: Wed, 27 Dec 2017 03:00:00 PST
                         published_raw = str(rss_json['published'])
-                        if name == 'The Wall Street Journal (USA)':
+                        if name == 'The Wall Street Journal':
                             published_stripped = published_raw[:-3]
                             published_assembled = published_stripped + '-0500'
-                        elif name == 'The Los Angeles Times (USA)':
+                        elif name == 'The Los Angeles Times':
                             published_stripped = published_raw[:-3]
                             published_assembled = published_stripped + '-0800'
                         published_struct = time.strptime(published_assembled, '%a, %d %b %Y %H:%M:%S %z')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
-                    elif name == 'The Washington Post (USA)' or name == 'The Christian Science Monitor (USA)':
+                    elif name == 'The Washington Post' or name == 'The Christian Science Monitor':
                         # These contain the date but not the time the article is published in the URL; therefore,
                         # we will use only the date
                         # ---------------------------
@@ -226,9 +262,9 @@ class RSS_Collector():
                         url_date_regex = re.search(
                             r'([./\-_]{0,1}(19|20)\d{2})[./\-_]{0,1}(([0-3]{0,1}[0-9][./\-_])|'
                             r'(\w{3,5}[./\-_]))([0-3]{0,1}[0-9][./\-]{0,1})?', str_url)
-                        if name == 'The Washington Post (USA)':
+                        if name == 'The Washington Post':
                             url_date = time.strptime(str(url_date_regex.group(0)), '/%Y/%m/%d/')
-                        elif name == 'The Christian Science Monitor (USA)':
+                        elif name == 'The Christian Science Monitor':
                             url_date = time.strptime(str(url_date_regex.group(0)), '/%Y/%m%d/')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(url_date)))
                 except:
@@ -277,8 +313,8 @@ class RSS_Collector():
 
                 # saves each variable to the database using DB-API's parameter substitution, where '?' is a stand-in
                 # for a tuple element containing the actual values
-                c.execute('INSERT INTO rss VALUES (?,?,?,?,?,?)',
-                          (name, published, imported, title, summary, url))
+                c.execute('INSERT INTO rss VALUES (?,?,?,?,?,?,?)',
+                          (name, country, published, imported, title, summary, url))
                 # commits the changes to the database
                 try:
                     conn.commit()

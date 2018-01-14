@@ -4,5 +4,8 @@ be immediately addressed, as they either stop system functionality or are credib
 
 Note: SMS messages should only be used in important circumstances, as these pose a small but actual cost per use.
 """
-
+# Python library import
 import twilio
+# local file imports
+import _keys_and_secrets as keys
+

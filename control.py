@@ -5,11 +5,10 @@ import os
 import time
 
 import setup
-import twitter_location_collector
-import twitter_track_collector
-import twitter_follow_collector
-import collectors.batch_collectors.rss_collector as rss_collector
-import collectors.batch_collectors.stock_collector as stock_collector
+from collection.real_time_collectors import twitter_location_collector, twitter_follow_collector, \
+    twitter_track_collector
+import collection.batch_collectors.rss_collector as rss_collector
+import collection.batch_collectors.stock_collector as stock_collector
 
 """
 sets up whether the setup script is needed 
@@ -22,7 +21,7 @@ sets up whether whether debug mode is on
 debug = True
 
 """
-sets up whether social network collectors are activate
+sets up whether social network collection are activate
 """
 social_network = False
 
@@ -130,6 +129,6 @@ while True:
     for stock_market in stock_markets:
         stocks.stock_ingestor(stock_market)
 
-    # this pauses all of the collectors for five (5) minutes
+    # this pauses all of the collection for five (5) minutes
     time.sleep(300)
 

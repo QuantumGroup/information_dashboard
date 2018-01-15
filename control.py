@@ -1,10 +1,11 @@
 """
 This is the main control script: in a production run, this should be either replaced or updated by the web UI
 """
+# Python library imports
 import os
 import time
-
 import setup
+# local file imports
 from collection.real_time_collectors import twitter_location_collector, twitter_follow_collector, \
     twitter_track_collector
 import collection.batch_collectors.rss_collector as rss_collector

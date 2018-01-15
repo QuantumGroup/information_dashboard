@@ -10,6 +10,7 @@ from collection.real_time_collectors import twitter_location_collector, twitter_
     twitter_track_collector
 import collection.batch_collectors.rss_collector as rss_collector
 import collection.batch_collectors.stock_collector as stock_collector
+import dissemination.sms_alerts.alerts as sms_alerts
 
 """
 sets up whether the setup script is needed 
@@ -37,6 +38,15 @@ sets up files, if necessary
 setup = setup.InformationCollectorSetup()
 if setup_required is True:
     setup.initiate()
+
+"""
+sets up SMS alert class
+"""
+alerts = sms_alerts.SMS_alerts()
+
+CRITIC_alert = alerts.send_sms('CRITIC alert\n'
+                               '------------\n'
+                               'system failure')
 
 """
 sets up variables for Twitter location collection: this is to be a list of the four corners of a bounded box. Per the 
@@ -121,6 +131,7 @@ last_modifieds = {}
 
 rss = rss_collector.RSS_Collector(rss_urls, error_log, debug, e_tags, last_modifieds)
 stocks = stock_collector.StockCollector()
+
 while True:
     # # this runs the RSS Collector in perpetuity
     for url in rss_urls:
@@ -132,4 +143,4 @@ while True:
 
     # this pauses all of the collection for five (5) minutes
     time.sleep(300)
-
+# if the scripts stop running, sends SMS alert

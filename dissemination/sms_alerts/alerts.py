@@ -8,6 +8,9 @@ Note: SMS messages should only be used in important circumstances, as these pose
 
 class SMS_alerts:
 
+    def __init__(self):
+        pass
+
     def send_sms(self, message):
         # Python library import
         from twilio.rest import Client
@@ -21,10 +24,3 @@ class SMS_alerts:
             from_=keys.twilio_outbound_phone,
             body=message)
 
-        print(message.sid)
-
-message = 'another test message'
-
-alerts = SMS_alerts()
-
-alerts.send_sms(message)

@@ -56,8 +56,6 @@ class RSS_Collector:
         return parser
 
     def rss_parser(self, rss_url, error_log, debug, e_tags, last_modifieds):
-        # local file imports
-        import control
         # Python library imports
         import os
         import json
@@ -67,6 +65,8 @@ class RSS_Collector:
         import datetime
         import time
         from urllib.parse import urlparse
+        # local file imports
+        import control
 
         if control.debug is True:
             print('starting RSS Collector\n'

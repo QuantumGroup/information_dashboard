@@ -9,9 +9,6 @@ class StockCollector:
         pass
 
     def stock_ingestor(self, input_symbol):
-        # local file imports
-        import _keys_and_secrets
-        import control
         # Python library imports
         import sqlite3
         import sys
@@ -21,6 +18,13 @@ class StockCollector:
         import requests
         import pandas
         from io import StringIO
+        # local file imports
+        import _keys_and_secrets
+        import control
+        import dissemination.sms_alerts.alerts as sms
+
+        # this code block instantiates the SMS alert feature
+        sms_alerts = sms.SMS_alerts()
 
         # this code block loads the database instance
         sqlite_relative_path = os.path.join('collector.sqlite3')
@@ -68,7 +72,15 @@ class StockCollector:
         c.execute('SELECT published FROM stock_markets WHERE symbol IS (?)', (input_symbol,))
         published_in_database = c.fetchall()
         for index, row in stocks_last10_df.iterrows():
-            published_raw = row['timestamp']
+            try:
+                published_raw = row['timestamp']
+            except KeyError as e:
+                message = ("Stock_Collector stock_ingestor()\n"
+                           "timestamp failure"
+                           "%s" % str(e))
+                print(message)
+                sms_alerts.critic_sms(message)
+
             # if the row is not already in the database, proceeds
             if published_raw not in str(published_in_database):
                 print('-------------------------------------------------\n'
@@ -87,12 +99,6 @@ class StockCollector:
                     imported = 'None'
                     e = sys.exc_info()
                     print('imported error\n' + str(e))
-
-
-
-
-
-
 
                 # this block returns the name of the index being imported
                 try:
@@ -129,17 +135,8 @@ class StockCollector:
                     country = 'EEE'
                 elif input_symbol == 'SENSEX':
                     country = 'IND'
-
-
-                print('country: ' + country)
-
-
-
-
-
-
-
-
+                if control.debug is True:
+                    print('country: ' + country)
 
                 # this block returns the timestamp data returned from the market index API itself
                 try:

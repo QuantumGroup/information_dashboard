@@ -1,15 +1,22 @@
 """
 This is the main control script: in a production run, this should be either replaced or updated by the web UI
 """
+
+
 # Python library imports
 import os
 import time
 import setup
+import datetime
+import sys
+import traceback
 # local file imports
 from collection.real_time_collectors import twitter_location_collector, twitter_follow_collector, \
     twitter_track_collector
 import collection.batch_collectors.rss_collector as rss_collector
 import collection.batch_collectors.stock_collector as stock_collector
+import error as error_class
+
 
 """
 sets up whether the setup script is needed 
@@ -20,6 +27,11 @@ setup_required = True
 sets up whether whether debug mode is on
 """
 debug = True
+
+if debug is True:
+    current_time_int = int(time.time())
+    current_time_struct = time.gmtime(current_time_int)
+    current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
 
 """
 sets up whether social network collection are activate
@@ -37,6 +49,12 @@ sets up files, if necessary
 setup = setup.InformationCollectorSetup()
 if setup_required is True:
     setup.initiate()
+
+"""
+instantiates the error class
+"""
+error = error_class.error()
+
 
 """
 sets up variables for Twitter location collection: this is to be a list of the four corners of a bounded box. Per the 
@@ -110,8 +128,8 @@ if social_network is True:
     """
     runs the Twitter Follow Collector
     """
-    twitter_follow = twitter_follow_collector.TwitterFollowCollector(accounts, error_log, debug)
-    twitter_follow.twitter_follow_ingestor(accounts, error_log, debug)
+    twitter_follow = twitter_follow_collector.TwitterFollowCollector()
+    twitter_follow.twitter_follow_ingestor(accounts)
     """
 
 runs the RSS Collector
@@ -122,15 +140,30 @@ last_modifieds = {}
 rss = rss_collector.RSS_Collector(rss_urls, error_log, debug, e_tags, last_modifieds)
 stocks = stock_collector.StockCollector()
 
-while True:
-    # # this runs the RSS Collector in perpetuity
-    for url in rss_urls:
-        rss.rss_parser(url, error_log, debug, e_tags, last_modifieds)
+try:
+    while True:
+        # # this runs the RSS Collector in perpetuity
+        for url in rss_urls:
+            rss.rss_parser(url, error_log, debug, e_tags, last_modifieds)
+        if debug is True:
+            print('==============================================================================\n'
+                  'all RSS entries pre-processed on %s: continuing to next run...\n'
+                  '==============================================================================\n'
+                  % current_time)
 
-    # this runs the Stock Collector in perpetuity
-    for stock_market in stock_markets:
-        stocks.stock_ingestor(stock_market)
+        # this runs the Stock Collector in perpetuity
+        for stock_market in stock_markets:
+            stocks.stock_ingestor(stock_market)
+        if debug is True:
+            print('=======================================================================================\n'
+                  'all stock index entries pre-processed on %s: continuing to next run...\n'
+                  '=======================================================================================\n'
+                  % current_time)
 
-    # this pauses all of the collection for five (5) minutes
-    time.sleep(300)
-# if the scripts stop running, sends SMS alert
+        # this pauses all of the collection for five (5) minutes
+        time.sleep(300)
+except:
+    e = sys.exc_info()
+    full_e = traceback.format_exc()
+    error.if_error(str(e), full_e, 'control', 'critical failure', sms=True)
+

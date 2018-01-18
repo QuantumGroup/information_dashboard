@@ -17,14 +17,15 @@ class StockCollector:
         import time
         import requests
         import pandas
+        import traceback
         from io import StringIO
         # local file imports
+        import error as error_class
         import _keys_and_secrets
         import control
-        import dissemination.sms_alerts.alerts as sms
 
-        # this code block instantiates the SMS alert feature
-        sms_alerts = sms.SMS_alerts()
+        # this code instantiates the error class
+        error = error_class.error()
 
         # this code block loads the database instance
         sqlite_relative_path = os.path.join('collector.sqlite3')
@@ -53,10 +54,12 @@ class StockCollector:
             stocks_raw = requests.get(api_url, params=data)
             stocks_str = stocks_raw.text
             stocks_df = pandas.read_csv(StringIO(stocks_str))
-            stocks_last10_df = stocks_df.iloc[:10]
+            stocks_last20_df = stocks_df.iloc[:20]
         except:
-            e = sys.exc_info()[0]
-            print('website request or parsing failed\n' + str(e) + '\n')
+            e = sys.exc_info()
+            full_e = traceback.format_exc()
+            error.if_error(str(e), full_e, 'stock_ingestor', 'Alpha Vantage API call')
+
 
         if control.debug is True:
             current_time_int = int(time.time())
@@ -71,15 +74,14 @@ class StockCollector:
         # the database
         c.execute('SELECT published FROM stock_markets WHERE symbol IS (?)', (input_symbol,))
         published_in_database = c.fetchall()
-        for index, row in stocks_last10_df.iterrows():
+        for index, row in stocks_last20_df.iterrows():
             try:
                 published_raw = row['timestamp']
-            except KeyError as e:
-                message = ("Stock_Collector stock_ingestor()\n"
-                           "timestamp failure"
-                           "%s" % str(e))
-                print(message)
-                sms_alerts.critic_sms(message)
+            except:
+                e = sys.exc_info()
+                full_e = traceback.format_exc()
+                error.if_error(str(e), full_e, 'stock_ingestor', 'timestamp creation')
+                return
 
             # if the row is not already in the database, proceeds
             if published_raw not in str(published_in_database):
@@ -96,9 +98,9 @@ class StockCollector:
                     if control.debug is True:
                         print('imported: ' + imported)
                 except:
-                    imported = 'None'
                     e = sys.exc_info()
-                    print('imported error\n' + str(e))
+                    full_e = traceback.format_exc()
+                    error.if_error(str(e), full_e, 'stock_ingestor()', 'imported time')
 
                 # this block returns the name of the index being imported
                 try:
@@ -120,23 +122,28 @@ class StockCollector:
                     if control.debug is True:
                         print('name: ' + name)
                 except:
-                    e = sys.exc_info()[0]
-                    name = 'None'
-                    print('name of index failed\n' + str(e) + '\n')
+                    e = sys.exc_info()
+                    full_e = traceback.format_exc()
+                    error.if_error(str(e), full_e, 'stock_ingestor()', 'stock index name')
 
                 # this block returns the country that the stock index nominally tracks or belongs to
-                if input_symbol == 'SPX' or input_symbol == 'DJI' or input_symbol == 'RUT':
-                    country = 'USA'
-                elif input_symbol == 'BURCAP':
-                    country = 'ARG'
-                elif input_symbol == 'UKX':
-                    country = 'GBR'
-                elif input_symbol == 'SX5E':
-                    country = 'EEE'
-                elif input_symbol == 'SENSEX':
-                    country = 'IND'
-                if control.debug is True:
-                    print('country: ' + country)
+                try:
+                    if input_symbol == 'SPX' or input_symbol == 'DJI' or input_symbol == 'RUT':
+                        country = 'USA'
+                    elif input_symbol == 'BURCAP':
+                        country = 'ARG'
+                    elif input_symbol == 'UKX':
+                        country = 'GBR'
+                    elif input_symbol == 'SX5E':
+                        country = 'EEE'
+                    elif input_symbol == 'SENSEX':
+                        country = 'IND'
+                    if control.debug is True:
+                        print('country: ' + country)
+                except:
+                    e = sys.exc_info()
+                    full_e = traceback.format_exc()
+                    error.if_error(str(e), full_e, 'stock_ingestor()', 'stock index country')
 
                 # this block returns the timestamp data returned from the market index API itself
                 try:
@@ -144,8 +151,9 @@ class StockCollector:
                     if control.debug is True:
                         print('published: ' + published)
                 except:
-                    e = sys.exc_info()[0]
-                    print('timestamp data failed' + str(e) + '\n')
+                    e = sys.exc_info()
+                    full_e = traceback.format_exc()
+                    error.if_error(str(e), full_e, 'stock_ingestor()', 'timestamp creation')
 
                 # this block returns the market pricing data returned from the market index API itself
                 try:
@@ -160,8 +168,9 @@ class StockCollector:
                               'close: %s\n'
                               % (stock_open, stock_high, stock_low, stock_close))
                 except:
-                    e = sys.exc_info()[0]
-                    print('stock information failed' + str(e) + '\n')
+                    e = sys.exc_info()
+                    full_e = traceback.format_exc()
+                    error.if_error(str(e), full_e, 'stock_ingestor()', 'stock index price data')
 
                 # saves each variable to the database using DB-API's parameter substitution, where '?' is a stand-in
                 # for a tuple element containing the actual values
@@ -170,14 +179,17 @@ class StockCollector:
                 try:
                     conn.commit()
                 except sqlite3.Error as e:
-                    print('database commit error\n' + str(e))
+                    e = sys.exc_info()
+                    full_e = traceback.format_exc()
+                    error.if_error(str(e), full_e, 'stock_ingestor()', 'committing stock information to database')
 
             else:
                 if control.debug is True:
-                    print('------------------------------------------\n'
+                    print('--------------------------------------------\n'
                           'ingested item present in database: passing\n'
-                          '------------------------------------------\n')
+                          '--------------------------------------------\n')
         if control.debug is True:
-            print('=================================================\n'
-                  'all entries for %s pre-processed on %s: continuing to next run\n'
+            print('--------------------------------------------------------\n'
+                  'all entries for %s pre-processed on %s\n'
+                  '--------------------------------------------------------\n'
                   % (input_symbol, current_time))

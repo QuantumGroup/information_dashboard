@@ -60,7 +60,6 @@ class StockCollector:
             full_e = traceback.format_exc()
             error.if_error(str(e), full_e, 'stock_ingestor', 'Alpha Vantage API call')
 
-
         if control.debug is True:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)

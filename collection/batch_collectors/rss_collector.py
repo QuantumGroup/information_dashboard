@@ -14,22 +14,25 @@ class RSS_Collector:
         self.last_modifieds = last_modifieds
 
     def rss_ingestor(self, rss_url, error_log, debug, e_tags, last_modifieds):
+        # Python library imports
         import feedparser
         import sys
         import control
+        import traceback
+        # local file imports
+        import error as error_class
+
+        # instantiates the error class
+        error = error_class.error()
 
         try:
             if rss_url in control.e_tags:
-                print('etag found for ' + rss_url)
                 e_tag = control.e_tags[rss_url]
-                print(e_tag)
                 parser = feedparser.parse(rss_url, etag=e_tag)
                 control.e_tags[rss_url] = parser.etag
 
             elif rss_url in control.last_modifieds:
-                print('last-modified found for ' + rss_url)
                 last_modified = control.last_modifieds[rss_url]
-                print(last_modified)
                 parser = feedparser.parse(rss_url, modified=last_modified)
                 control.last_modifieds[rss_url] = parser.modified
 
@@ -38,20 +41,16 @@ class RSS_Collector:
                 try:
                     control.e_tags[rss_url] = parser.etag
                 except:
-                    e = sys.exc_info()
-                    print('no etag found for ' + rss_url)
-                    print(str(e))
+                    pass
                 try:
                     control.last_modifieds[rss_url] = parser.modified
                 except:
-                    e = sys.exc_info()
-                    print('no last-modified found for ' + rss_url)
-                    print(str(e))
+                    pass
 
         except:
             e = sys.exc_info()
-            print(str(e))
-            print('failure')
+            full_e = traceback.format_exc()
+            error.if_error(str(e), full_e, 'rss_ingestor()', 'feedparser failure')
 
         return parser
 
@@ -64,13 +63,19 @@ class RSS_Collector:
         import re
         import datetime
         import time
+        import traceback
         from urllib.parse import urlparse
         # local file imports
         import control
+        import error as error_class
+
+        # instantiates error class
+        error = error_class.error()
 
         if control.debug is True:
-            print('starting RSS Collector\n'
-                  '======================\n\n')
+            print('----------------------\n'
+                  'starting RSS Collector\n'
+                  '----------------------\n\n')
 
         # sets up the connection to the SQLite database
         sqlite_database_path = os.path.join('collector.sqlite3')
@@ -85,9 +90,9 @@ class RSS_Collector:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)
             current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
-            print('--------------------------------------------------------------------------------------------\n'
+            print('--------------------------------------------------------------------------------------\n'
                   'batch ingested from the RSS feed on %s: comparing entries to database\n'
-                  '--------------------------------------------------------------------------------------------\n'
+                  '--------------------------------------------------------------------------------------\n'
                   % current_time)
 
         # for each 'items' in the feedparser object (aka, for every RSS entry), we save the JSON object locally
@@ -150,10 +155,10 @@ class RSS_Collector:
                 else:
                     name = str(hostname_url[4:-4])
             except:
-                url = 'None'
-                name = 'None'
-                e = sys.exc_info()[0]
-                print('name error\n' + str(str_url) + '\n' + str(e))
+                e = sys.exc_info()
+                full_e = traceback.format_exc()
+                error.if_error(str(e), full_e, 'rss_parser()', 'URL or name error')
+                return
 
             # this code block adds the nationality of origin for each of these news services
             if hostname_url == 'www.nytimes.com':
@@ -270,7 +275,8 @@ class RSS_Collector:
                 except:
                     published = 'None'
                     e = sys.exc_info()
-                    print('published error\n' + str(e))
+                    full_e = traceback.format_exc()
+                    error.if_error(str(e), full_e, 'rss_parser()', 'published error')
                 if debug is True:
                     print('published: ' + published)
 
@@ -282,7 +288,8 @@ class RSS_Collector:
                 except:
                     imported = 'None'
                     e = sys.exc_info()
-                    print('imported error\n' + str(e))
+                    full_e = traceback.format_exc()
+                    error.if_error(str(e), full_e, 'rss_parser()', 'imported error')
                 if debug is True:
                     print('imported: ' + imported)
 
@@ -292,7 +299,8 @@ class RSS_Collector:
                 except:
                     title = 'None'
                     e = sys.exc_info()
-                    print('title error\n' + str(e))
+                    full_e = traceback.format_exc()
+                    error.if_error(str(e), full_e, 'rss_parser()', 'title error')
                 if debug is True:
                     print('title: ' + title)
 
@@ -306,7 +314,8 @@ class RSS_Collector:
                 except:
                     summary = 'None'
                     e = sys.exc_info()
-                    print('summary error\n' + str(e))
+                    full_e = traceback.format_exc()
+                    error.if_error(str(e), full_e, 'rss_parser()', 'summary error')
                 if debug is True:
                     print('summary: ' + summary)
                     print('\n')
@@ -319,8 +328,9 @@ class RSS_Collector:
                 try:
                     conn.commit()
                 except sqlite3.Error as e:
-                    print('database commit error\n' + str(e))
-
+                    e = sys.exc_info()
+                    full_e = traceback.format_exc()
+                    error.if_error(str(e), full_e, 'rss_parser()', 'database commit error')
             else:
                 if debug is True:
                     print('------------------------------------------\n'
@@ -328,6 +338,9 @@ class RSS_Collector:
                           '------------------------------------------\n')
 
         if debug is True:
-            print('=================================================\n'
-                  'all entries pre-processed on %s: continuing to next run\n'
-                  % current_time)
+            # raw_url = urlparse(rss_url)
+            # base_url = raw_url.hostname
+            print('----------------------------------------------\n'
+                  'all entries for %s pre-processed on %s\n'
+                  '----------------------------------------------\n'
+                  % (urlparse(rss_url).hostname, current_time))

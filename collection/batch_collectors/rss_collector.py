@@ -6,24 +6,13 @@ data to the database.
 
 class RSS_Collector:
 
-    def __init__(self, rss_url, error_log, debug, e_tags, last_modifieds):
-        self.rss_url = rss_url
-        self.error_log = error_log
-        self.debug = debug
-        self.e_tag = e_tags
-        self.last_modifieds = last_modifieds
+    def __init__(self):
+        pass
 
-    def rss_ingestor(self, rss_url, error_log, debug, e_tags, last_modifieds):
+    def rss_ingestor(self, rss_url):
         # Python library imports
         import feedparser
-        import sys
         import control
-        import traceback
-        # local file imports
-        import error as error_class
-
-        # instantiates the error class
-        error = error_class.Error()
 
         try:
             if rss_url in control.e_tags:
@@ -48,7 +37,7 @@ class RSS_Collector:
             pass
         return parser
 
-    def rss_parser(self, rss_url, error_log, debug, e_tags, last_modifieds):
+    def rss_parser(self, rss_url):
         # Python library imports
         import os
         import json
@@ -78,7 +67,7 @@ class RSS_Collector:
         c = conn.cursor()
 
         # this instantiates the feedparser instance and returns the relevant data as an 'items' entry in a JSON object
-        feed = self.rss_ingestor(rss_url, error_log, debug, e_tags, last_modifieds)
+        feed = self.rss_ingestor(rss_url)
 
         if control.debug is True:
             current_time_int = int(time.time())
@@ -110,7 +99,7 @@ class RSS_Collector:
                 url = str(str_url)
                 parsed_url = urlparse(str_url)
                 hostname_url = parsed_url.hostname
-                if debug is True:
+                if control.debug is True:
                     print('hostname: ' + str(hostname_url))
                 if hostname_url == 'www.nytimes.com':
                     name = 'The New York Times'
@@ -195,7 +184,7 @@ class RSS_Collector:
             c.execute('SELECT url FROM rss')
             urls = c.fetchall()
             if url not in str(urls):
-                if debug is True:
+                if control.debug is True:
                     print('name: ' + name)
 
                 # This block extracts the time published from the RSS JSON object, or the date from the website URL.
@@ -271,7 +260,7 @@ class RSS_Collector:
                     e = sys.exc_info()
                     full_e = traceback.format_exc()
                     error.if_error(str(e), full_e, 'rss_parser()', 'published error')
-                if debug is True:
+                if control.debug is True:
                     print('published: ' + published)
 
                 # this block returns the date and time when the RSS entry was imported
@@ -284,7 +273,7 @@ class RSS_Collector:
                     e = sys.exc_info()
                     full_e = traceback.format_exc()
                     error.if_error(str(e), full_e, 'rss_parser()', 'imported error')
-                if debug is True:
+                if control.debug is True:
                     print('imported: ' + imported)
 
                 # This block extracts the article title from the RSS JSON object
@@ -295,7 +284,7 @@ class RSS_Collector:
                     e = sys.exc_info()
                     full_e = traceback.format_exc()
                     error.if_error(str(e), full_e, 'rss_parser()', 'title error')
-                if debug is True:
+                if control.debug is True:
                     print('title: ' + title)
 
                 # this block looks for a story summary embedded within the RSS JSON object
@@ -310,7 +299,7 @@ class RSS_Collector:
                     e = sys.exc_info()
                     full_e = traceback.format_exc()
                     error.if_error(str(e), full_e, 'rss_parser()', 'summary error')
-                if debug is True:
+                if control.debug is True:
                     print('summary: ' + summary)
                     print('\n')
 
@@ -326,15 +315,15 @@ class RSS_Collector:
                     full_e = traceback.format_exc()
                     error.if_error(str(e), full_e, 'rss_parser()', 'database commit error')
             else:
-                if debug is True:
+                if control.debug is True:
                     print('------------------------------------------\n'
                           'ingested item present in database: passing\n'
                           '------------------------------------------\n')
 
-        if debug is True:
+        if control.debug is True:
             # raw_url = urlparse(rss_url)
             # base_url = raw_url.hostname
-            print('--------------------------------------------------\n'
+            print('-------------------------------------------------------------------------\n'
                   'all entries for %s pre-processed on %s UTC\n'
-                  '--------------------------------------------------\n'
+                  '-------------------------------------------------------------------------\n'
                   % (urlparse(rss_url).hostname, current_time))

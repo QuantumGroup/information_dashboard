@@ -23,35 +23,29 @@ class RSS_Collector:
         import error as error_class
 
         # instantiates the error class
-        error = error_class.error()
+        error = error_class.Error()
 
         try:
             if rss_url in control.e_tags:
                 e_tag = control.e_tags[rss_url]
                 parser = feedparser.parse(rss_url, etag=e_tag)
                 control.e_tags[rss_url] = parser.etag
-
             elif rss_url in control.last_modifieds:
                 last_modified = control.last_modifieds[rss_url]
                 parser = feedparser.parse(rss_url, modified=last_modified)
                 control.last_modifieds[rss_url] = parser.modified
-
             else:
                 parser = feedparser.parse(rss_url)
                 try:
                     control.e_tags[rss_url] = parser.etag
-                except:
+                except AttributeError:
                     pass
                 try:
                     control.last_modifieds[rss_url] = parser.modified
-                except:
+                except AttributeError:
                     pass
-
-        except:
-            e = sys.exc_info()
-            full_e = traceback.format_exc()
-            error.if_error(str(e), full_e, 'rss_ingestor()', 'feedparser failure')
-
+        except AttributeError:
+            pass
         return parser
 
     def rss_parser(self, rss_url, error_log, debug, e_tags, last_modifieds):
@@ -70,7 +64,7 @@ class RSS_Collector:
         import error as error_class
 
         # instantiates error class
-        error = error_class.error()
+        error = error_class.Error()
 
         if control.debug is True:
             print('----------------------\n'
@@ -90,9 +84,9 @@ class RSS_Collector:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)
             current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
-            print('--------------------------------------------------------------------------------------\n'
-                  'batch ingested from the RSS feed on %s: comparing entries to database\n'
-                  '--------------------------------------------------------------------------------------\n'
+            print('------------------------------------------------------------------------------------------\n'
+                  'batch ingested from the RSS feed on %s UTC: comparing entries to database\n'
+                  '------------------------------------------------------------------------------------------\n'
                   % current_time)
 
         # for each 'items' in the feedparser object (aka, for every RSS entry), we save the JSON object locally
@@ -340,7 +334,7 @@ class RSS_Collector:
         if debug is True:
             # raw_url = urlparse(rss_url)
             # base_url = raw_url.hostname
-            print('----------------------------------------------\n'
-                  'all entries for %s pre-processed on %s\n'
-                  '----------------------------------------------\n'
+            print('--------------------------------------------------\n'
+                  'all entries for %s pre-processed on %s UTC\n'
+                  '--------------------------------------------------\n'
                   % (urlparse(rss_url).hostname, current_time))

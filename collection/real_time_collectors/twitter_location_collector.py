@@ -33,12 +33,20 @@ class TwitterLocationCollector(StreamListener):
         twitter_stream.filter(locations=locations, async=True)
 
     def on_data(self, raw_data):
+        # Python library imports
         import json
         import re
         import sqlite3
         import os
         import sys
+        import traceback
         import time
+        # local file imports
+        import control
+        import error as error_class
+
+        # instantiates error class
+        error = error_class.error()
 
         # establishes connection to database
         sql_database = os.path.join('collector.sqlite3')
@@ -160,7 +168,7 @@ class TwitterLocationCollector(StreamListener):
         try:
             conn.commit()
         except sqlite3.Error as e:
-            print(e)
-            sys.exit(1)
+            full_e = traceback.format_exc()
+            error.if_error(str(e), full_e, 'Twitter on_data()', 'database commit error')
 
         return True

@@ -33,12 +33,19 @@ class TwitterFollowCollector(StreamListener):
         twitter_stream.filter(follow=accounts, async=True)
 
     def on_data(self, raw_data):
+        # Python library imports
         import json
         import re
         import sqlite3
         import os
         import sys
         import time
+        import traceback
+        # local file imports
+        import error as error_class
+
+        # instantiates error class
+        error = error_class.error()
 
         # establishes connection to database
         sql_database = os.path.join('collector.sqlite3')
@@ -160,7 +167,8 @@ class TwitterFollowCollector(StreamListener):
         try:
             conn.commit()
         except sqlite3.Error as e:
-            print(e)
-            sys.exit(1)
+            e = sys.exc_info()
+            full_e = traceback.format_exc()
+            error.if_error(str(e), full_e, 'twitter_on_data()', 'database commit error')
 
         return True

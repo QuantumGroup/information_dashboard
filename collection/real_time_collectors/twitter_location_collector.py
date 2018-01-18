@@ -46,7 +46,7 @@ class TwitterLocationCollector(StreamListener):
         import error as error_class
 
         # instantiates error class
-        error = error_class.error()
+        error = error_class.Error()
 
         # establishes connection to database
         sql_database = os.path.join('collector.sqlite3')

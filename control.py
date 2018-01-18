@@ -10,6 +10,7 @@ import setup
 import datetime
 import sys
 import traceback
+import subprocess
 # local file imports
 from collection.real_time_collectors import twitter_location_collector, twitter_follow_collector, \
     twitter_track_collector
@@ -27,11 +28,6 @@ setup_required = True
 sets up whether whether debug mode is on
 """
 debug = True
-
-if debug is True:
-    current_time_int = int(time.time())
-    current_time_struct = time.gmtime(current_time_int)
-    current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
 
 """
 sets up whether social network collection are activate
@@ -132,20 +128,25 @@ if social_network is True:
     twitter_follow.twitter_follow_ingestor(accounts)
     """
 
-runs the RSS Collector
+runs the batch collectors
 """
+# saves HTML ETags and last-modified headers in a persistent variable to be referenced when pulling data from websites
 e_tags = {}
 last_modifieds = {}
 
-rss = rss_collector.RSS_Collector(rss_urls, error_log, debug, e_tags, last_modifieds)
+# instantiates the batch collector classes
+rss = rss_collector.RSS_Collector()
 stocks = stock_collector.StockCollector()
 
 try:
     while True:
-        # # this runs the RSS Collector in perpetuity
+        # this runs the batch collectors in perpetuity
         for url in rss_urls:
-            rss.rss_parser(url, error_log, debug, e_tags, last_modifieds)
+            rss.rss_parser(url)
         if debug is True:
+            current_time_int = int(time.time())
+            current_time_struct = time.gmtime(current_time_int)
+            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
             print('==================================================================================\n'
                   'all RSS entries pre-processed on %s UTC: continuing to next run...\n'
                   '==================================================================================\n'
@@ -155,6 +156,9 @@ try:
         for stock_market in stock_markets:
             stocks.stock_ingestor(stock_market)
         if debug is True:
+            current_time_int = int(time.time())
+            current_time_struct = time.gmtime(current_time_int)
+            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
             print('===========================================================================================\n'
                   'all stock index entries pre-processed on %s UTC: continuing to next run...\n'
                   '===========================================================================================\n'
@@ -166,4 +170,3 @@ except:
     e = sys.exc_info()
     full_e = traceback.format_exc()
     error.if_error(str(e), full_e, 'control', 'critical failure', sms=True)
-

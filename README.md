@@ -107,6 +107,10 @@ This is used in the various Twitter Collectors in order to connect to the Twitte
 
 This is used in the Stock Collectors to convert the data into a usable format.
 
+### twilio
+
+This is used by in SMS_alerts to send text messages whenever there are critical events taking place.
+
 ### _keys_and_secrets
 
 This is not a library - it is a Python file used to store and call passwords, keys, secrets, and other PII. The code that relies on such PII calls this file, and it makes for a convenient place to store such data.

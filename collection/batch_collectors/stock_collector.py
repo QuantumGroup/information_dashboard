@@ -25,7 +25,7 @@ class StockCollector:
         import control
 
         # this code instantiates the error class
-        error = error_class.error()
+        error = error_class.Error()
 
         # this code block loads the database instance
         sqlite_relative_path = os.path.join('collector.sqlite3')
@@ -65,9 +65,9 @@ class StockCollector:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)
             current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
-            print('--------------------------------------------------------------------------------------------\n'
-                  'batch ingested from stock market feed on %s: comparing entries to database\n'
-                  '--------------------------------------------------------------------------------------------\n'
+            print('------------------------------------------------------------------------------------------------\n'
+                  'batch ingested from stock market feed on %s UTC: comparing entries to database\n'
+                  '------------------------------------------------------------------------------------------------\n'
                   % current_time)
 
         # this block compares the current row (1 minute worth) of stock market data with data already imported to
@@ -189,7 +189,7 @@ class StockCollector:
                           'ingested item present in database: passing\n'
                           '--------------------------------------------\n')
         if control.debug is True:
-            print('--------------------------------------------------------\n'
-                  'all entries for %s pre-processed on %s\n'
-                  '--------------------------------------------------------\n'
+            print('---------------------------------------------------------------\n'
+                  'all entries for %s pre-processed on %s UTC\n'
+                  '---------------------------------------------------------------\n'
                   % (input_symbol, current_time))

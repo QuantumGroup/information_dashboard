@@ -3,7 +3,7 @@ This class contains code that will be called in the case of errors in other scri
 """
 
 
-class error:
+class Error:
 
     def if_error(self, e, full_e, method_name, failure_type, sms=False):
         """
@@ -36,14 +36,18 @@ class error:
         sms_alert = alerts.SMS_alerts()
 
         # creates multi-purpose error message
-        message = ("error at: %s\n"
-                   "error in: %s\n"
+        message = ("error in: %s\n"
                    "error type: %s\n"
                    "exception: %s\n\n"
-                   % (current_time, method_name, failure_type, str(e)))
+                   % (method_name, failure_type, str(e)))
 
         print(message)
         with open('error_log.txt', 'a') as f:
-            f.write(full_e)
+            f.write('=============================================================================================\n'
+                    'error at %s UTC\n'
+                    '=============================================================================================\n'
+                    % current_time)
+            f.write(message + '\n')
+            f.write(full_e + '\n\n\n\n')
         if sms is True:
             sms_alert.critic_sms(message)

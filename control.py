@@ -53,7 +53,7 @@ if setup_required is True:
 """
 instantiates the error class
 """
-error = error_class.error()
+error = error_class.Error()
 
 
 """
@@ -146,18 +146,18 @@ try:
         for url in rss_urls:
             rss.rss_parser(url, error_log, debug, e_tags, last_modifieds)
         if debug is True:
-            print('==============================================================================\n'
-                  'all RSS entries pre-processed on %s: continuing to next run...\n'
-                  '==============================================================================\n'
+            print('==================================================================================\n'
+                  'all RSS entries pre-processed on %s UTC: continuing to next run...\n'
+                  '==================================================================================\n'
                   % current_time)
 
         # this runs the Stock Collector in perpetuity
         for stock_market in stock_markets:
             stocks.stock_ingestor(stock_market)
         if debug is True:
-            print('=======================================================================================\n'
-                  'all stock index entries pre-processed on %s: continuing to next run...\n'
-                  '=======================================================================================\n'
+            print('===========================================================================================\n'
+                  'all stock index entries pre-processed on %s UTC: continuing to next run...\n'
+                  '===========================================================================================\n'
                   % current_time)
 
         # this pauses all of the collection for five (5) minutes

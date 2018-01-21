@@ -1,0 +1,98 @@
+body {
+    font-family: "Roboto", "Lucida Grande", Verdana, Arial, sans-serif;
+    font-size: 100%;
+    background-color: #3d3d3d;
+    color: white;
+}
+
+h1 {
+    color: white;
+    font-size: 200%;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-weight: lighter;
+    line-height: 2em;
+    letter-spacing: .05em;
+    text-align: center;
+    text-shadow: 1px, 1px, 0px, white;
+}
+
+h2 {
+    color: white;
+    background-color: black;
+    font-size: 150%;
+    font-family: "Lucinda Grande", "Lucinda Sans Unicode", Helvetica, Arial, Verdana, sans-serif;
+    font-weight: lighter;
+    line-height: 1.5em;
+    letter-spacing: .025em;
+    text-align: center;
+}
+
+th {
+    padding: 15px
+}
+
+table.info {
+    font-weight: lighter;
+    border: 2px solid white;
+    border-collapse: collapse;
+    width: 300px;
+    text-align: center;
+    padding: 15px;
+}
+
+td.info {
+    padding: 15px;
+}
+
+table.menu {
+    font-weight: lighter;
+    border: 2px solid white;
+    border-collapse: collapse;
+    min-width: 300px;
+    max-width: 300px;
+    text-align: center;
+    height: 100%;
+}
+
+tr.current {
+    background-color: rgba(20,20,20,0.93);
+}
+
+td.label {
+    font-weight: lighter;
+    border: 2px solid white;
+    width: 200px;
+    text-align: center;
+    height: 100px
+}
+
+td.icon {
+    border: 2px solid white;
+    width: 100px;
+    text-align: center;
+    height: 100px;
+}
+
+a:link {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:visited {
+    color: white;
+    background-color: transparent;
+    text-decoration: none;
+}
+
+a:hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+a:active {
+    color: blue;
+    background-color: transparent;
+    text-decoration: underline;
+}

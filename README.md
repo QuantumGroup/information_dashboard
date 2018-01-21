@@ -27,11 +27,7 @@ This is very much a work in progress - stay tuned.
 
 ## Components
 
-### User Interface
-
-A web-based UI will be the main way of updating the collection requirements, as well as one of the ways of viewing the results from the collectors.
-
-### Collectors
+### Collectors and Processors
 
 A number of collectors will be built for different sources, each with different capabilities. Examples to date include collectors that take in data from the Twitter API and collectors that take in news site RSS feeds live. These collectors will also be in charge of data pre-processing, i.e. converting the data into a machine-readable format.
 
@@ -43,9 +39,13 @@ Pre-processed data will be run through a number of analyzers, starting with natu
 
 Finally, the processed and/or analyzed data will need to be disseminated to end users, with options for both machine-readable and human-readable formats. These disseminators will also include additional communications mediums, such as SMS alerts.
 
+### User Interface
+
+A web-based UI will be the main way of updating the collection requirements, as well as one of the ways of viewing the results from the collectors.
+
 ## Modules
 
-### collection
+### collection_and_processing/
 
 This directory contains the collection and pre-processing scripts, divided by temporal type.
 
@@ -73,13 +73,15 @@ This is the Twitter collector that takes in data based off of location inputs, p
 
 This is the Twitter collector that takes in data based off of keywords, parses the collected tweets, and adds the parsed data to the database.
 
-### dissemination
+### analysis/
+
+### dissemination/
 
 #### sms_alerts
 
 This disseminator will send out alerts in the form of SMS messages
 
-#### web_UI
+### user_interface/
 
 This directory will contain the HTML and CSS files, along with the Django backend, that will make up the web UI that controls this script.
 

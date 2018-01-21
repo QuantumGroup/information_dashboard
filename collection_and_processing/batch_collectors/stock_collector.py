@@ -58,7 +58,9 @@ class StockCollector:
         except:
             e = sys.exc_info()
             full_e = traceback.format_exc()
+            print(stocks_str)
             error.if_error(str(e), full_e, 'stock_ingestor', 'Alpha Vantage API call')
+            return
 
         if control.debug is True:
             current_time_int = int(time.time())
@@ -84,9 +86,9 @@ class StockCollector:
 
             # if the row is not already in the database, proceeds
             if published_raw not in str(published_in_database):
-                print('-------------------------------------------------\n'
+                print('----------------------------------------------------\n'
                       'row %s not in database: proceeding\n'
-                      '-------------------------------------------------\n'
+                      '----------------------------------------------------\n'
                       % row['timestamp'])
 
                 # this block returns the date and time when the row was imported
@@ -177,10 +179,11 @@ class StockCollector:
                           (name, symbol, country, published, imported, stock_open, stock_high, stock_low, stock_close))
                 try:
                     conn.commit()
-                except sqlite3.Error as e:
+                except:
                     e = sys.exc_info()
                     full_e = traceback.format_exc()
                     error.if_error(str(e), full_e, 'stock_ingestor()', 'committing stock information to database')
+                    return
 
             else:
                 if control.debug is True:

@@ -10,12 +10,11 @@ import setup
 import datetime
 import sys
 import traceback
-import subprocess
 # local file imports
-from collection.real_time_collectors import twitter_location_collector, twitter_follow_collector, \
+from collection_and_processing.real_time_collectors import twitter_location_collector, twitter_follow_collector, \
     twitter_track_collector
-import collection.batch_collectors.rss_collector as rss_collector
-import collection.batch_collectors.stock_collector as stock_collector
+import collection_and_processing.batch_collectors.rss_collector as rss_collector
+import collection_and_processing.batch_collectors.stock_collector as stock_collector
 import error as error_class
 
 
@@ -147,9 +146,9 @@ try:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)
             current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
-            print('==================================================================================\n'
+            print('===================================================================================\n'
                   'all RSS entries pre-processed on %s UTC: continuing to next run...\n'
-                  '==================================================================================\n'
+                  '===================================================================================\n'
                   % current_time)
 
         # this runs the Stock Collector in perpetuity
@@ -166,7 +165,15 @@ try:
 
         # this pauses all of the collection for five (5) minutes
         time.sleep(300)
+except KeyboardInterrupt:
+    pass
 except:
     e = sys.exc_info()
     full_e = traceback.format_exc()
-    error.if_error(str(e), full_e, 'control', 'critical failure', sms=True)
+    error.if_error(str(e), full_e, 'control', 'FLASH FAILURE')
+    try:
+        os.execv(sys.executable, ['python3'] + sys.argv)
+    except:
+        e = sys.exc_info()
+        full_e = traceback.format_exc()
+        error.if_error(str(e), full_e, 'control', 'CRITIC FAILURE', sms=True)

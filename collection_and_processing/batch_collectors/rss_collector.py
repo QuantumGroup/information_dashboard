@@ -310,10 +310,11 @@ class RSS_Collector:
                 # commits the changes to the database
                 try:
                     conn.commit()
-                except sqlite3.Error as e:
+                except:
                     e = sys.exc_info()
                     full_e = traceback.format_exc()
                     error.if_error(str(e), full_e, 'rss_parser()', 'database commit error')
+                    return
             else:
                 if control.debug is True:
                     print('------------------------------------------\n'
@@ -321,8 +322,6 @@ class RSS_Collector:
                           '------------------------------------------\n')
 
         if control.debug is True:
-            # raw_url = urlparse(rss_url)
-            # base_url = raw_url.hostname
             print('-------------------------------------------------------------------------\n'
                   'all entries for %s pre-processed on %s UTC\n'
                   '-------------------------------------------------------------------------\n'

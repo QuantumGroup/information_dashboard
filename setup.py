@@ -39,4 +39,10 @@ class InformationCollectorSetup:
                               'published REAL, imported REAL, open REAL, high REAL, low REAL, close REAL)'
         c.execute(table_stock_markets)
 
+        # this code block creates the table that takes in data from the currency_collector
+        table_currencies = 'CREATE TABLE IF NOT EXISTS currencies (base_currency_code TEXT, base_currency_name TEXT, ' \
+                           'counter_currency_code TEXT, counter_currency_name TEXT, exchange_rate REAL, ' \
+                           'published TEXT, imported TEXT)'
+        c.execute(table_currencies)
+
         c.close()

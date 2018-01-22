@@ -55,11 +55,6 @@ class RSS_Collector:
         # instantiates error class
         error = error_class.Error()
 
-        if control.debug is True:
-            print('----------------------\n'
-                  'starting RSS Collector\n'
-                  '----------------------\n\n')
-
         # sets up the connection to the SQLite database
         sqlite_database_path = os.path.join('collector.sqlite3')
         sqlite_database = os.path.abspath(sqlite_database_path)

@@ -1,5 +1,5 @@
 """
-This class downloads stock market data in real time.
+This class downloads stock market data in batches.
 """
 
 
@@ -136,7 +136,7 @@ class StockCollector:
                     elif input_symbol == 'UKX':
                         country = 'GBR'
                     elif input_symbol == 'SX5E':
-                        country = 'EEE'
+                        country = 'EUR'
                     elif input_symbol == 'SENSEX':
                         country = 'IND'
                     if control.debug is True:

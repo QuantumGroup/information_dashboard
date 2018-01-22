@@ -15,13 +15,9 @@ from collection_and_processing.real_time_collectors import twitter_location_coll
     twitter_track_collector
 import collection_and_processing.batch_collectors.rss_collector as rss_collector
 import collection_and_processing.batch_collectors.stock_collector as stock_collector
+import collection_and_processing.batch_collectors.currency_collector as currency_collector
 import error as error_class
 
-
-"""
-sets up whether the setup script is needed 
-"""
-setup_required = True
 
 """
 sets up whether whether debug mode is on
@@ -33,17 +29,12 @@ sets up whether social network collection are activate
 """
 social_network = False
 
-"""
-sets up the error log
-"""
-error_log = os.path.join('error_log.txt')
 
 """
-sets up files, if necessary
+sets up files necessary files
 """
 setup = setup.InformationCollectorSetup()
-if setup_required is True:
-    setup.initiate()
+setup.initiate()
 
 """
 instantiates the error class
@@ -136,35 +127,69 @@ last_modifieds = {}
 # instantiates the batch collector classes
 rss = rss_collector.RSS_Collector()
 stocks = stock_collector.StockCollector()
+currencies = currency_collector.CurrencyCollector()
 
 try:
     while True:
+
         # this runs the batch collectors in perpetuity
+        if debug is True:
+            current_time_int = int(time.time())
+            current_time_struct = time.gmtime(current_time_int)
+            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
+            print('===================================================================================\n'
+                  'RSS collection starting on %s UTC\n'
+                  '===================================================================================\n'
+                  % current_time)
         for url in rss_urls:
             rss.rss_parser(url)
         if debug is True:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)
             current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
-            print('===================================================================================\n'
-                  'all RSS entries pre-processed on %s UTC: continuing to next run...\n'
-                  '===================================================================================\n'
+            print('========================================================================================\n'
+                  'all RSS entries pre-processed on %s UTC: continuing to next collector...\n'
+                  '========================================================================================\n'
                   % current_time)
 
         # this runs the Stock Collector in perpetuity
+        if debug is True:
+            current_time_int = int(time.time())
+            current_time_struct = time.gmtime(current_time_int)
+            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
+            print('===================================================================================\n'
+                  'stock market collection starting on %s UTC\n'
+                  '===================================================================================\n'
+                  % current_time)
         for stock_market in stock_markets:
             stocks.stock_ingestor(stock_market)
         if debug is True:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)
             current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
-            print('===========================================================================================\n'
-                  'all stock index entries pre-processed on %s UTC: continuing to next run...\n'
-                  '===========================================================================================\n'
+            print('===============================================================================================\n'
+                  'all stock index entries pre-processed on %s UTC: continuing to next collector...\n'
+                  '===============================================================================================\n'
                   % current_time)
 
-        # this pauses all of the collection for five (5) minutes
-        time.sleep(300)
+        # this runs the Currency Collector in perpetuity
+        if debug is True:
+            current_time_int = int(time.time())
+            current_time_struct = time.gmtime(current_time_int)
+            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
+            print('================================================================================\n'
+                  'currency collection starting on %s UTC\n'
+                  '================================================================================\n'
+                  % current_time)
+        currencies.currency_ingestor()
+        if debug is True:
+            current_time_int = int(time.time())
+            current_time_struct = time.gmtime(current_time_int)
+            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
+            print('==============================================================================================\n'
+                  'all currency index entries pre-processed on %s UTC: continuing to next run...\n'
+                  '==============================================================================================\n'
+                  % current_time)
 except KeyboardInterrupt:
     pass
 except:

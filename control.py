@@ -11,11 +11,11 @@ import sys
 import traceback
 # local file imports
 import setup.setup as setup
-from collection_and_processing.real_time_collectors import twitter_location_collector, twitter_follow_collector, \
+from collection.real_time_collectors import twitter_location_collector, twitter_follow_collector, \
     twitter_track_collector
-import collection_and_processing.batch_collectors.rss_collector as rss_collector
-import collection_and_processing.batch_collectors.stock_collector as stock_collector
-import collection_and_processing.batch_collectors.currency_collector as currency_collector
+import collection.batch_collectors.rss_collector as rss_collector
+import collection.batch_collectors.stock_collector as stock_collector
+import collection.batch_collectors.currency_collector as currency_collector
 import error as error_class
 
 

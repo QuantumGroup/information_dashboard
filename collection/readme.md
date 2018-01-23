@@ -1,4 +1,4 @@
-# 1. Collection and Processing
+# 1. Collection
 
 > The traditional intelligence cycle:
 > requirements > planning > **collection** > **processing** > analysis > dissemination

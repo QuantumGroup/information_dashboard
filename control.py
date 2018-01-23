@@ -6,11 +6,11 @@ This is the main control script: in a production run, this should be either repl
 # Python library imports
 import os
 import time
-import setup
 import datetime
 import sys
 import traceback
 # local file imports
+import setup.setup as setup
 from collection_and_processing.real_time_collectors import twitter_location_collector, twitter_follow_collector, \
     twitter_track_collector
 import collection_and_processing.batch_collectors.rss_collector as rss_collector

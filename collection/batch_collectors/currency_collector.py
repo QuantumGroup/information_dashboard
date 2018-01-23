@@ -1,5 +1,5 @@
 """
-This class imports global currency data in batches.
+This class imports global currency data as batch inputs
 """
 
 
@@ -58,6 +58,7 @@ class CurrencyCollector:
         # this code block sets all of the static Alpha Vantage API variables
         api_url = 'https://www.alphavantage.co/query'
         api_function = 'CURRENCY_EXCHANGE_RATE'
+        api_key = _keys_and_secrets.alphavantage_api_key
 
         if control.debug is True:
             current_time_int = int(time.time())
@@ -74,7 +75,6 @@ class CurrencyCollector:
                 if currency != major_currencies:
                     from_currency = currency
                     to_currency = major_currency
-                    api_key = _keys_and_secrets.alphavantage_api_key
 
                     data = {'function': api_function,
                             'from_currency': from_currency,

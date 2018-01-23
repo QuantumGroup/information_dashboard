@@ -41,16 +41,7 @@ class CurrencyCollector:
         majors.
         """
 
-        major_currencies = [
-            'USD',
-            'EUR',
-            'JPY',
-            'GBP',
-            'AUD',
-            'CAD',
-            'CHF',
-            'CNY'
-        ]
+        major_currencies = ['USD', 'EUR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY']
 
         currencies = ['USD', 'EUR', 'JPY', 'GBP', 'AUD', 'CAD', 'CHF', 'CNY', 'AED', 'AFN', 'ALL', 'AMD', 'AOA', 'ARS',
                       'AWG', 'AZN', 'BAM', 'BBD', 'BDT', 'BGN', 'BHD', 'BIF', 'BMD', 'BND', 'BOB', 'BRL', 'BSD', 'BTN',
@@ -62,8 +53,7 @@ class CurrencyCollector:
                       'NOK', 'NPR', 'NZD', 'OMR', 'PAB', 'PEN', 'PGK', 'PHP', 'PKR', 'PLN', 'PYG', 'QAR', 'RON', 'RSD',
                       'RUB', 'RWF', 'SAR', 'SBD', 'SCR', 'SDG', 'SEK', 'SGD', 'SHP', 'SLL', 'SOS', 'SRD', 'STD', 'SVC',
                       'SYP', 'SZL', 'THB', 'TJS', 'TMT', 'TND', 'TOP', 'TRY', 'TTD', 'TWD', 'TZS', 'UAH', 'UGX', 'UYU',
-                      'UZS', 'VEF', 'VND', 'VUV', 'WST', 'XCD', 'XOF', 'XPF', 'YER', 'ZAR', 'ZMW', 'ZWL', 'XAG', 'XAU'
-                      ]
+                      'UZS', 'VEF', 'VND', 'VUV', 'WST', 'XCD', 'XOF', 'XPF', 'YER', 'ZAR', 'ZMW', 'ZWL', 'XAG', 'XAU']
 
         # this code block sets all of the static Alpha Vantage API variables
         api_url = 'https://www.alphavantage.co/query'

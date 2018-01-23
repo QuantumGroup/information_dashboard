@@ -6,20 +6,25 @@ This class sets up the required files, databases, and other things needed for th
 class InformationCollectorSetup:
 
     def __init__(self):
-        # todo: create flag that checks if setup has been run and skips process if True
         pass
 
     def initiate(self):
         self.database_setup()
+        self.metadata_setup()
 
     def database_setup(self):
         import sqlite3
         import os
 
         database = os.path.join('collector.sqlite3')
-
         conn = sqlite3.connect(database)
         c = conn.cursor()
+
+        # this creates the table that correlates ISO 3166-1 alpha 3 country codes, ISO 3166/MA short country names,
+        # ISO 4217 currency codes, and currency names
+        table_countries = 'CREATE TABLE IF NOT EXISTS countries (country_code TEXT, country_name TEXT, ' \
+                          'currency_code TEXT, currency_name TEXT)'
+        c.execute(table_countries)
 
         # this creates the table that takes in data from the tweet_collector
         table_tweets = 'CREATE TABLE IF NOT EXISTS tweets (name TEXT, screename TEXT, ' \
@@ -46,3 +51,41 @@ class InformationCollectorSetup:
         c.execute(table_currencies)
 
         c.close()
+
+    def metadata_setup(self):
+        # Python library imports
+        import sqlite3
+        import os
+        import csv
+
+        # local file imports
+        import error as error_class
+
+        # instantiates the error class
+        error = error_class.Error()
+
+        # instantiates the database connection
+        database = os.path.join('collector.sqlite3')
+        conn = sqlite3.connect(database)
+        c = conn.cursor()
+
+        # this is the file path to the CSV file that contains the data to be imported
+        country_metadata = os.path.join('setup', 'country_meta.csv')
+
+        # this loads the CSV file, parses it, and adds each field of data into the database
+        with open(country_metadata, 'rU', encoding='utf-8', errors='ignore') as f:
+            reader = csv.reader(f)
+            for row in reader:
+                currency_code = row[0]
+                currency_name = row[1]
+                country_code = row[2]
+                country_name = row[3]
+
+                # this block compares the current row data with data already imported to the database
+                c.execute('SELECT country_code FROM countries WHERE country_code IS (?)', (country_code,))
+                published_in_database = c.fetchall()
+
+                if country_code not in str(published_in_database):
+                    c.execute('INSERT INTO countries VALUES (?,?,?,?)',
+                              (country_code, country_name, currency_code, currency_name))
+                    conn.commit()

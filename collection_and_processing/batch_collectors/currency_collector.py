@@ -88,6 +88,7 @@ class CurrencyCollector:
                     except:
                         e = sys.exc_info()
                         full_e = traceback.format_exc()
+                        currency_raw.close()
                         error.if_error(str(e), full_e, 'currency_ingestor()', 'Alpha Vantage API call')
                         break
 

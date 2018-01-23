@@ -58,8 +58,8 @@ class StockCollector:
         except:
             e = sys.exc_info()
             full_e = traceback.format_exc()
-            print(stocks_str)
             error.if_error(str(e), full_e, 'stock_ingestor', 'Alpha Vantage API call')
+            stocks_raw.close()
             return
 
         if control.debug is True:

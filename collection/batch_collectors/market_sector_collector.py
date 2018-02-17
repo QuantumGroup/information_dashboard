@@ -16,6 +16,7 @@ class MarketSectorCollector:
         import time
         import requests
         import traceback
+        import dateutil.parser
         # local file imports
         import error as error_class
         import _keys_and_secrets
@@ -57,20 +58,20 @@ class MarketSectorCollector:
             full_e = traceback.format_exc()
             sector_raw.close()
             error.if_error(str(e), full_e, 'market_sector_ingestor()', 'Alpha Vantage API call')
-            # todo: break out of function if reached
+            return
 
         try:
-            energy = sector_parsed['Energy']
-            real_estate = sector_parsed['Real Estate']
-            utilities = sector_parsed['Utilities']
-            consumer_discretionary = sector_parsed['Consumer Discretionary']
-            information_technology = sector_parsed['Information Technology']
-            industrials = sector_parsed['Industrials']
-            financials = sector_parsed['Financials']
-            materials = sector_parsed['Materials']
-            consumer_staples = sector_parsed['Consumer Staples']
-            health_care = sector_parsed['Health Care']
-            telecom_services = sector_parsed['Telecommunication Services']
+            energy = sector_parsed['Energy'][:-1]
+            real_estate = sector_parsed['Real Estate'][:-1]
+            utilities = sector_parsed['Utilities'][:-1]
+            consumer_discretionary = sector_parsed['Consumer Discretionary'][:-1]
+            information_technology = sector_parsed['Information Technology'][:-1]
+            industrials = sector_parsed['Industrials'][:-1]
+            financials = sector_parsed['Financials'][:-1]
+            materials = sector_parsed['Materials'][:-1]
+            consumer_staples = sector_parsed['Consumer Staples'][:-1]
+            health_care = sector_parsed['Health Care'][:-1]
+            telecom_services = sector_parsed['Telecommunication Services'][:-1]
         except:
             e = sys.exc_info()
             full_e = traceback.format_exc()
@@ -92,6 +93,14 @@ class MarketSectorCollector:
                   % (energy, real_estate, utilities, consumer_discretionary, information_technology,
                      industrials, financials, materials, consumer_staples, health_care, telecom_services))
 
+        try:
+            published_raw = sector_json['Meta Data']['Last Refreshed']
+            published = dateutil.parser.parse(published_raw)
+        except:
+            e = sys.exc_info()
+            full_e = traceback.format_exc()
+            error.if_error(str(e), full_e, 'market_sector_ingestor()', 'published time')
+
         # this block returns the date and time when the row was imported
         try:
             imported_int = int(time.time())
@@ -104,9 +113,9 @@ class MarketSectorCollector:
             full_e = traceback.format_exc()
             error.if_error(str(e), full_e, 'market_sector_ingestor()', 'imported time')
 
-        c.execute('INSERT INTO market_sectors VALUES (?,?,?,?,?,?,?,?,?,?,?)',
+        c.execute('INSERT INTO market_sectors VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
                   (energy, real_estate, utilities, consumer_discretionary, information_technology, industrials,
-                   financials, materials, consumer_staples, health_care, telecom_services, imported))
+                   financials, materials, consumer_staples, health_care, telecom_services, published, imported))
 
         try:
             conn.commit()

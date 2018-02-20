@@ -55,6 +55,8 @@ class StockCollector:
             stocks_str = stocks_raw.text
             stocks_df = pandas.read_csv(StringIO(stocks_str))
             stocks_last20_df = stocks_df.iloc[:20]
+        except KeyError:
+            return
         except:
             e = sys.exc_info()
             full_e = traceback.format_exc()

@@ -85,6 +85,8 @@ class CurrencyCollector:
                         currency_raw = requests.get(api_url, params=data)
                         currency_json = currency_raw.json()
                         currency_parsed = currency_json['Realtime Currency Exchange Rate']
+                    except KeyError:
+                        return
                     except:
                         e = sys.exc_info()
                         full_e = traceback.format_exc()

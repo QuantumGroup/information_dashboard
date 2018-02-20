@@ -53,6 +53,8 @@ class MarketSectorCollector:
             sector_raw = requests.get(api_url, params=data)
             sector_json = sector_raw.json()
             sector_parsed = sector_json['Rank A: Real-Time Performance']
+        except KeyError:
+            return
         except:
             e = sys.exc_info()
             full_e = traceback.format_exc()

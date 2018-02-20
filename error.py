@@ -25,6 +25,7 @@ class Error:
         import datetime
         import time
         # local file imports
+        import control
         import dissemination.sms_alerts.alerts as alerts
 
         # acquires the current time
@@ -41,7 +42,9 @@ class Error:
                    "exception: %s\n\n"
                    % (method_name, failure_type, str(e)))
 
-        print(message)
+        if control.debug is True:
+            print(message)
+
         with open('error_log.txt', 'a') as f:
             f.write('=============================================================================================\n'
                     'error at %s UTC\n'

@@ -56,7 +56,7 @@ class RSS_Collector:
         error = error_class.Error()
 
         # sets up the connection to the SQLite database
-        sqlite_database_path = os.path.join('collector.sqlite3')
+        sqlite_database_path = os.path.join('real-time_information.sqlite3')
         sqlite_database = os.path.abspath(sqlite_database_path)
         conn = sqlite3.connect(sqlite_database)
         c = conn.cursor()
@@ -194,11 +194,16 @@ class RSS_Collector:
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a %b %d %H:%M:%S %Z %Y')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
-                    elif name == 'The Daily Star' or name == 'The Hindu' or name == 'Haaretz' or \
+                    elif name == 'The Daily Star' or name == 'The Hindu' or \
                             name == 'The Straits Times' or name == 'Reuters':
                         # These have a published value in the JSON object: "Wed, 27 Dec 2017 00:00:00 +0600"
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %z')
+                        published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
+                    elif name == 'Hareetz':
+                        # These have a published value in the JSON object: "Wed, 27 Dec 2017 00:00:00"
+                        published_raw = str(rss_json['published'])
+                        published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
                     elif name == 'The Nation':
                         # These have a published value in the JSON object: 2017-12-27T14:38:54Z

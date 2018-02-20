@@ -16,7 +16,7 @@ class InformationCollectorSetup:
         import sqlite3
         import os
 
-        database = os.path.join('collector.sqlite3')
+        database = os.path.join('real-time_information.sqlite3')
         conn = sqlite3.connect(database)
         c = conn.cursor()
 
@@ -28,20 +28,20 @@ class InformationCollectorSetup:
 
         # this creates the table that takes in data from the tweet_collector
         table_tweets = 'CREATE TABLE IF NOT EXISTS tweets (name TEXT, screename TEXT, ' \
-                       'published REAL, tweet TEXT, coordinates_long REAL, coordinate_lat REAL,  ' \
+                       'published TEXT, tweet TEXT, coordinates_long REAL, coordinate_lat REAL,  ' \
                        'place_sw_point_long REAL, place_sw_point_lat REAL, place_nw_point_long REAL, ' \
                        'place_nw_point_lat REAL, place_ne_point_long REAL, place_ne_point_lat REAL, ' \
                        'place_se_point_long REAL, place_se_point_lat REAL, collector TEXT, url REAL)'
         c.execute(table_tweets)
 
         # this creates the table that takes in data from the rss_collector
-        table_rss = 'CREATE TABLE IF NOT EXISTS rss (name TEXT, country TEXT, published REAL, ' \
+        table_rss = 'CREATE TABLE IF NOT EXISTS rss (name TEXT, country TEXT, published TEXT, ' \
                     'imported TEXT, title TEXT, summary TEXT, url TEXT)'
         c.execute(table_rss)
 
         # this code block creates the table that takes in data from the stock_collector
         table_stock_markets = 'CREATE TABLE IF NOT EXISTS stock_markets (name TEXT, symbol TEXT, country TEXT, ' \
-                              'published REAL, imported REAL, open REAL, high REAL, low REAL, close REAL)'
+                              'published TEXT, imported TEXT, open REAL, high REAL, low REAL, close REAL)'
         c.execute(table_stock_markets)
 
         # this code block creates the table that takes in data from the currency_collector
@@ -49,6 +49,13 @@ class InformationCollectorSetup:
                            'counter_currency_code TEXT, counter_currency_name TEXT, exchange_rate REAL, ' \
                            'published TEXT, imported TEXT)'
         c.execute(table_currencies)
+
+        # this code block creates the table that takes in data from the market_sector_collector
+        table_market_sectors = 'CREATE TABLE IF NOT EXISTS market_sectors (energy REAL, real_estate REAL, ' \
+                               'utilities REAL, consumer_discretionary REAL, information_technology REAL, ' \
+                               'industrials REAL, financials REAL, materials REAL, consumer_staples REAL, ' \
+                               'health_care REAL, telecom_services REAL, published REAL, imported REAL)'
+        c.execute(table_market_sectors)
 
         c.close()
 
@@ -65,7 +72,7 @@ class InformationCollectorSetup:
         error = error_class.Error()
 
         # instantiates the database connection
-        database = os.path.join('collector.sqlite3')
+        database = os.path.join('real-time_information.sqlite3')
         conn = sqlite3.connect(database)
         c = conn.cursor()
 

@@ -1,5 +1,5 @@
 """
-This is the main control script: in a production run, this should be either replaced or updated by the web UI
+This is the main control script.
 """
 
 
@@ -16,6 +16,7 @@ from collection.real_time_collectors import twitter_location_collector, twitter_
 import collection.batch_collectors.rss_collector as rss_collector
 import collection.batch_collectors.stock_collector as stock_collector
 import collection.batch_collectors.currency_collector as currency_collector
+import collection.batch_collectors.market_sector_collector as market_sector_collector
 import error as error_class
 
 
@@ -40,7 +41,6 @@ setup.initiate()
 instantiates the error class
 """
 error = error_class.Error()
-
 
 """
 sets up variables for Twitter location collection: this is to be a list of the four corners of a bounded box. Per the 
@@ -128,11 +128,23 @@ last_modifieds = {}
 rss = rss_collector.RSS_Collector()
 stocks = stock_collector.StockCollector()
 currencies = currency_collector.CurrencyCollector()
+market_sectors = market_sector_collector.MarketSectorCollector()
 
+# prints upon starting the script, whether in debug mode or not
+current_time_int = int(time.time())
+current_time_struct = time.gmtime(current_time_int)
+current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
+print('\n'
+      '=======================================================\n'
+      'starting the Global Real-time Information Dashboard\n'
+      'release-0.0.1 2018-02-19 running at %s\n'
+      '=======================================================\n'
+      % current_time)
+
+# this runs all of the collectors in perpetuity
 try:
     while True:
-
-        # this runs the batch collectors in perpetuity
+        # this runs the batch collectors
         if debug is True:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)
@@ -152,7 +164,26 @@ try:
                   '========================================================================================\n'
                   % current_time)
 
-        # this runs the Stock Collector in perpetuity
+        # this runs the Market Sector Collector
+        if debug is True:
+            current_time_int = int(time.time())
+            current_time_struct = time.gmtime(current_time_int)
+            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
+            print('================================================================================\n'
+                  'market sector collection starting on %s UTC\n'
+                  '================================================================================\n'
+                  % current_time)
+        market_sectors.market_sector_ingestor()
+        if debug is True:
+            current_time_int = int(time.time())
+            current_time_struct = time.gmtime(current_time_int)
+            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
+            print('==============================================================================================\n'
+                  'all market sector entries pre-processed on %s UTC: continuing to next run...\n'
+                  '==============================================================================================\n'
+                  % current_time)
+
+        # this runs the Stock Collector
         if debug is True:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)
@@ -172,7 +203,7 @@ try:
                   '===============================================================================================\n'
                   % current_time)
 
-        # this runs the Currency Collector in perpetuity
+        # this runs the Currency Collector
         if debug is True:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)
@@ -190,8 +221,9 @@ try:
                   'all currency index entries pre-processed on %s UTC: continuing to next run...\n'
                   '==============================================================================================\n'
                   % current_time)
+
 except KeyboardInterrupt:
-    pass
+    sys.exit(0)
 except:
     e = sys.exc_info()
     full_e = traceback.format_exc()

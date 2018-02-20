@@ -48,7 +48,7 @@ class TwitterFollowCollector(StreamListener):
         error = error_class.Error()
 
         # establishes connection to database
-        sql_database = os.path.join('collector.sqlite3')
+        sql_database = os.path.join('real-time_information.sqlite3')
         conn = sqlite3.connect(sql_database)
         c = conn.cursor()
 

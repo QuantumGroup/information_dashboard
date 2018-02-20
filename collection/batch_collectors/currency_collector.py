@@ -26,7 +26,7 @@ class CurrencyCollector:
         error = error_class.Error()
 
         # this loads the database instance
-        sqlite_relative_path = os.path.join('collector.sqlite3')
+        sqlite_relative_path = os.path.join('real-time_information.sqlite3')
         sqlite_absolute_path = os.path.abspath(sqlite_relative_path)
         conn = sqlite3.connect(sqlite_absolute_path)
         c = conn.cursor()

@@ -200,7 +200,7 @@ class RSS_Collector:
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %z')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
-                    elif name == 'Hareetz':
+                    elif name == 'Haaretz':
                         # These have a published value in the JSON object: "Wed, 27 Dec 2017 00:00:00"
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S')

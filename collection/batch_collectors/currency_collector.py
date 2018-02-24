@@ -86,7 +86,7 @@ class CurrencyCollector:
                         currency_json = currency_raw.json()
                         currency_parsed = currency_json['Realtime Currency Exchange Rate']
                     except KeyError:
-                        return
+                        break
                     except:
                         e = sys.exc_info()
                         full_e = traceback.format_exc()
@@ -137,4 +137,4 @@ class CurrencyCollector:
                         e = sys.exc_info()
                         full_e = traceback.format_exc()
                         error.if_error(str(e), full_e, 'currency_ingestor()', 'database commit')
-                        return
+                        break

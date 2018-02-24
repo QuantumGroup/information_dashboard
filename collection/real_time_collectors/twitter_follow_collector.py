@@ -7,12 +7,10 @@ from tweepy import StreamListener
 
 class TwitterFollowCollector(StreamListener):
 
-    def __init__(self, accounts, error_log, debug):
-        self.accounts = accounts
-        self.error_log = error_log
-        self.debug = debug
+    def __init__(self, accounts):
+        pass
 
-    def twitter_follow_ingestor(self, accounts, error_log, debug):
+    def twitter_follow_ingestor(self, accounts):
         from tweepy import Stream
         from tweepy import OAuthHandler
         # imports auth secrets and keys
@@ -29,7 +27,7 @@ class TwitterFollowCollector(StreamListener):
         # handles Twitter API authentication
         auth = OAuthHandler(keys.twitter_consumer_key_3, keys.twitter_consumer_secret_3)
         auth.set_access_token(keys.twitter_access_token_key_3, keys.twitter_access_token_secret_3)
-        twitter_stream = Stream(auth, TwitterFollowCollector(accounts, error_log, debug))
+        twitter_stream = Stream(auth, TwitterFollowCollector(accounts))
         twitter_stream.filter(follow=accounts, async=True)
 
     def on_data(self, raw_data):
@@ -42,6 +40,7 @@ class TwitterFollowCollector(StreamListener):
         import time
         import traceback
         # local file imports
+        import control
         import error as error_class
 
         # instantiates error class
@@ -70,31 +69,31 @@ class TwitterFollowCollector(StreamListener):
 
         # this is the 'human-readable' Twitter name
         name = raw_tweet['user']['name']
-        if self.debug is True:
+        if control.debug is True:
             print('name: ' + name)
 
         # this is the Twitter '@' handle
         screenname = raw_tweet['user']['screen_name']
-        if self.debug is True:
+        if control.debug is True:
             print('screenname: @' + screenname)
 
         # this is the time the tweet was created
         published_raw = raw_tweet['created_at']
         published_struct = time.strptime(published_raw, '%a %b %d %H:%M:%S %z %Y')
         published = time.strftime('%c', published_struct)
-        if self.debug is True:
+        if control.debug is True:
             print('time: ' + published)
 
         # this is the actual tweet body, or message
         tweet = raw_tweet['text']
-        if self.debug is True:
+        if control.debug is True:
             print('tweet: ' + tweet)
 
         # from the Twitter docs: "the coordinates object is only present (non-null) when the Tweet is assigned an
         # exact location. If an exact location is provided, the coordinates object will provide a [long, lat] array
         # with the geographical coordinates
         coordinates = str(raw_tweet['coordinates'])
-        if self.debug is True:
+        if control.debug is True:
             print('coordinates: ' + coordinates)
         if coordinates != 'None':
             # if 'coordinates' exist, this retrieves the Python list that contains the coordinates and saves them as
@@ -112,7 +111,7 @@ class TwitterFollowCollector(StreamListener):
         # Tweets associated with Places are not necessarily issued from that location but could also potentially be
         # about that location."
         place = str(raw_tweet['place'])
-        if self.debug is True:
+        if control.debug is True:
             print('place: ' + place)
         if place != 'None':
             # if 'place' exists, this returns the Python list that contains the coordinates of each corner of the bound
@@ -147,12 +146,12 @@ class TwitterFollowCollector(StreamListener):
 
         # this block specifies which Collector is being used to download this tweet
         collector = 'follow(account)'
-        if self.debug is True:
+        if control.debug is True:
             print('collector: ' + collector)
 
         # this block specifies what URL is embedded in this tweet
         url = 'test_url'
-        if self.debug is True:
+        if control.debug is True:
             print('URL: ' + url + '\n\n')
 
         # saves each variable to the database uses DB-API's parameter substitution, where ? is a stand-in for a

@@ -28,7 +28,7 @@ debug = True
 """
 sets up whether social network collection are activate
 """
-social_network = False
+social_media = True
 
 
 """
@@ -100,24 +100,26 @@ stock_markets = ['DJI',
                  'SENSEX'
                  ]
 
-if social_network is True:
-    """
-    runs the Twitter Location Collector
-    """
-    twitter_location = twitter_location_collector.TwitterLocationCollector(location, error_log, debug)
-    twitter_location.twitter_location_ingestor(location, error_log, debug)
-    """
-    runs the Twitter Track Collector
-    """
-    twitter_track = twitter_track_collector.TwitterTrackCollector(keywords, error_log, debug)
-    twitter_track.twitter_track_ingestor(keywords, error_log, debug)
+# todo: tweets are not able to be ingested at this time: investigate
+# todo: replace current Twitter collection scrips with
+if social_media is True:
     """
     runs the Twitter Follow Collector
     """
-    twitter_follow = twitter_follow_collector.TwitterFollowCollector()
+    twitter_follow = twitter_follow_collector.TwitterFollowCollector(accounts)
     twitter_follow.twitter_follow_ingestor(accounts)
     """
+    runs the Twitter Location Collector
+    """
+    twitter_location = twitter_location_collector.TwitterLocationCollector(location)
+    twitter_location.twitter_location_ingestor(location)
+    """
+    runs the Twitter Track Collector
+    """
+    twitter_track = twitter_track_collector.TwitterTrackCollector(keywords)
+    twitter_track.twitter_track_ingestor(keywords)
 
+"""
 runs the batch collectors
 """
 # saves HTML ETags and last-modified headers in a persistent variable to be referenced when pulling data from websites

@@ -146,84 +146,49 @@ try:
     while True:
         # this runs the batch collectors
         if debug is True:
-            current_time_int = int(time.time())
-            current_time_struct = time.gmtime(current_time_int)
-            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
             print('===================================================================================\n'
-                  'RSS collection starting on %s UTC\n'
-                  '===================================================================================\n'
-                  % current_time)
+                  'RSS collection starting\n'
+                  '===================================================================================\n')
         for url in rss_urls:
             rss.rss_parser(url)
         if debug is True:
-            current_time_int = int(time.time())
-            current_time_struct = time.gmtime(current_time_int)
-            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
             print('========================================================================================\n'
-                  'all RSS entries pre-processed on %s UTC: continuing to next collector...\n'
-                  '========================================================================================\n'
-                  % current_time)
+                  'all RSS entries pre-processed: continuing to next collector...\n'
+                  '========================================================================================\n')
 
         # this runs the Market Sector Collector
         if debug is True:
-            current_time_int = int(time.time())
-            current_time_struct = time.gmtime(current_time_int)
-            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
             print('================================================================================\n'
-                  'market sector collection starting on %s UTC\n'
-                  '================================================================================\n'
-                  % current_time)
+                  'market sector collection starting\n'
+                  '================================================================================\n')
         market_sectors.market_sector_ingestor()
         if debug is True:
-            current_time_int = int(time.time())
-            current_time_struct = time.gmtime(current_time_int)
-            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
             print('==============================================================================================\n'
-                  'all market sector entries pre-processed on %s UTC: continuing to next run...\n'
-                  '==============================================================================================\n'
-                  % current_time)
+                  'all market sector entries pre-processed: continuing to next run...\n'
+                  '==============================================================================================\n')
 
         # this runs the Stock Collector
         if debug is True:
-            current_time_int = int(time.time())
-            current_time_struct = time.gmtime(current_time_int)
-            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
             print('===================================================================================\n'
-                  'stock market collection starting on %s UTC\n'
-                  '===================================================================================\n'
-                  % current_time)
+                  'stock market collection starting\n'
+                  '===================================================================================\n')
         for stock_market in stock_markets:
             stocks.stock_ingestor(stock_market)
         if debug is True:
-            current_time_int = int(time.time())
-            current_time_struct = time.gmtime(current_time_int)
-            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
             print('===============================================================================================\n'
-                  'all stock index entries pre-processed on %s UTC: continuing to next collector...\n'
-                  '===============================================================================================\n'
-                  % current_time)
+                  'all stock index entries pre-processed: continuing to next collector...\n'
+                  '===============================================================================================\n')
 
         # this runs the Currency Collector
         if debug is True:
-            current_time_int = int(time.time())
-            current_time_struct = time.gmtime(current_time_int)
-            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
             print('================================================================================\n'
-                  'currency collection starting on %s UTC\n'
-                  '================================================================================\n'
-                  % current_time)
+                  'currency collection starting\n'
+                  '================================================================================\n')
         currencies.currency_ingestor()
         if debug is True:
-            current_time_int = int(time.time())
-            current_time_struct = time.gmtime(current_time_int)
-            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
             print('==============================================================================================\n'
-                  'all currency index entries pre-processed on %s UTC: continuing to next run...\n'
-                  '==============================================================================================\n'
-                  % current_time)
-
-except KeyboardInterrupt:
-    sys.exit(0)
+                  'all currency index entries pre-processed: continuing to next run...\n'
+                  '==============================================================================================\n')
 except:
     e = sys.exc_info()
     full_e = traceback.format_exc()

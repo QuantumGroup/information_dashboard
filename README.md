@@ -1,6 +1,6 @@
 release-0.0.1 2018-02-19
 
-# Information Collector
+# Information Dashboard
 
 ## Purpose
 
@@ -53,7 +53,7 @@ This directory contains the collection and pre-processing scripts, divided by te
 
 #### batch_collectors
 
-- rss_collector.py
+- headline_collector.py
 
 This is the collectors that takes in data from a variety of news organizations, parses their outputs, and adds that parsed data to the database.
 
@@ -101,7 +101,7 @@ This code relies on a few libraries that are not included in the standard Python
 
 ### feedparser
 
-This is a library used in the RSS Collector for collecting RSS feeds from given URLs.
+This is a library used in the Headline Collector for collecting RSS feeds from given URLs.
 
 ### tweepy
 

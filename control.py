@@ -13,7 +13,7 @@ import traceback
 import setup.setup as setup
 from collection.real_time_collectors import twitter_location_collector, twitter_follow_collector, \
     twitter_track_collector
-import collection.batch_collectors.rss_collector as rss_collector
+import collection.batch_collectors.headline_collector as rss_collector
 import collection.batch_collectors.stock_collector as stock_collector
 import collection.batch_collectors.currency_collector as currency_collector
 import collection.batch_collectors.market_sector_collector as market_sector_collector
@@ -149,13 +149,13 @@ try:
         # this runs the batch collectors
         if debug is True:
             print('===================================================================================\n'
-                  'RSS collection starting\n'
+                  'headline collection starting\n'
                   '===================================================================================\n')
         for url in rss_urls:
             rss.rss_parser(url)
         if debug is True:
             print('========================================================================================\n'
-                  'all RSS entries pre-processed: continuing to next collector...\n'
+                  'all headline entries pre-processed: continuing to next collector...\n'
                   '========================================================================================\n')
 
         # this runs the Market Sector Collector
@@ -166,7 +166,7 @@ try:
         market_sectors.market_sector_ingestor()
         if debug is True:
             print('==============================================================================================\n'
-                  'all market sector entries pre-processed: continuing to next run...\n'
+                  'all market sector entries pre-processed: continuing to next collector...\n'
                   '==============================================================================================\n')
 
         # this runs the Stock Collector

@@ -50,12 +50,37 @@ class InformationCollectorSetup:
                            'published TEXT, imported TEXT)'
         c.execute(table_currencies)
 
-        # this code block creates the table that takes in data from the market_sector_collector
+        # these code blocks create the tables that takes in data from the market_sector_collector for one day, three
+        # day, one month, three month, and one year performance
         table_one_day_market_sectors = 'CREATE TABLE IF NOT EXISTS one_day_market_sectors (energy REAL, real_estate REAL, ' \
                                'utilities REAL, consumer_discretionary REAL, information_technology REAL, ' \
                                'industrials REAL, financials REAL, materials REAL, consumer_staples REAL, ' \
                                'health_care REAL, telecom_services REAL, published REAL, imported REAL)'
         c.execute(table_one_day_market_sectors)
+
+        table_five_day_market_sectors = 'CREATE TABLE IF NOT EXISTS five_day_market_sectors (energy REAL, real_estate REAL, ' \
+                               'utilities REAL, consumer_discretionary REAL, information_technology REAL, ' \
+                               'industrials REAL, financials REAL, materials REAL, consumer_staples REAL, ' \
+                               'health_care REAL, telecom_services REAL, published REAL, imported REAL)'
+        c.execute(table_five_day_market_sectors)
+
+        table_one_month_market_sectors = 'CREATE TABLE IF NOT EXISTS one_month_market_sectors (energy REAL, real_estate REAL, ' \
+                               'utilities REAL, consumer_discretionary REAL, information_technology REAL, ' \
+                               'industrials REAL, financials REAL, materials REAL, consumer_staples REAL, ' \
+                               'health_care REAL, telecom_services REAL, published REAL, imported REAL)'
+        c.execute(table_one_month_market_sectors)
+
+        table_three_month_market_sectors = 'CREATE TABLE IF NOT EXISTS three_month_market_sectors (energy REAL, real_estate REAL, ' \
+                               'utilities REAL, consumer_discretionary REAL, information_technology REAL, ' \
+                               'industrials REAL, financials REAL, materials REAL, consumer_staples REAL, ' \
+                               'health_care REAL, telecom_services REAL, published REAL, imported REAL)'
+        c.execute(table_three_month_market_sectors)
+
+        table_one_year_market_sectors = 'CREATE TABLE IF NOT EXISTS one_year_market_sectors (energy REAL, real_estate REAL, ' \
+                               'utilities REAL, consumer_discretionary REAL, information_technology REAL, ' \
+                               'industrials REAL, financials REAL, materials REAL, consumer_staples REAL, ' \
+                               'health_care REAL, telecom_services REAL, published REAL, imported REAL)'
+        c.execute(table_one_year_market_sectors)
 
         c.close()
 

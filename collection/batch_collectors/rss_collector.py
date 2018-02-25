@@ -100,7 +100,7 @@ class RSS_Collector:
                     name = 'The New York Times'
                 elif hostname_url == 'www.washingtonpost.com':
                     name = 'The Washington Post'
-                elif hostname_url == 'smh.com.au':
+                elif hostname_url == 'www.smh.com.au':
                     name = 'The Sydney Morning Herald'
                 elif hostname_url == 'www.thedailystar.net':
                     name = 'The Daily Star'
@@ -143,7 +143,7 @@ class RSS_Collector:
                 country = 'USA'
             elif hostname_url == 'www.washingtonpost.com':
                 country = 'USA'
-            elif hostname_url == 'smh.com.au':
+            elif hostname_url == 'www.smh.com.au':
                 country = 'AUS'
             elif hostname_url == 'www.thedailystar.net':
                 country = 'IND'
@@ -181,7 +181,6 @@ class RSS_Collector:
             if url not in str(urls):
                 if control.debug is True:
                     print('name: ' + name)
-
                 # This block extracts the time published from the RSS JSON object, or the date from the website URL.
                 try:
                     if name == 'The New York Times' or name == 'The Times of India' or name == 'The BBC':
@@ -190,9 +189,9 @@ class RSS_Collector:
                         published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %Z')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
                     elif name == 'The Sydney Morning Herald':
-                        # These have a published value in the JSON object: "Wed Dec 27 15:11:22 UTC 2017"
+                        # These have a published value in the JSON object: "Sun, 25 Feb 2018 21:02:42 +1100"
                         published_raw = str(rss_json['published'])
-                        published_struct = time.strptime(published_raw, '%a %b %d %H:%M:%S %Z %Y')
+                        published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %Z')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
                     elif name == 'The Daily Star' or name == 'The Hindu' or \
                             name == 'The Straits Times' or name == 'Reuters':

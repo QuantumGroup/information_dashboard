@@ -52,7 +52,7 @@ class MarketSectorCollector:
         try:
             sector_raw = requests.get(api_url, params=data)
             sector_json = sector_raw.json()
-            sector_parsed = sector_json['Rank A: Real-Time Performance']
+            sector_parsed = sector_json['Rank B: 1 Day Performance']
         except KeyError:
             return
         except:
@@ -115,7 +115,7 @@ class MarketSectorCollector:
             full_e = traceback.format_exc()
             error.if_error(str(e), full_e, 'market_sector_ingestor()', 'imported time')
 
-        c.execute('INSERT INTO market_sectors VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        c.execute('INSERT INTO one_day_market_sectors VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
                   (energy, real_estate, utilities, consumer_discretionary, information_technology, industrials,
                    financials, materials, consumer_staples, health_care, telecom_services, published, imported))
 

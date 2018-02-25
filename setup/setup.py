@@ -51,11 +51,11 @@ class InformationCollectorSetup:
         c.execute(table_currencies)
 
         # this code block creates the table that takes in data from the market_sector_collector
-        table_market_sectors = 'CREATE TABLE IF NOT EXISTS market_sectors (energy REAL, real_estate REAL, ' \
+        table_one_day_market_sectors = 'CREATE TABLE IF NOT EXISTS one_day_market_sectors (energy REAL, real_estate REAL, ' \
                                'utilities REAL, consumer_discretionary REAL, information_technology REAL, ' \
                                'industrials REAL, financials REAL, materials REAL, consumer_staples REAL, ' \
                                'health_care REAL, telecom_services REAL, published REAL, imported REAL)'
-        c.execute(table_market_sectors)
+        c.execute(table_one_day_market_sectors)
 
         c.close()
 

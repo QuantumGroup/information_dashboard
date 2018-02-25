@@ -3,3 +3,4 @@ real-time_information.sqlite3
 error_log.txt
 .git
 _keys_and_secrets.py
+__pycache__

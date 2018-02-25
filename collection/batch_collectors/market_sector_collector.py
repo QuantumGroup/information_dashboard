@@ -36,93 +36,105 @@ class MarketSectorCollector:
         api_function = 'SECTOR'
         api_key = _keys_and_secrets.alphavantage_api_key
 
-        if control.debug is True:
-            current_time_int = int(time.time())
-            current_time_struct = time.gmtime(current_time_int)
-            current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
-            print('---------------------------------------------------------------------------------\n'
-                  'market sector ingestor initiated on %s UTC\n'
-                  '---------------------------------------------------------------------------------\n'
-                  % current_time)
-
         data = {'function': api_function,
                 'apikey': api_key
                 }
 
-        try:
-            sector_raw = requests.get(api_url, params=data)
-            sector_json = sector_raw.json()
-            sector_parsed = sector_json['Rank B: 1 Day Performance']
-        except KeyError:
-            return
-        except:
-            e = sys.exc_info()
-            full_e = traceback.format_exc()
-            sector_raw.close()
-            error.if_error(str(e), full_e, 'market_sector_ingestor()', 'Alpha Vantage API call')
-            return
+        performance_metric = ['Rank B: 1 Day Performance', 'Rank C: 5 Day Performance', 'Rank D: 1 Month Performance',
+                              'Rank E: 3 Month Performance', 'Rank G: 1 Year Performance']
+        for metric in performance_metric:
+            try:
+                sector_raw = requests.get(api_url, params=data)
+                sector_json = sector_raw.json()
+                sector_parsed = sector_json[metric]
+            except KeyError:
+                return
+            except:
+                e = sys.exc_info()
+                full_e = traceback.format_exc()
+                sector_raw.close()
+                error.if_error(str(e), full_e, 'market_sector_ingestor()', 'Alpha Vantage API call')
+                return
 
-        try:
-            energy = sector_parsed['Energy'][:-1]
-            real_estate = sector_parsed['Real Estate'][:-1]
-            utilities = sector_parsed['Utilities'][:-1]
-            consumer_discretionary = sector_parsed['Consumer Discretionary'][:-1]
-            information_technology = sector_parsed['Information Technology'][:-1]
-            industrials = sector_parsed['Industrials'][:-1]
-            financials = sector_parsed['Financials'][:-1]
-            materials = sector_parsed['Materials'][:-1]
-            consumer_staples = sector_parsed['Consumer Staples'][:-1]
-            health_care = sector_parsed['Health Care'][:-1]
-            telecom_services = sector_parsed['Telecommunication Services'][:-1]
-        except:
-            e = sys.exc_info()
-            full_e = traceback.format_exc()
-            sector_raw.close()
-            error.if_error(str(e), full_e, 'market_sector_ingestor()', 'market variable saving call')
+            try:
+                energy = sector_parsed['Energy'][:-1]
+                real_estate = sector_parsed['Real Estate'][:-1]
+                utilities = sector_parsed['Utilities'][:-1]
+                consumer_discretionary = sector_parsed['Consumer Discretionary'][:-1]
+                information_technology = sector_parsed['Information Technology'][:-1]
+                industrials = sector_parsed['Industrials'][:-1]
+                financials = sector_parsed['Financials'][:-1]
+                materials = sector_parsed['Materials'][:-1]
+                consumer_staples = sector_parsed['Consumer Staples'][:-1]
+                health_care = sector_parsed['Health Care'][:-1]
+                telecom_services = sector_parsed['Telecommunication Services'][:-1]
+            except:
+                e = sys.exc_info()
+                full_e = traceback.format_exc()
+                sector_raw.close()
+                error.if_error(str(e), full_e, 'market_sector_ingestor()', 'market variable saving call')
 
-        if control.debug is True:
-            print('energy: %s\n'
-                  'real estate: %s\n'
-                  'utilities: %s\n'
-                  'consumer discretionary: %s\n'
-                  'information technology: %s\n'
-                  'industrials: %s\n'
-                  'financials: %s\n'
-                  'materials: %s\n'
-                  'consumer staples: %s\n'
-                  'health care: %s\n'
-                  'telecommunication services: %s\n'
-                  % (energy, real_estate, utilities, consumer_discretionary, information_technology,
-                     industrials, financials, materials, consumer_staples, health_care, telecom_services))
-
-        try:
-            published_raw = sector_json['Meta Data']['Last Refreshed']
-            published = dateutil.parser.parse(published_raw)
-        except:
-            e = sys.exc_info()
-            full_e = traceback.format_exc()
-            error.if_error(str(e), full_e, 'market_sector_ingestor()', 'published time')
-
-        # this block returns the date and time when the row was imported
-        try:
-            imported_int = int(time.time())
-            imported_struct = time.gmtime(imported_int)
-            imported = str(datetime.datetime.fromtimestamp(time.mktime(imported_struct)))
             if control.debug is True:
-                print('imported: ' + imported)
-        except:
-            e = sys.exc_info()
-            full_e = traceback.format_exc()
-            error.if_error(str(e), full_e, 'market_sector_ingestor()', 'imported time')
+                print('%s\n'
+                      'energy: %s\n'
+                      'real estate: %s\n'
+                      'utilities: %s\n'
+                      'consumer discretionary: %s\n'
+                      'information technology: %s\n'
+                      'industrials: %s\n'
+                      'financials: %s\n'
+                      'materials: %s\n'
+                      'consumer staples: %s\n'
+                      'health care: %s\n'
+                      'telecommunication services: %s'
+                      % (metric, energy, real_estate, utilities, consumer_discretionary, information_technology,
+                         industrials, financials, materials, consumer_staples, health_care, telecom_services))
 
-        c.execute('INSERT INTO one_day_market_sectors VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                  (energy, real_estate, utilities, consumer_discretionary, information_technology, industrials,
-                   financials, materials, consumer_staples, health_care, telecom_services, published, imported))
+            try:
+                published_raw = sector_json['Meta Data']['Last Refreshed']
+                published = dateutil.parser.parse(published_raw)
+            except:
+                e = sys.exc_info()
+                full_e = traceback.format_exc()
+                error.if_error(str(e), full_e, 'market_sector_ingestor()', 'published time')
 
-        try:
-            conn.commit()
-        except:
-            e = sys.exc_info()
-            full_e = traceback.format_exc()
-            error.if_error(str(e), full_e, 'market_sector_ingestor()', 'database commit')
-            return
+            # this block returns the date and time when the row was imported
+            try:
+                imported_int = int(time.time())
+                imported_struct = time.gmtime(imported_int)
+                imported = str(datetime.datetime.fromtimestamp(time.mktime(imported_struct)))
+                if control.debug is True:
+                    print('imported: ' + imported + '\n\n')
+            except:
+                e = sys.exc_info()
+                full_e = traceback.format_exc()
+                error.if_error(str(e), full_e, 'market_sector_ingestor()', 'imported time')
+
+            if metric == 'Rank B: 1 Day Performance':
+                c.execute('INSERT INTO one_day_market_sectors VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                          (energy, real_estate, utilities, consumer_discretionary, information_technology, industrials,
+                           financials, materials, consumer_staples, health_care, telecom_services, published, imported))
+            elif metric == 'Rank C: 5 Day Performance':
+                c.execute('INSERT INTO five_day_market_sectors VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                          (energy, real_estate, utilities, consumer_discretionary, information_technology, industrials,
+                           financials, materials, consumer_staples, health_care, telecom_services, published, imported))
+            elif metric == 'Rank D: 1 Month Performance':
+                c.execute('INSERT INTO one_month_market_sectors VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                          (energy, real_estate, utilities, consumer_discretionary, information_technology, industrials,
+                           financials, materials, consumer_staples, health_care, telecom_services, published, imported))
+            elif metric == 'Rank E: 3 Month Performance':
+                c.execute('INSERT INTO three_month_market_sectors VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                          (energy, real_estate, utilities, consumer_discretionary, information_technology, industrials,
+                           financials, materials, consumer_staples, health_care, telecom_services, published, imported))
+            elif metric == 'Rank G: 1 Year Performance':
+                c.execute('INSERT INTO one_year_market_sectors VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)',
+                          (energy, real_estate, utilities, consumer_discretionary, information_technology, industrials,
+                           financials, materials, consumer_staples, health_care, telecom_services, published, imported))
+
+            try:
+                conn.commit()
+            except:
+                e = sys.exc_info()
+                full_e = traceback.format_exc()
+                error.if_error(str(e), full_e, 'market_sector_ingestor()', 'database commit')
+                return

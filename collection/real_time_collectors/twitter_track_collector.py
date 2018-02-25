@@ -3,17 +3,27 @@ This class takes in the keyword requirements from the control script and handles
 pre-processing of those tweets based off of those requirements.
 """
 from tweepy import StreamListener
+from tweepy import Stream
+from tweepy import OAuthHandler
+# imports the auth keys and secrets
+import _keys_and_secrets as keys
+# Python library imports
+import json
+import re
+import sqlite3
+import os
+import traceback
+import time
+# local file imports
+import error as error_class
 
 
 class TwitterTrackCollector(StreamListener):
-    def __init__(self, keywords):
-        pass
+    def __init__(self, keywords, debug=True):
+        super().__init__()
+        self.debug = debug
 
     def twitter_track_ingestor(self, keywords):
-        from tweepy import Stream
-        from tweepy import OAuthHandler
-        # imports the auth keys and secrets
-        import _keys_and_secrets as keys
 
         print('\n'
               'opening connection to Twitter API\n'
@@ -30,16 +40,6 @@ class TwitterTrackCollector(StreamListener):
         twitter_stream.filter(track=keywords, async=True)
 
     def on_data(self, raw_data):
-        # Python library imports
-        import json
-        import re
-        import sqlite3
-        import os
-        import traceback
-        import time
-        # local file imports
-        import control
-        import error as error_class
 
         # instantiates error class
         error = error_class.Error()
@@ -67,31 +67,31 @@ class TwitterTrackCollector(StreamListener):
 
         # this is the 'human-readable' Twitter name
         name = raw_tweet['user']['name']
-        if control.debug is True:
+        if self.debug is True:
             print('name: ' + name)
 
         # this is the Twitter '@' handle
         screenname = raw_tweet['user']['screen_name']
-        if control.debug is True:
+        if self.debug is True:
             print('screenname: @' + screenname)
 
         # this is the time the tweet was created
         published_raw = raw_tweet['created_at']
         published_struct = time.strptime(published_raw, '%a %b %d %H:%M:%S %z %Y')
         published = time.strftime('%c', published_struct)
-        if control.debug is True:
+        if self.debug is True:
             print('time: ' + published)
 
         # this is the actual tweet body, or message
         tweet = raw_tweet['text']
-        if control.debug is True:
+        if self.debug is True:
             print('tweet: ' + tweet)
 
         # from the Twitter docs: "the coordinates object is only present (non-null) when the Tweet is assigned an
         # exact location. If an exact location is provided, the coordinates object will provide a [long, lat] array
         # with the geographical coordinates
         coordinates = str(raw_tweet['coordinates'])
-        if control.debug is True:
+        if self.debug is True:
             print('coordinates: ' + coordinates)
         if coordinates != 'None':
             # if 'coordinates' exist, this retrieves the Python list that contains the coordinates and saves them as
@@ -109,7 +109,7 @@ class TwitterTrackCollector(StreamListener):
         # Tweets associated with Places are not necessarily issued from that location but could also potentially be
         # about that location."
         place = str(raw_tweet['place'])
-        if control.debug is True:
+        if self.debug is True:
             print('place: ' + place)
         if place != 'None':
             # if 'place' exists, this returns the Python list that contains the coordinates of each corner of the bound
@@ -144,12 +144,12 @@ class TwitterTrackCollector(StreamListener):
 
         # this block specifies which Collector is being used to download this tweet
         collector = 'track(keywords)'
-        if control.debug is True:
+        if self.debug is True:
             print('collector: ' + collector)
 
         # this block specifies what URL is embedded in this tweet
         url = 'test_url'
-        if control.debug is True:
+        if self.debug is True:
             print('URL: ' + url + '\n\n')
 
         # saves each variable to the database uses DB-API's parameter substitution, where ? is a stand-in for a

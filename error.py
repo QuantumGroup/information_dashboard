@@ -5,7 +5,7 @@ This class contains code that will be called in the case of errors in other scri
 
 class Error:
 
-    def if_error(self, e, full_e, method_name, failure_type, sms=False):
+    def if_error(self, e, full_e, method_name, failure_type, debug=True, sms=False):
         """
         This method takes in errors from other methods and prints them to console and sends them as text to a specified
         phone number.
@@ -24,8 +24,7 @@ class Error:
         # Python library imports
         import datetime
         import time
-        # local file imports
-        import control
+
         import dissemination.sms_alerts.alerts as alerts
 
         # acquires the current time
@@ -41,8 +40,10 @@ class Error:
                    "error type: %s\n"
                    "exception: %s\n\n"
                    % (method_name, failure_type, str(e)))
-
-        if control.debug is True:
+        # Removed reference to debug.
+        # Referencing control in error and error in control creates
+        # circular dependency.
+        if debug:
             print(message)
 
         with open('error_log.txt', 'a') as f:

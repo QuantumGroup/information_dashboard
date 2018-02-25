@@ -1,28 +1,27 @@
 """
 This class downloads stock market data in batches.
 """
+# Python library imports
+import sqlite3
+import sys
+import datetime
+import os
+import time
+import requests
+import pandas
+import traceback
+from io import StringIO
+# local file imports
+import error as error_class
+import _keys_and_secrets
 
 
 class StockCollector:
 
-    def __init__(self):
-        pass
+    def __init__(self, debug=True):
+        self.debug = True
 
     def stock_ingestor(self, input_symbol):
-        # Python library imports
-        import sqlite3
-        import sys
-        import datetime
-        import os
-        import time
-        import requests
-        import pandas
-        import traceback
-        from io import StringIO
-        # local file imports
-        import error as error_class
-        import _keys_and_secrets
-        import control
 
         # this code instantiates the error class
         error = error_class.Error()
@@ -64,7 +63,7 @@ class StockCollector:
             stocks_raw.close()
             return
 
-        if control.debug is True:
+        if self.debug is True:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)
             current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
@@ -98,7 +97,7 @@ class StockCollector:
                     imported_int = int(time.time())
                     imported_struct = time.gmtime(imported_int)
                     imported = str(datetime.datetime.fromtimestamp(time.mktime(imported_struct)))
-                    if control.debug is True:
+                    if self.debug is True:
                         print('imported: ' + imported)
                 except:
                     e = sys.exc_info()
@@ -122,7 +121,7 @@ class StockCollector:
                     if input_symbol == 'SENSEX':
                         name = 'S&P BSE SENSEX INDEX'
 
-                    if control.debug is True:
+                    if self.debug is True:
                         print('name: ' + name)
                 except:
                     e = sys.exc_info()
@@ -141,7 +140,7 @@ class StockCollector:
                         country = 'EUR'
                     elif input_symbol == 'SENSEX':
                         country = 'IND'
-                    if control.debug is True:
+                    if self.debug is True:
                         print('country: ' + country)
                 except:
                     e = sys.exc_info()
@@ -151,7 +150,7 @@ class StockCollector:
                 # this block returns the timestamp data returned from the market index API itself
                 try:
                     published = row['timestamp']
-                    if control.debug is True:
+                    if self.debug is True:
                         print('published: ' + published)
                 except:
                     e = sys.exc_info()
@@ -164,7 +163,7 @@ class StockCollector:
                     stock_high = row['high']
                     stock_low = row['low']
                     stock_close = row['close']
-                    if control.debug is True:
+                    if self.debug is True:
                         print('open: %s\n'
                               'high: %s\n'
                               'low: %s\n'
@@ -188,11 +187,11 @@ class StockCollector:
                     return
 
             else:
-                if control.debug is True:
+                if self.debug is True:
                     print('--------------------------------------------\n'
                           'ingested item present in database: passing\n'
                           '--------------------------------------------\n')
-        if control.debug is True:
+        if self.debug is True:
             print('---------------------------------------------------------------\n'
                   'all entries for %s pre-processed on %s UTC\n'
                   '---------------------------------------------------------------\n'

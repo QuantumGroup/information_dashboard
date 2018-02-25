@@ -1,26 +1,25 @@
 """
 This class imports global currency data as batch inputs
 """
+# Python library imports
+import sqlite3
+import sys
+import datetime
+import os
+import time
+import requests
+import traceback
+# local file imports
+import error as error_class
+import _keys_and_secrets
 
 
 class CurrencyCollector:
 
-    def __init__(self):
-        pass
+    def __init__(self, debug=True):
+        self.debug = debug
 
     def currency_ingestor(self):
-        # Python library imports
-        import sqlite3
-        import sys
-        import datetime
-        import os
-        import time
-        import requests
-        import traceback
-        # local file imports
-        import error as error_class
-        import _keys_and_secrets
-        import control
 
         # this instantiates the error class
         error = error_class.Error()
@@ -60,7 +59,7 @@ class CurrencyCollector:
         api_function = 'CURRENCY_EXCHANGE_RATE'
         api_key = _keys_and_secrets.alphavantage_api_key
 
-        if control.debug is True:
+        if self.debug is True:
             current_time_int = int(time.time())
             current_time_struct = time.gmtime(current_time_int)
             current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
@@ -111,14 +110,14 @@ class CurrencyCollector:
                         imported_int = int(time.time())
                         imported_struct = time.gmtime(imported_int)
                         imported = str(datetime.datetime.fromtimestamp(time.mktime(imported_struct)))
-                        if control.debug is True:
+                        if self.debug is True:
                             print('imported: ' + imported)
                     except:
                         e = sys.exc_info()
                         full_e = traceback.format_exc()
                         error.if_error(str(e), full_e, 'currency_ingestor()', 'imported time')
 
-                    if control.debug is True:
+                    if self.debug is True:
                         print('base currency code: %s\n'
                               'base currency name: %s\n'
                               'counter currency code: %s\n'

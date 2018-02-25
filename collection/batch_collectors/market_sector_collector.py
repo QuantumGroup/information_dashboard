@@ -1,26 +1,26 @@
 """
 This class imports stock data by market sector as batch inputs
 """
+# Python library imports
+import sqlite3
+import sys
+import datetime
+import os
+import time
+import requests
+import traceback
+import dateutil.parser
+# local file imports
+import error as error_class
+import _keys_and_secrets
+
 
 class MarketSectorCollector:
 
-    def __init__(self):
-        pass
+    def __init__(self, debug=True):
+        self.debug = debug
 
     def market_sector_ingestor(self):
-        # Python library imports
-        import sqlite3
-        import sys
-        import datetime
-        import os
-        import time
-        import requests
-        import traceback
-        import dateutil.parser
-        # local file imports
-        import error as error_class
-        import _keys_and_secrets
-        import control
 
         # this instantiates the error class
         error = error_class.Error()
@@ -74,7 +74,7 @@ class MarketSectorCollector:
                 sector_raw.close()
                 error.if_error(str(e), full_e, 'market_sector_ingestor()', 'market variable saving call')
 
-            if control.debug is True:
+            if self.debug is True:
                 print('%s\n'
                       'energy: %s\n'
                       'real estate: %s\n'
@@ -103,7 +103,7 @@ class MarketSectorCollector:
                 imported_int = int(time.time())
                 imported_struct = time.gmtime(imported_int)
                 imported = str(datetime.datetime.fromtimestamp(time.mktime(imported_struct)))
-                if control.debug is True:
+                if self.debug is True:
                     print('imported: ' + imported + '\n\n')
             except:
                 e = sys.exc_info()

@@ -28,7 +28,7 @@ debug = True
 """
 sets up whether social network collection are activate
 """
-social_media = True
+social_media = False
 
 
 """
@@ -47,9 +47,9 @@ sets up variables for Twitter location collection: this is to be a list of the f
 Twitter docs: A comma-separated list of longitude,latitude pairs specifying a set of bounding boxes to filter Tweets 
 by... Each bounding box should be specified as a pair of longitude and latitude pairs, with the southwest corner of the 
 bounding box coming first. 
-            [  SW,    NW,     NE,    SE,   SW, NW,  NE, SE ]
+           [  SW,    NW,    NE,    SE, | SW,    NW,    NE,   SE ]
 """
-location = [-122.75, 36.8, -121.75, 37.8, -74, 40, -73, 41]
+location = [-122.7, 36.8, -121.7, 37.8, -74.0, 40.0, -73.0, 41.0]
 """
 sets up the variables for Twitter track collection: this is a list of keywords to be tracked. Per Twitter docs: A comma-
 separated list of phrases which will be used to determine what Tweets will be delivered on the stream. A phrase may be 
@@ -101,7 +101,7 @@ stock_markets = ['DJI',
                  ]
 
 # todo: tweets are not able to be ingested at this time: investigate
-# todo: replace current Twitter collection scrips with
+# todo: replace current Twitter collection scrips with more generic sample firehose-like API calls
 if social_media is True:
     """
     runs the Twitter Follow Collector
@@ -191,6 +191,8 @@ try:
             print('==============================================================================================\n'
                   'all currency index entries pre-processed: continuing to next run...\n'
                   '==============================================================================================\n')
+except (KeyboardInterrupt, SystemExit):
+    os._exit(1)
 except:
     e = sys.exc_info()
     full_e = traceback.format_exc()

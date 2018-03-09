@@ -11,8 +11,7 @@ import sys
 import traceback
 # local file imports
 import setup.setup as setup
-from collection.real_time_collectors import twitter_location_collector, twitter_follow_collector, \
-    twitter_track_collector
+import collection.real_time_collectors.twitter_sample_collector as twitter_collector
 import collection.batch_collectors.headline_collector as rss_collector
 import collection.batch_collectors.stock_collector as stock_collector
 import collection.batch_collectors.currency_collector as currency_collector
@@ -24,12 +23,6 @@ import error as error_class
 sets up whether whether debug mode is on
 """
 debug = True
-
-"""
-sets up whether social network collection are activate
-"""
-social_media = False
-
 
 """
 sets up files necessary files
@@ -100,24 +93,8 @@ stock_markets = ['DJI',
                  'SENSEX'
                  ]
 
-# todo: tweets are not able to be ingested at this time: investigate
-# todo: replace current Twitter collection scrips with more generic sample firehose-like API calls
-if social_media is True:
-    """
-    runs the Twitter Follow Collector
-    """
-    twitter_follow = twitter_follow_collector.TwitterFollowCollector(accounts)
-    twitter_follow.twitter_follow_ingestor(accounts)
-    """
-    runs the Twitter Location Collector
-    """
-    twitter_location = twitter_location_collector.TwitterLocationCollector(location)
-    twitter_location.twitter_location_ingestor(location)
-    """
-    runs the Twitter Track Collector
-    """
-    twitter_track = twitter_track_collector.TwitterTrackCollector(keywords)
-    twitter_track.twitter_track_ingestor(keywords)
+twitter = twitter_collector.TwitterSample()
+twitter.twitter_sample_ingestor()
 
 """
 runs the batch collectors

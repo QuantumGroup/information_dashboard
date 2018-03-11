@@ -1,1 +1,1 @@
-Copyright (c) 2018 Hector Torres. All rights reserved.
+Copyright (c) 2018 Serendipity Research. All rights reserved.

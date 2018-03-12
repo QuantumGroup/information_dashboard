@@ -12,7 +12,6 @@ import sys
 import time
 import traceback
 # local file imports
-import control
 import error as error_class
 from tweepy import Stream
 from tweepy import OAuthHandler
@@ -23,6 +22,7 @@ class TwitterFollowCollector(StreamListener):
 
     def __init__(self, accounts):
         super().__init__()
+        self.debug = True
 
     def twitter_follow_ingestor(self, accounts):
 
@@ -69,31 +69,31 @@ class TwitterFollowCollector(StreamListener):
 
         # this is the 'human-readable' Twitter name
         name = raw_tweet['user']['name']
-        if control.debug is True:
+        if self.debug is True:
             print('name: ' + name)
 
         # this is the Twitter '@' handle
         screenname = raw_tweet['user']['screen_name']
-        if control.debug is True:
+        if self.debug is True:
             print('screenname: @' + screenname)
 
         # this is the time the tweet was created
         published_raw = raw_tweet['created_at']
         published_struct = time.strptime(published_raw, '%a %b %d %H:%M:%S %z %Y')
         published = time.strftime('%c', published_struct)
-        if control.debug is True:
+        if self.debug is True:
             print('time: ' + published)
 
         # this is the actual tweet body, or message
         tweet = raw_tweet['text']
-        if control.debug is True:
+        if self.debug is True:
             print('tweet: ' + tweet)
 
         # from the Twitter docs: "the coordinates object is only present (non-null) when the Tweet is assigned an
         # exact location. If an exact location is provided, the coordinates object will provide a [long, lat] array
         # with the geographical coordinates
         coordinates = str(raw_tweet['coordinates'])
-        if control.debug is True:
+        if self.debug is True:
             print('coordinates: ' + coordinates)
         if coordinates != 'None':
             # if 'coordinates' exist, this retrieves the Python list that contains the coordinates and saves them as
@@ -111,7 +111,7 @@ class TwitterFollowCollector(StreamListener):
         # Tweets associated with Places are not necessarily issued from that location but could also potentially be
         # about that location."
         place = str(raw_tweet['place'])
-        if control.debug is True:
+        if self.debug is True:
             print('place: ' + place)
         if place != 'None':
             # if 'place' exists, this returns the Python list that contains the coordinates of each corner of the bound
@@ -146,12 +146,12 @@ class TwitterFollowCollector(StreamListener):
 
         # this block specifies which Collector is being used to download this tweet
         collector = 'follow(account)'
-        if control.debug is True:
+        if self.debug is True:
             print('collector: ' + collector)
 
         # this block specifies what URL is embedded in this tweet
         url = 'test_url'
-        if control.debug is True:
+        if self.debug is True:
             print('URL: ' + url + '\n\n')
 
         # saves each variable to the database uses DB-API's parameter substitution, where ? is a stand-in for a

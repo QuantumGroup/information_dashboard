@@ -13,7 +13,6 @@ import traceback
 import time
 import datetime
 # local file imports
-import control
 import error as error_class
 import _keys_and_secrets as keys
 
@@ -21,7 +20,8 @@ import _keys_and_secrets as keys
 class TwitterSample(StreamListener):
 
     def __init__(self):
-        pass
+        super().__init__()
+        self.debug = True
 
     def twitter_sample_ingestor(self):
 
@@ -62,24 +62,24 @@ class TwitterSample(StreamListener):
 
         # this block saves the human-readable account name
         name = tweet['user']['name']
-        if control.debug is True:
+        if self.debug is True:
             print('name: ' + name)
 
         # this block saves the account '@' screenname
         screenname = tweet['user']['screen_name']
-        if control.debug is True:
+        if self.debug is True:
             print('screen name: @' + screenname)
 
         # this block saves the time the tweet was published
         published_raw = tweet['created_at']
         published_struct = time.strptime(published_raw, '%a %b %d %H:%M:%S %z %Y')
         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
-        if control.debug is True:
+        if self.debug is True:
             print('time: ' + published)
 
         # this block saves the actual tweet body text
         text = tweet['text']
-        if control.debug is True:
+        if self.debug is True:
             print('text: ' + text)
 
         # this block saves the exact location of a tweet (when present): if no location is available, ths is null.
@@ -93,7 +93,7 @@ class TwitterSample(StreamListener):
         else:
             coordinates_long = 'None'
             coordinates_lat = 'None'
-        if control.debug is True:
+        if self.debug is True:
             print('coordinates: ' + coordinates_long, coordinates_lat)
 
         # this block saves places that are tagged by users in their tweets. Tweets do not necessarily originate
@@ -128,7 +128,7 @@ class TwitterSample(StreamListener):
             place_ne_point_lat = 'None'
             place_se_point_long = 'None'
             place_se_point_lat = 'None'
-        if control.debug is True:
+        if self.debug is True:
             print('place name: ' + place_name)
             print('place type: ' + place_type)
             print('place country: ' + place_country)
@@ -139,7 +139,7 @@ class TwitterSample(StreamListener):
 
         # this block saves the selected language of the tweet
         language = tweet['user']['lang']
-        if control.debug is True:
+        if self.debug is True:
             print('language: ' + language + '\n\n')
 
         # saves each variable to the database uses DB-API's parameter substitution, where ? is a stand-in for a

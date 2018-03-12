@@ -3,18 +3,29 @@ This class takes in the user account requirements from the control script or web
 collection and pre-processing of tweets based off of those requirements.
 """
 from tweepy import StreamListener
-
+# Python library imports
+import json
+import re
+import sqlite3
+import os
+import sys
+import time
+import traceback
+# local file imports
+import control
+import error as error_class
+from tweepy import Stream
+from tweepy import OAuthHandler
+# imports auth secrets and keys
+import _keys_and_secrets as keys
 
 class TwitterFollowCollector(StreamListener):
 
     def __init__(self, accounts):
-        pass
+        super().__init__()
 
     def twitter_follow_ingestor(self, accounts):
-        from tweepy import Stream
-        from tweepy import OAuthHandler
-        # imports auth secrets and keys
-        import _keys_and_secrets as keys
+
 
         print('\n'
               'opening connection to Twitter API\n'
@@ -31,17 +42,6 @@ class TwitterFollowCollector(StreamListener):
         twitter_stream.filter(follow=accounts, async=True)
 
     def on_data(self, raw_data):
-        # Python library imports
-        import json
-        import re
-        import sqlite3
-        import os
-        import sys
-        import time
-        import traceback
-        # local file imports
-        import control
-        import error as error_class
 
         # instantiates error class
         error = error_class.Error()

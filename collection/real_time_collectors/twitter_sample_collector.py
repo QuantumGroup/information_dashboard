@@ -33,8 +33,8 @@ class TwitterSample(StreamListener):
         # handles Twitter API authentication
         auth = OAuthHandler(keys.twitter_consumer_key_1, keys.twitter_consumer_secret_1)
         auth.set_access_token(keys.twitter_access_token_key_1, keys.twitter_access_token_secret_1)
-        twitter_stream = Stream(auth, TwitterSample)
-        twitter_stream.sample(async=True, languages='en')
+        twitter_stream = Stream(auth, TwitterSample())
+        twitter_stream.sample(async=True)
 
     def on_data(self, raw_data):
 
@@ -59,6 +59,13 @@ class TwitterSample(StreamListener):
         # searches through tweet for retweet regex and returns if found
         if retweets.search(str(tweet['text'])):
             return True
+
+        # this block parses the selected language of the tweet, returns if not 'en', continues otherwise
+        language = tweet['user']['lang']
+        if language != 'en':
+            return True
+        if self.debug is True:
+            print('language: ' + language + '\n\n')
 
         # this block saves the human-readable account name
         name = tweet['user']['name']
@@ -136,11 +143,6 @@ class TwitterSample(StreamListener):
             print('place northwest coordinate: ' + place_nw_point_long, place_nw_point_lat)
             print('place northeast coordinate: ' + place_ne_point_long, place_ne_point_lat)
             print('place southeast coordinate: ' + place_se_point_long, place_se_point_lat)
-
-        # this block saves the selected language of the tweet
-        language = tweet['user']['lang']
-        if self.debug is True:
-            print('language: ' + language + '\n\n')
 
         # saves each variable to the database uses DB-API's parameter substitution, where ? is a stand-in for a
         # tuple containing the values

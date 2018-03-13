@@ -4,17 +4,13 @@ This is the main control script.
 
 
 # Python library imports
-import os
 import time
 import datetime
-import sys
-import traceback
 # local file imports
 import setup.setup as setup
 import collection.real_time_collectors.twitter_sample_collector as twitter_collector
 import collection.batch_collectors.headline_collector as headline_collector
 import error as error_class
-
 """
 sets up whether whether debug mode is on
 """

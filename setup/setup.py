@@ -35,52 +35,9 @@ class InformationCollectorSetup:
         c.execute(table_tweets)
 
         # this creates the table that takes in data from the rss_collector
-        table_rss = 'CREATE TABLE IF NOT EXISTS rss (name TEXT, country TEXT, published TEXT, ' \
-                    'imported TEXT, title TEXT, summary TEXT, url TEXT)'
-        c.execute(table_rss)
-
-        # this code block creates the table that takes in data from the stock_collector
-        table_stock_markets = 'CREATE TABLE IF NOT EXISTS stock_markets (name TEXT, symbol TEXT, country TEXT, ' \
-                              'published TEXT, imported TEXT, open REAL, high REAL, low REAL, close REAL)'
-        c.execute(table_stock_markets)
-
-        # this code block creates the table that takes in data from the currency_collector
-        table_currencies = 'CREATE TABLE IF NOT EXISTS currencies (base_currency_code TEXT, base_currency_name TEXT, ' \
-                           'counter_currency_code TEXT, counter_currency_name TEXT, exchange_rate REAL, ' \
-                           'published TEXT, imported TEXT)'
-        c.execute(table_currencies)
-
-        # these code blocks create the tables that takes in data from the market_sector_collector for one day, three
-        # day, one month, three month, and one year performance
-        table_one_day_market_sectors = 'CREATE TABLE IF NOT EXISTS one_day_market_sectors (energy REAL, real_estate REAL, ' \
-                               'utilities REAL, consumer_discretionary REAL, information_technology REAL, ' \
-                               'industrials REAL, financials REAL, materials REAL, consumer_staples REAL, ' \
-                               'health_care REAL, telecom_services REAL, published REAL, imported REAL)'
-        c.execute(table_one_day_market_sectors)
-
-        table_five_day_market_sectors = 'CREATE TABLE IF NOT EXISTS five_day_market_sectors (energy REAL, real_estate REAL, ' \
-                               'utilities REAL, consumer_discretionary REAL, information_technology REAL, ' \
-                               'industrials REAL, financials REAL, materials REAL, consumer_staples REAL, ' \
-                               'health_care REAL, telecom_services REAL, published REAL, imported REAL)'
-        c.execute(table_five_day_market_sectors)
-
-        table_one_month_market_sectors = 'CREATE TABLE IF NOT EXISTS one_month_market_sectors (energy REAL, real_estate REAL, ' \
-                               'utilities REAL, consumer_discretionary REAL, information_technology REAL, ' \
-                               'industrials REAL, financials REAL, materials REAL, consumer_staples REAL, ' \
-                               'health_care REAL, telecom_services REAL, published REAL, imported REAL)'
-        c.execute(table_one_month_market_sectors)
-
-        table_three_month_market_sectors = 'CREATE TABLE IF NOT EXISTS three_month_market_sectors (energy REAL, real_estate REAL, ' \
-                               'utilities REAL, consumer_discretionary REAL, information_technology REAL, ' \
-                               'industrials REAL, financials REAL, materials REAL, consumer_staples REAL, ' \
-                               'health_care REAL, telecom_services REAL, published REAL, imported REAL)'
-        c.execute(table_three_month_market_sectors)
-
-        table_one_year_market_sectors = 'CREATE TABLE IF NOT EXISTS one_year_market_sectors (energy REAL, real_estate REAL, ' \
-                               'utilities REAL, consumer_discretionary REAL, information_technology REAL, ' \
-                               'industrials REAL, financials REAL, materials REAL, consumer_staples REAL, ' \
-                               'health_care REAL, telecom_services REAL, published REAL, imported REAL)'
-        c.execute(table_one_year_market_sectors)
+        table_headlines = 'CREATE TABLE IF NOT EXISTS headlines (name TEXT, country TEXT, published TEXT, ' \
+                          'imported TEXT, title TEXT, summary TEXT, url TEXT)'
+        c.execute(table_headlines)
 
         c.close()
 

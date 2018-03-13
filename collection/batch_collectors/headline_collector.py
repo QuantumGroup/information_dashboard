@@ -3,6 +3,18 @@ This class takes in a list of RSS feeds, downloads their data, parses that data,
 data to the database.
 """
 
+# Python library imports
+import feedparser
+import os
+import json
+import sys
+import sqlite3
+import re
+import datetime
+import time
+import traceback
+from urllib.parse import urlparse
+
 
 class RSS_Collector:
 
@@ -10,9 +22,9 @@ class RSS_Collector:
         pass
 
     def rss_ingestor(self, rss_url):
-        # Python library imports
-        import feedparser
+        # local file imports
         import control
+        import error as error_class
 
         try:
             if rss_url in control.e_tags:
@@ -38,16 +50,6 @@ class RSS_Collector:
         return parser
 
     def rss_parser(self, rss_url):
-        # Python library imports
-        import os
-        import json
-        import sys
-        import sqlite3
-        import re
-        import datetime
-        import time
-        import traceback
-        from urllib.parse import urlparse
         # local file imports
         import control
         import error as error_class

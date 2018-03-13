@@ -176,7 +176,7 @@ class RSS_Collector:
 
             # this block checks the database to see if the URL in the new article matches any URLs already captured: if
             # not a match, the script continues the pre-processing and downloading process; if yes a match, pass
-            c.execute('SELECT url FROM rss')
+            c.execute('SELECT url FROM headlines')
             urls = c.fetchall()
             if url not in str(urls):
                 if control.debug is True:
@@ -304,7 +304,7 @@ class RSS_Collector:
 
                 # saves each variable to the database using DB-API's parameter substitution, where '?' is a stand-in
                 # for a tuple element containing the actual values
-                c.execute('INSERT INTO rss VALUES (?,?,?,?,?,?,?)',
+                c.execute('INSERT INTO headlines VALUES (?,?,?,?,?,?,?)',
                           (name, country, published, imported, title, summary, url))
                 # commits the changes to the database
                 try:

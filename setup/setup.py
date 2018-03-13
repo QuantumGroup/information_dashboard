@@ -27,11 +27,11 @@ class InformationCollectorSetup:
         c.execute(table_countries)
 
         # this creates the table that takes in data from the tweet_collector
-        table_tweets = 'CREATE TABLE IF NOT EXISTS tweets (name TEXT, screename TEXT, ' \
-                       'published TEXT, tweet TEXT, coordinates_long REAL, coordinate_lat REAL,  ' \
-                       'place_sw_point_long REAL, place_sw_point_lat REAL, place_nw_point_long REAL, ' \
-                       'place_nw_point_lat REAL, place_ne_point_long REAL, place_ne_point_lat REAL, ' \
-                       'place_se_point_long REAL, place_se_point_lat REAL, collector TEXT, url REAL)'
+        table_tweets = 'CREATE TABLE IF NOT EXISTS tweets (name TEXT, screenname TEXT, published TEXT, text_text TEXT, ' \
+                       'coordinates_long INTEGER, coordinates_lat INTEGER, place_name TEXT, place_type TEXT, ' \
+                       'place_country TEXT, place_sw_point_long INTEGER, place_sw_point_lat INTEGER, ' \
+                       'place_nw_point_long INTEGER, place_nw_point_lat INTEGER, place_ne_point_long INTEGER, ' \
+                       'place_ne_point_lat INTEGER, place_se_point_long INTEGER, place_se_point_lat INTEGER, lang TEXT)'
         c.execute(table_tweets)
 
         # this creates the table that takes in data from the rss_collector

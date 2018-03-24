@@ -14,10 +14,10 @@ import error as error_class
 """
 sets up whether whether debug mode is on
 """
-debug = True
+debug = False
 
 """
-sets up files necessary files
+sets up necessary files
 """
 setup = setup.InformationCollectorSetup()
 setup.initiate()
@@ -74,15 +74,18 @@ current_time_int = int(time.time())
 current_time_struct = time.gmtime(current_time_int)
 current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
 print('\n'
-      '=======================================================\n'
+      '========================================================\n'
       'starting the Information Edge Tool (working title)\n'
-      'release-0.0.1. 2018-03-12 running at %s\n'
-      '=======================================================\n'
+      'release 0.0.0. (2018-03-24) running at %s\n'
+      '========================================================\n'
       % current_time)
 
 # this runs all of the collectors in perpetuity
 while True:
     for url in rss_urls:
         headlines.rss_parser(url)
-    print('run completed at %d' % int(time.time()))
+    current_time_int = int(time.time())
+    current_time_struct = time.gmtime(current_time_int)
+    current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
+    print('run completed at %s' % current_time)
     time.sleep(60)

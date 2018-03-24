@@ -1,4 +1,4 @@
-release 0.0.0. 2018-02-19
+release 0.0.0. 2018-03-24
 
 # The Information Edge Tool (working title)
 

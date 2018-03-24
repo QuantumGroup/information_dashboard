@@ -132,6 +132,8 @@ class RSS_Collector:
                     name = 'Reuters'
                 elif hostname_url == 'www.latimes.com':
                     name = 'The Los Angeles Times'
+                elif hostname_url == 'reliefweb.int':
+                    name = 'ReliefWeb'
                 else:
                     name = str(hostname_url[4:-4])
             except:
@@ -175,6 +177,8 @@ class RSS_Collector:
                 country = 'GBR'
             elif hostname_url == 'www.latimes.com':
                 country = 'USA'
+            elif hostname_url == 'reliefweb.int':
+                country = 'UNO'
 
             # this block checks the database to see if the URL in the new article matches any URLs already captured: if
             # not a match, the script continues the pre-processing and downloading process; if yes a match, pass
@@ -193,10 +197,10 @@ class RSS_Collector:
                     elif name == 'The Sydney Morning Herald':
                         # These have a published value in the JSON object: "Sun, 25 Feb 2018 21:02:42 +1100"
                         published_raw = str(rss_json['published'])
-                        published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %Z')
+                        published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %z')
                         published = str(datetime.datetime.fromtimestamp(time.mktime(published_struct)))
                     elif name == 'The Daily Star' or name == 'The Hindu' or \
-                            name == 'The Straits Times' or name == 'Reuters':
+                            name == 'The Straits Times' or name == 'Reuters' or name == 'ReliefWeb':
                         # These have a published value in the JSON object: "Wed, 27 Dec 2017 00:00:00 +0600"
                         published_raw = str(rss_json['published'])
                         published_struct = time.strptime(published_raw, '%a, %d %b %Y %H:%M:%S %z')

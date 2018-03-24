@@ -50,16 +50,17 @@ rss_urls = ['http://www.nytimes.com/services/xml/rss/nyt/World.xml',
             'feed://www.wsj.com/xml/rss/3_7085.xml'
             'feed://hosted2.ap.org/atom/APDEFAULT/cae69a7523db45408eeb2b3a98c0c9c5',
             'http://feeds.reuters.com/Reuters/worldNews',
-            'feed://www.latimes.com/world/rss2.0.xml']
+            'feed://www.latimes.com/world/rss2.0.xml',
+            'https://reliefweb.int/disasters/rss.xml']
 
 """
-this runs the Twitter ingestor
+this runs the Twitter collector
 """
 twitter = twitter_collector.TwitterSample()
 twitter.twitter_sample_ingestor()
 
 """
-runs the batch collectors
+runs the headline collector
 """
 # saves HTML ETags and last-modified headers in a persistent variable to be referenced when pulling data from websites
 e_tags = {}
@@ -74,21 +75,14 @@ current_time_struct = time.gmtime(current_time_int)
 current_time = str(datetime.datetime.fromtimestamp(time.mktime(current_time_struct)))
 print('\n'
       '=======================================================\n'
-      'starting the Global Real-time Information Dashboard\n'
+      'starting the Information Edge Tool (working title)\n'
       'release-0.0.1. 2018-03-12 running at %s\n'
       '=======================================================\n'
       % current_time)
 
 # this runs all of the collectors in perpetuity
 while True:
-    # this runs the batch collectors
-    if debug is True:
-        print('===================================================================================\n'
-              'headline collection starting\n'
-              '===================================================================================\n')
     for url in rss_urls:
         headlines.rss_parser(url)
-    if debug is True:
-        print('========================================================================================\n'
-              'all headline entries pre-processed: continuing to next run...\n'
-              '========================================================================================\n')
+    print('run completed at %d' % int(time.time()))
+    time.sleep(60)

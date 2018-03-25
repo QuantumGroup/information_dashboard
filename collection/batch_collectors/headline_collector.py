@@ -139,7 +139,8 @@ class RSS_Collector:
             except:
                 e = sys.exc_info()
                 full_e = traceback.format_exc()
-                error.if_error(str(e), full_e, 'rss_parser()', 'URL or name error')
+                error.if_error(str(e), full_e, 'module headline_collector, class RSS_Collector, method rss_parser',
+                               'error in parsing URL for organization name')
                 return
 
             # this code block adds the nationality of origin for each of these news services
@@ -264,7 +265,8 @@ class RSS_Collector:
                     published = 'None'
                     e = sys.exc_info()
                     full_e = traceback.format_exc()
-                    error.if_error(str(e), full_e, 'rss_parser()', 'published error')
+                    error.if_error(str(e), full_e, 'module headline_collector, class RSS_Collector, method rss_parser',
+                                   'error in extracting time from RSS')
                 if control.debug is True:
                     print('published: ' + published)
 
@@ -277,7 +279,8 @@ class RSS_Collector:
                     imported = 'None'
                     e = sys.exc_info()
                     full_e = traceback.format_exc()
-                    error.if_error(str(e), full_e, 'rss_parser()', 'imported error')
+                    error.if_error(str(e), full_e, 'module headline_collector, class RSS_Collector, method rss_parser',
+                                   'error in returning imported time')
                 if control.debug is True:
                     print('imported: ' + imported)
 
@@ -288,7 +291,8 @@ class RSS_Collector:
                     title = 'None'
                     e = sys.exc_info()
                     full_e = traceback.format_exc()
-                    error.if_error(str(e), full_e, 'rss_parser()', 'title error')
+                    error.if_error(str(e), full_e, 'module headline_collector, class RSS_Collector, method rss_parser',
+                                   'error in extracting title from RSS')
                 if control.debug is True:
                     print('title: ' + title)
 
@@ -303,7 +307,8 @@ class RSS_Collector:
                     summary = 'None'
                     e = sys.exc_info()
                     full_e = traceback.format_exc()
-                    error.if_error(str(e), full_e, 'rss_parser()', 'summary error')
+                    error.if_error(str(e), full_e, 'module headline_collector, class RSS_Collector, method rss_parser',
+                                   'error in extracting summary from RSS')
                 if control.debug is True:
                     print('summary: ' + summary)
                     print('\n')
@@ -318,7 +323,8 @@ class RSS_Collector:
                 except:
                     e = sys.exc_info()
                     full_e = traceback.format_exc()
-                    error.if_error(str(e), full_e, 'rss_parser()', 'database commit error')
+                    error.if_error(str(e), full_e, 'module headline_collector, class RSS_Collector, method rss_parser',
+                                   'error in saving to database')
                     return
             else:
                 if control.debug is True:

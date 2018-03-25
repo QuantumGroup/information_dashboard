@@ -27,10 +27,11 @@ class TwitterSample(StreamListener):
     def twitter_sample_ingestor(self):
 
         # handles Twitter API authentication
-        auth = OAuthHandler(keys.twitter_consumer_key_2, keys.twitter_consumer_secret_2)
-        auth.set_access_token(keys.twitter_access_token_key_2, keys.twitter_access_token_secret_2)
+        auth = OAuthHandler(keys.twitter_consumer_key_3, keys.twitter_consumer_secret_3)
+        auth.set_access_token(keys.twitter_access_token_key_3, keys.twitter_access_token_secret_3)
         twitter_stream = Stream(auth, TwitterSample())
         twitter_stream.sample(async=True)
+
 
     def on_data(self, raw_data):
 

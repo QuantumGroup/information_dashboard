@@ -22,7 +22,7 @@ class TwitterSample(StreamListener):
 
     def __init__(self):
         super().__init__()
-        self.debug = True
+        self.debug = False
 
     def twitter_sample_ingestor(self):
 
@@ -31,7 +31,6 @@ class TwitterSample(StreamListener):
         auth.set_access_token(keys.twitter_access_token_key_3, keys.twitter_access_token_secret_3)
         twitter_stream = Stream(auth, TwitterSample())
         twitter_stream.sample(async=True)
-
 
     def on_data(self, raw_data):
 

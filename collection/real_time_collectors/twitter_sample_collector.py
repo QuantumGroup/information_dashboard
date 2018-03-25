@@ -25,11 +25,6 @@ class TwitterSample(StreamListener):
 
     def twitter_sample_ingestor(self):
 
-        print('\n'
-              '=================================\n'
-              'opening connection to Twitter API\n'
-              '=================================\n')
-
         # handles Twitter API authentication
         auth = OAuthHandler(keys.twitter_consumer_key_1, keys.twitter_consumer_secret_1)
         auth.set_access_token(keys.twitter_access_token_key_1, keys.twitter_access_token_secret_1)
